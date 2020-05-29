@@ -24,5 +24,9 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5**
  5. Ensure BIOS has Display Memory set to 64MB and that Secure Boot is disabled.
  6. Reboot and boot from USB and complete macOS installation!
 
- 
+
+## Post-Installation Notes
+ Install [Clover](https://github.com/CloverHackyColor/CloverBootloader/releases) to the macOS partition and choose `Customize` before installation and ensure that `Clover for UEFI booting only` is checked, along with `Install Clover in the ESP` and `UEFI Drivers -> Recommended drivers`,  as well as `File System drivers -> ApfsDriverLoader`, and also ensure that `Memory fix drivers -> AptioMemoryFix` is checked.
+
+You should also select a Theme *(or all of them)* as well, and also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
