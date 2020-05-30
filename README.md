@@ -45,6 +45,7 @@ Note: [This driver](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/33
 Most notably is the fact that you *cannot* actually connect to any wireless networks directly from the Wireless dropdown in the macOS  menu bar, but actually have to add your Wireless SSID and password as strings to the NVRAM *(recommended)* or as entries in the Clover config.plist to run as boot arguments.
 
 It also doesn't support running the card at full speed yet, but I've managed to get fairly decent performance at an average of 60mb down and 15up *(which is much better than nothing!)*
+
 ![Speed Test](Images/speedtest.png)
 
 <br>
