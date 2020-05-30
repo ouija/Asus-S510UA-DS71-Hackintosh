@@ -22,7 +22,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5**
  3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/blob/master/Installation/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
  4. Copy/replace [these kexts](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/master/Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
  5. Ensure BIOS has Display Memory set to 64MB and that both Secure Boot and CSM mode is disabled.
- 6. Reboot and boot from USB and complete macOS installation!
+ 6. Reboot and boot from USB and complete macOS installation! *(note that you need a usb mouse to complete installation)*
 
 
 ## Post-Installation Notes
@@ -43,3 +43,10 @@ Note that this post-installation folder contains all the kexts and config settin
 
 ## Detailed Installation and Configuration Notes
 ### Pre-Install: 
+Just getting the macOS Installer to load took me more time than it did to configure all the hardware!  There were a couple tricks to it that I hadn't come across before in all my years of Hackintoshin', and I struggled figuring them out.
+
+First off, you need to have the two `Prevent Apple I2C kexts from attaching to I2C controllers` [patches by CoolStar](https://github.com/RehabMan/OS-X-Clover-Laptop-Config/blob/bcd876e93df197c1cbf04ba5923b5479f94988d4/config_patches.plist#L54) added to the Clover configuration of the USB Installer or you'll see a number of errors in the console related to the `appleintellpssi2ccontroller`timing out, due to the native AppleIntelPSSI2Controller trying to attach to the I2C devices in the machine.
+
+Second, you need to also ensure that the [VoodooTSSync.kext](https://bitbucket.org/RehabMan/VoodooTSCSync/downloads/) is also installed to the `EFI/CLOVER/kexts/Other` folder of the USB Installer or you'll get a kernel panic on installation as well.
+
+And finally, you need to have the Intel injection method enabled with the proper `FakeID` of `0x59168086` for the IntelGFX and `ig-platform-id`of the Intel UHD 620 or you'll have no video output.
