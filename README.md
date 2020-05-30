@@ -38,15 +38,21 @@ Note that this post-installation folder contains all the kexts and config settin
 
 *Note:  If you **don't** see an entry in the BIOS boot menu for Clover on the macOS installation partition, you'll need to **manually create it** through the BIOS.* 
 
-4. Once booted into MacOS, Install the kext package for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading this file, extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.
+4. Once booted into MacOS, Install the kext package for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading this file, extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.  
 
-Note: [This driver](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633257017) is still very experimental at the time *(being released only a few days before this writing)* and has some limitations in terms of performance and operation.  
+Note: [This driver](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633257017) is still very experimental at the time *(being released only a few days before this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an *
 
 Most notably is the fact that you *cannot* actually connect to any wireless networks directly from the Wireless dropdown in the macOS  menu bar, but actually have to add your Wireless SSID and password as strings to the NVRAM *(recommended)* or as entries in the Clover config.plist to run as boot arguments.
 
 It also doesn't support running the card at full speed yet, but I've managed to get fairly decent performance at an average of 60mb down and 15up *(which is much better than nothing!)*
 
-<center><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/speedtest.png"></center>
+<p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/speedtest.png"></p>
+
+5. Use [Hackintool](https://github.com/headkaze/Hackintool/releases) and open the NVRAM section and add two `string` type variable names as `WiFi-SSID` and `WiFi-PW` using the values of the wireless network you want to connect to:
+
+<p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/hackintool-nvram-wifi.png"></p>
+
+
 
 <br>
 
