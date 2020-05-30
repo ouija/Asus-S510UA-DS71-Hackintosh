@@ -19,7 +19,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 
  1. Create macOS 10.15.5 Catalina USB Installer via [UniBeast](https://www.tonymacx86.com/resources/unibeast-10-1-0-catalina.469/) (EFI Method)
  2. Mount EFI partition of USB Installer *(using [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
- 3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/blob/master/Installation/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
+ 3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](Installation/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
  4. Copy/replace [these kexts](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/master/Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
  5. Ensure BIOS has Display Memory set to 64MB and that both Secure Boot and CSM mode is disabled.
  6. Reboot and boot from USB and complete macOS installation! *(note that you need a usb mouse to complete installation)*
@@ -30,7 +30,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 
 You should also select a Theme *(or all of them)* as well, and also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
-2. The EFI volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of this Clover post-installation folder from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
+2. The EFI volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of the [Clover post-installation folder](Post-Install/CLOVER) from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
 
 Note that this post-installation folder contains all the kexts and config settings needed to get your `ASUS S510UA-DS71`running.
 
@@ -40,7 +40,7 @@ Note that this post-installation folder contains all the kexts and config settin
 
 4. Once booted into MacOS, Install the kext package for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading this file, extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.  
 
-Note: [This driver](http://bbs.pcbeta.com/viewthread-1856465-1-1.html) is still very experimental at the time *(being released only a few days before this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an *
+Note: [This driver](http://bbs.pcbeta.com/viewthread-1856465-1-1.html) is still very experimental at the time *(only being released a few days prior to this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an *
 
 Most notably is the fact that you *cannot* directly connect to any wireless networks using the Wireless dropdown in the macOS  menu bar, but rather have to add your Wireless SSID and password as strings to the NVRAM *(recommended)* or as entries in the Clover config.plist to run as boot arguments - [see here](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633963347) for more details.
 
