@@ -28,7 +28,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 ## Post-Installation Notes
  1. Install [Clover](https://github.com/CloverHackyColor/CloverBootloader/releases) to the macOS installation partition and choose `Customize` before installation and ensure that `Clover for UEFI booting only` is checked, along with `Install Clover in the ESP` and `UEFI Drivers -> Recommended drivers`,  as well as `File System drivers -> ApfsDriverLoader`, and also ensure that `Memory fix drivers -> OSXAptioFix3Drv` OR  `AptioMemoryFix`is checked.
 
-You should also select a Theme *(or all of them)* as well, and also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
+You should also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
 2. The EFI volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of the [Clover post-installation folder](Post-Install/CLOVER) from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
 
