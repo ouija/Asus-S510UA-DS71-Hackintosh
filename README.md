@@ -36,4 +36,7 @@ Note that this post-installation folder contains all the kexts and config settin
 
 3. Now reboot and enjoy your fully functional hackintosh! :)
 
+---
 
+## Detailed Installation and Configuration Notes
+### Pre-Install: 
