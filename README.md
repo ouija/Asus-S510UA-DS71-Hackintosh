@@ -18,15 +18,17 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5**
 ## Quick Installation Notes
 
  1. Create macOS 10.15.5 Catalina USB Installer via [UniBeast](https://www.tonymacx86.com/resources/unibeast-10-1-0-catalina.469/) (EFI Method)
- 2. Mount EFI partition of USB Installer *(use [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
- 3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/blob/master/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
- 4. Copy/replace [these kexts](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/master/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
- 5. Ensure BIOS has Display Memory set to 64MB and that Secure Boot is disabled.
+ 2. Mount EFI partition of USB Installer *(using [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
+ 3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/blob/master/Installation/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
+ 4. Copy/replace [these kexts](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/master/Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
+ 5. Ensure BIOS has Display Memory set to 64MB and that both Secure Boot and CSM mode is disabled.
  6. Reboot and boot from USB and complete macOS installation!
 
 
 ## Post-Installation Notes
- Install [Clover](https://github.com/CloverHackyColor/CloverBootloader/releases) to the macOS partition and choose `Customize` before installation and ensure that `Clover for UEFI booting only` is checked, along with `Install Clover in the ESP` and `UEFI Drivers -> Recommended drivers`,  as well as `File System drivers -> ApfsDriverLoader`, and also ensure that `Memory fix drivers -> AptioMemoryFix` is checked.
+ 1. Install [Clover](https://github.com/CloverHackyColor/CloverBootloader/releases) to the macOS partition and choose `Customize` before installation and ensure that `Clover for UEFI booting only` is checked, along with `Install Clover in the ESP` and `UEFI Drivers -> Recommended drivers`,  as well as `File System drivers -> ApfsDriverLoader`, and also ensure that `Memory fix drivers -> AptioMemoryFix` is checked.
 
 You should also select a Theme *(or all of them)* as well, and also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
+2. Mount the EFI partition for the macOS disk 
+you just installed to *(using [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)* and copy the contents of this post-installation folder to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
