@@ -76,6 +76,8 @@ Getting most things setup post-install was relatively painless, with some minor 
 
  - **No external HDMI display on startup:**
  This was an odd issue that I managed to resolve using the Clover boot argument `igfxonln=1`  for WhateverGreen. 
- However, I was then experience kernel panics when waking from sleep when using this boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the Apple PowerManagement preference files:
+ 
+ - **Reboot on wake/resume from sleep:**
+ However, I was then  experiencing kernel panics/rebooting when waking from sleep when using the `igfxonln=1` boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the *Apple PowerManagement preference* files:
  ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
 
