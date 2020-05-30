@@ -35,8 +35,11 @@ You should also select a Theme *(or all of them)* as well, and also check off `I
 Note that this post-installation folder contains all the kexts and config settings needed to get your `ASUS S510UA-DS71`running.
 
 3. Now reboot and enjoy your fully functional hackintosh! :)
+<br>
 
 ---
+
+<br>
 
 ## Detailed Installation and Configuration Notes
 ### Pre-Install: 
