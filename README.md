@@ -32,17 +32,17 @@ You should also select a Theme *(or all of them)* as well, and also check off `I
 
 2. The EFI volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of the [Clover post-installation folder](Post-Install/CLOVER) from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
 
-Note that [this post-installation folder](Post-Install/CLOVER) contains all the kexts and config settings needed to get your `ASUS S510UA-DS71`running.
+Note that [this post-installation folder](Post-Install/CLOVER) contains all the kexts, config settings, and DSDT modifications needed to get your `ASUS S510UA-DS71` up and running beautifully.
 
-3. Now reboot and select the macOS installation partition to boot Clover from.  
+3. Now reboot and **open the BIOS boot menu** to select the macOS installation partition to boot Clover from.  
 
 *Note:  If you **don't** see an entry in the BIOS boot menu for Clover on the macOS installation partition, you'll need to **manually create it** through the BIOS.* 
 
-4. Once booted into MacOS, Install the kext package for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading this file, extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.  
+4. Once booted into MacOS, install [the driver package](Post-Install/WiFi) for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading [this file](Post-Install/WiFi), extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.  
 
-Note: [This driver](http://bbs.pcbeta.com/viewthread-1856465-1-1.html) is still very experimental at the time *(only being released a few days prior to this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an *
+Note: [This driver](http://bbs.pcbeta.com/viewthread-1856465-1-1.html) is still very experimental at the time *(only being released a few days prior to this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an `uninstall.command` file to remove it in the future if needed)*
 
-Most notably is the fact that you *cannot* directly connect to any wireless networks using the Wireless dropdown in the macOS  menu bar, but rather have to add your Wireless SSID and password as strings to the NVRAM *(recommended)* or as entries in the Clover config.plist to run as boot arguments - [see here](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633963347) for more details.
+Most notably is the fact that you <ins>**cannot**</ins> directly connect to wireless networks using the Wireless Settings dropdown in the macOS  menu bar, but rather have to add your Wireless SSID and password as strings to the NVRAM *(recommended)* or as entries in the Clover config.plist to run as boot arguments - [see here](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633963347) for more details.
 
 It also doesn't support running the card at full speed yet, but I've managed to get fairly decent performance at an average of 60mb down and 15up *(which is much better than nothing!)*
 
