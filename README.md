@@ -46,7 +46,7 @@ Most notably is the fact that you *cannot* actually connect to any wireless netw
 
 It also doesn't support running the card at full speed yet, but I've managed to get fairly decent performance at an average of 60mb down and 15up *(which is much better than nothing!)*
 
-<img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/speedtest.png" align="center">
+<center><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/speedtest.png"></center>
 
 <br>
 
