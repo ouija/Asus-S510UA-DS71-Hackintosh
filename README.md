@@ -3,7 +3,7 @@
 **Hackintosh Method for Asus VivoBook S10UA-DS71**
 
 ## Preface
-This unit was a bit of a stubborn bitch to hackintosh *(as it was my first Kaby Lake and Intel UHD 620 based model)* and warranted me to create this repo to track my installation and configuration steps for not only myself, but others as well.
+This unit was a bit of a stubborn bitch to hackintosh *(as it was my first Kaby Lake and Intel UHD 620 based model)* and prompted me to create this repo to track my installation and configuration steps for not only myself, but others as well.
 
 This installation and guide was done in *May of 2020* using **macOS 10.15.5** and supports *ALL NATIVE HARDWARE*, including the oem wifi card!
 
@@ -18,7 +18,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 ## Quick Installation Notes
 
  1. Create macOS 10.15.5 Catalina USB Installer via [UniBeast](https://www.tonymacx86.com/resources/unibeast-10-1-0-catalina.469/) (EFI Method)
- 2. Mount EFI partition of USB Installer *(using [Hackintool](https://github.com/headkaze/Hackintool/releases){:target="_blank"} or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
+ 2. Mount EFI partition of USB Installer *(using [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
  3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](Installation/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
  4. Copy/replace [these kexts](Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
  5. Ensure BIOS has Display Memory set to 64MB and that both Secure Boot and CSM mode is disabled.
@@ -30,9 +30,9 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 
 You should also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
-2. The EFI volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of the [Clover post-installation folder](Post-Install/CLOVER) from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
+2. The `EFI` volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of the [Clover post-installation folder](Post-Install/CLOVER) from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
 
-Note that [this post-installation folder](Post-Install/CLOVER) contains all the kexts, config settings, and DSDT modifications needed to get your `ASUS S510UA-DS71` up and running beautifully.
+Note that [this post-installation folder](Post-Install/CLOVER) contains **all** of the kexts, config settings, and DSDT modifications needed to get your `ASUS S510UA-DS71` up and running *beautifully*!
 
 3. Now reboot and **open the BIOS boot menu** to select the macOS installation partition to boot Clover from.  
 
@@ -42,13 +42,13 @@ Note that [this post-installation folder](Post-Install/CLOVER) contains all the 
 
 Note: [This driver](http://bbs.pcbeta.com/viewthread-1856465-1-1.html) is still very experimental at the time *(only being released a few days prior to this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an `uninstall.command` file to remove it in the future if needed)*
 
-Most notably is the fact that you <ins>**cannot**</ins> directly connect to wireless networks using the Wireless Settings dropdown in the macOS  menu bar, but rather have to add your Wireless SSID and password as strings to the NVRAM *(recommended)* or as entries in the Clover config.plist to run as boot arguments - [see here](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633963347) for more details.
+Most notably is the fact that you <ins>*cannot*</ins> directly connect to wireless networks using the Wireless Settings dropdown in the macOS  menu bar, but rather have to **add your Wireless SSID and password as strings to the NVRAM** *(recommended)* or as entries in the Clover config.plist to run as boot arguments - [see here](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633963347) for more details.
 
-It also doesn't support running the card at full speed yet, but I've managed to get fairly decent performance at an average of 60mb down and 15up *(which is much better than nothing!)*
+This driver also *doesn't* support running the card at full speed yet, but I've managed to get fairly decent performance at an average of 60mb down and 15up *(which is much better than nothing!)*
 
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/speedtest.png"></p>
 
-5. Use [Hackintool](https://github.com/headkaze/Hackintool/releases) and open the NVRAM section and add two `string` type variable names as `WiFi-SSID` and `WiFi-PW` using the values of the wireless network you want to connect to:
+5. Use [Hackintool](https://github.com/headkaze/Hackintool/releases) and open the NVRAM section and add two `string` type variable names as `WiFi-SSID` and `WiFi-PW` using the credentials of the wireless network you want to connect to:
 
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/hackintool-nvram-wifi.png"></p>
 
@@ -62,7 +62,7 @@ It also doesn't support running the card at full speed yet, but I've managed to 
 
 ## Detailed Installation and Configuration Notes
 ### Pre-Install: 
-Just getting the macOS Installer to load took me more time than it did to configure all the hardware!  There were a couple tricks to it that I hadn't come across before in all my years of Hackintoshin', and I struggled figuring them out.
+Just getting the macOS Installer to load took me more time than it did to configure all the hardware!  There were a couple tricks to it that I hadn't come across before in all my years of Hackintoshin', and I struggled a bit figuring them out.
 
 First off, you need to have the two `Prevent Apple I2C kexts from attaching to I2C controllers` [patches by CoolStar](https://github.com/RehabMan/OS-X-Clover-Laptop-Config/blob/bcd876e93df197c1cbf04ba5923b5479f94988d4/config_patches.plist#L54) added to the Clover configuration of the USB Installer or you'll see a number of errors in the console related to the `appleintellpssi2ccontroller`timing out, due to the native AppleIntelPSSI2Controller trying to attach to the I2C devices in the machine.
 
@@ -72,4 +72,10 @@ And finally, you need to have the Intel injection method enabled with the proper
 
 ### Post-Install: 
 
-Getting most things setup was relatively painless, minor a couple issues that took some debugging.  But I'm 
+Getting most things setup post-install was relatively painless, with some minor issues that took some debugging, which I'm detailing here for reference.
+
+ - **No external HDMI display on startup:**
+ This was an odd issue that I managed to resolve using the Clover boot argument `igfxonln=1`  for WhateverGreen. 
+ However, I was then experience kernel panics when waking from sleep when using this boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the Apple PowerManagement preference files:
+ ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
+
