@@ -52,7 +52,7 @@ It also doesn't support running the card at full speed yet, but I've managed to 
 
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/hackintool-nvram-wifi.png"></p>
 
-
+6. Reboot and enjoy your fully-functional Hackintosh!
 
 <br>
 
