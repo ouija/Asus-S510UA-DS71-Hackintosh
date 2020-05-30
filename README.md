@@ -26,9 +26,14 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5**
 
 
 ## Post-Installation Notes
- 1. Install [Clover](https://github.com/CloverHackyColor/CloverBootloader/releases) to the macOS partition and choose `Customize` before installation and ensure that `Clover for UEFI booting only` is checked, along with `Install Clover in the ESP` and `UEFI Drivers -> Recommended drivers`,  as well as `File System drivers -> ApfsDriverLoader`, and also ensure that `Memory fix drivers -> AptioMemoryFix` is checked.
+ 1. Install [Clover](https://github.com/CloverHackyColor/CloverBootloader/releases) to the macOS installation partition and choose `Customize` before installation and ensure that `Clover for UEFI booting only` is checked, along with `Install Clover in the ESP` and `UEFI Drivers -> Recommended drivers`,  as well as `File System drivers -> ApfsDriverLoader`, and also ensure that `Memory fix drivers -> AptioMemoryFix` is checked.
 
 You should also select a Theme *(or all of them)* as well, and also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
-2. Mount the EFI partition for the macOS disk 
-you just installed to *(using [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)* and copy the contents of this post-installation folder to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
+2. The EFI volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of this Clover post-installation folder from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
+
+Note that this post-installation folder contains all the kexts and config settings needed to get your `ASUS S510UA-DS71`running.
+
+3. Now reboot and enjoy your fully functional hackintosh! :)
+
+
