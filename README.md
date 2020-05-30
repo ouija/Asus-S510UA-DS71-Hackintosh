@@ -18,7 +18,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 ## Quick Installation Notes
 
  1. Create macOS 10.15.5 Catalina USB Installer via [UniBeast](https://www.tonymacx86.com/resources/unibeast-10-1-0-catalina.469/) (EFI Method)
- 2. Mount EFI partition of USB Installer *(using [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
+ 2. Mount EFI partition of USB Installer *(using [Hackintool](https://github.com/headkaze/Hackintool/releases){:target="_blank"} or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
  3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](Installation/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
  4. Copy/replace [these kexts](Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
  5. Ensure BIOS has Display Memory set to 64MB and that both Secure Boot and CSM mode is disabled.
