@@ -4026,16 +4026,6 @@ DefinitionBlock ("", "DSDT", 2, "_ASUS_", "Notebook", 0x01072009)
                 0x12
             }
         })
-        Device(ALS0)
-        {
-            Name(_HID, "ACPI0008")
-            Name(_CID, "smc-als")
-            Name(_ALI, 150)
-            Name(_ALR, Package()
-            {
-                Package() { 100, 150 },
-            })
-        }
     }
 
     Scope (_SB)
@@ -18270,195 +18260,9 @@ RWAK (Arg0)
 
     Method (PNOT, 0, Serialized)
     {
-        If (LGreater (TCNT, One))
-        {
-            If (And (PC00, 0x08))
-            {
-                Notify (\_PR.PR00, 0x80)
-            }
+        
+        // nothing
 
-            If (And (PC01, 0x08))
-            {
-                Notify (\_PR.PR01, 0x80)
-            }
-
-            If (And (PC02, 0x08))
-            {
-                Notify (\_PR.PR02, 0x80)
-            }
-
-            If (And (PC03, 0x08))
-            {
-                Notify (\_PR.PR03, 0x80)
-            }
-
-            If (And (PC04, 0x08))
-            {
-                Notify (\_PR.PR04, 0x80)
-            }
-
-            If (And (PC05, 0x08))
-            {
-                Notify (\_PR.PR05, 0x80)
-            }
-
-            If (And (PC06, 0x08))
-            {
-                Notify (\_PR.PR06, 0x80)
-            }
-
-            If (And (PC07, 0x08))
-            {
-                Notify (\_PR.PR07, 0x80)
-            }
-
-            If (And (PC08, 0x08))
-            {
-                Notify (\_PR.PR08, 0x80)
-            }
-
-            If (And (PC09, 0x08))
-            {
-                Notify (\_PR.PR09, 0x80)
-            }
-
-            If (And (PC10, 0x08))
-            {
-                Notify (\_PR.PR10, 0x80)
-            }
-
-            If (And (PC11, 0x08))
-            {
-                Notify (\_PR.PR11, 0x80)
-            }
-
-            If (And (PC12, 0x08))
-            {
-                Notify (\_PR.PR12, 0x80)
-            }
-
-            If (And (PC13, 0x08))
-            {
-                Notify (\_PR.PR13, 0x80)
-            }
-
-            If (And (PC14, 0x08))
-            {
-                Notify (\_PR.PR14, 0x80)
-            }
-
-            If (And (PC15, 0x08))
-            {
-                Notify (\_PR.PR15, 0x80)
-            }
-        }
-        Else
-        {
-            Notify (\_PR.PR00, 0x80)
-        }
-
-        If (LGreater (TCNT, One))
-        {
-            If (LAnd (And (PC00, 0x08), And (PC00, 0x10)))
-            {
-                Notify (\_PR.PR00, 0x81)
-            }
-
-            If (LAnd (And (PC01, 0x08), And (PC01, 0x10)))
-            {
-                Notify (\_PR.PR01, 0x81)
-            }
-
-            If (LAnd (And (PC02, 0x08), And (PC02, 0x10)))
-            {
-                Notify (\_PR.PR02, 0x81)
-            }
-
-            If (LAnd (And (PC03, 0x08), And (PC03, 0x10)))
-            {
-                Notify (\_PR.PR03, 0x81)
-            }
-
-            If (LAnd (And (PC04, 0x08), And (PC04, 0x10)))
-            {
-                Notify (\_PR.PR04, 0x81)
-            }
-
-            If (LAnd (And (PC05, 0x08), And (PC05, 0x10)))
-            {
-                Notify (\_PR.PR05, 0x81)
-            }
-
-            If (LAnd (And (PC06, 0x08), And (PC06, 0x10)))
-            {
-                Notify (\_PR.PR06, 0x81)
-            }
-
-            If (LAnd (And (PC07, 0x08), And (PC07, 0x10)))
-            {
-                Notify (\_PR.PR07, 0x81)
-            }
-
-            If (LAnd (And (PC08, 0x08), And (PC08, 0x10)))
-            {
-                Notify (\_PR.PR08, 0x81)
-            }
-
-            If (LAnd (And (PC09, 0x08), And (PC09, 0x10)))
-            {
-                Notify (\_PR.PR09, 0x81)
-            }
-
-            If (LAnd (And (PC10, 0x08), And (PC10, 0x10)))
-            {
-                Notify (\_PR.PR10, 0x81)
-            }
-
-            If (LAnd (And (PC11, 0x08), And (PC11, 0x10)))
-            {
-                Notify (\_PR.PR11, 0x81)
-            }
-
-            If (LAnd (And (PC12, 0x08), And (PC12, 0x10)))
-            {
-                Notify (\_PR.PR12, 0x81)
-            }
-
-            If (LAnd (And (PC13, 0x08), And (PC13, 0x10)))
-            {
-                Notify (\_PR.PR13, 0x81)
-            }
-
-            If (LAnd (And (PC14, 0x08), And (PC14, 0x10)))
-            {
-                Notify (\_PR.PR14, 0x81)
-            }
-
-            If (LAnd (And (PC15, 0x08), And (PC15, 0x10)))
-            {
-                Notify (\_PR.PR15, 0x81)
-            }
-        }
-        Else
-        {
-            Notify (\_PR.PR00, 0x81)
-        }
-
-        If (LEqual (ECON, One))
-        {
-            Notify (\_SB.PCI0.LPCB.H_EC.BAT0, 0x81)
-            Notify (\_SB.PCI0.LPCB.H_EC.BAT1, 0x81)
-            Notify (\_SB.PCI0.LPCB.H_EC.BAT2, 0x81)
-        }
-
-        If (LEqual (DPTF, One))
-        {
-            Notify (\_SB.IETM, 0x86)
-            If (LEqual (CHGE, One))
-            {
-                Notify (\_SB.PCI0.LPCB.H_EC.CHRG, 0x80)
-            }
-        }
     }
 
     OperationRegion (MBAR, SystemMemory, Add (\_SB.PCI0.GMHB (), 0x5000), 0x1000)
@@ -39714,21 +39518,6 @@ RWAK (Arg0)
             Method (CBIF, 1, Serialized)
             {
                 Return (Zero)
-            }
-            Method (ALSS, 0, NotSerialized)
-            {
-                Return (^^ALS0._ALI)
-            }
-            Method (ALSC, 1, NotSerialized)
-            {
-                // This method does nothing
-            }
-            Method (SKBV, 1, NotSerialized)
-            {
-                ^^KBLV = Arg0 / 16
-                ^^PCI0.LPCB.EC0.WRAM (0x09F0, ^^KBLV)
-                ^^PCI0.LPCB.EC0.ST9E (0x1F, 0xFF, Arg0)
-                Return (Arg0)
             }
         }
     }

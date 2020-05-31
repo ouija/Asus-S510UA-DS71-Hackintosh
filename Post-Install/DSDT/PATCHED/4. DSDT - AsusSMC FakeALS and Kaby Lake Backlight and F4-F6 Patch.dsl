@@ -18222,195 +18222,9 @@ RWAK (Arg0)
 
     Method (PNOT, 0, Serialized)
     {
-        If (LGreater (TCNT, One))
-        {
-            If (And (PC00, 0x08))
-            {
-                Notify (\_PR.PR00, 0x80)
-            }
+        
+        // nothing
 
-            If (And (PC01, 0x08))
-            {
-                Notify (\_PR.PR01, 0x80)
-            }
-
-            If (And (PC02, 0x08))
-            {
-                Notify (\_PR.PR02, 0x80)
-            }
-
-            If (And (PC03, 0x08))
-            {
-                Notify (\_PR.PR03, 0x80)
-            }
-
-            If (And (PC04, 0x08))
-            {
-                Notify (\_PR.PR04, 0x80)
-            }
-
-            If (And (PC05, 0x08))
-            {
-                Notify (\_PR.PR05, 0x80)
-            }
-
-            If (And (PC06, 0x08))
-            {
-                Notify (\_PR.PR06, 0x80)
-            }
-
-            If (And (PC07, 0x08))
-            {
-                Notify (\_PR.PR07, 0x80)
-            }
-
-            If (And (PC08, 0x08))
-            {
-                Notify (\_PR.PR08, 0x80)
-            }
-
-            If (And (PC09, 0x08))
-            {
-                Notify (\_PR.PR09, 0x80)
-            }
-
-            If (And (PC10, 0x08))
-            {
-                Notify (\_PR.PR10, 0x80)
-            }
-
-            If (And (PC11, 0x08))
-            {
-                Notify (\_PR.PR11, 0x80)
-            }
-
-            If (And (PC12, 0x08))
-            {
-                Notify (\_PR.PR12, 0x80)
-            }
-
-            If (And (PC13, 0x08))
-            {
-                Notify (\_PR.PR13, 0x80)
-            }
-
-            If (And (PC14, 0x08))
-            {
-                Notify (\_PR.PR14, 0x80)
-            }
-
-            If (And (PC15, 0x08))
-            {
-                Notify (\_PR.PR15, 0x80)
-            }
-        }
-        Else
-        {
-            Notify (\_PR.PR00, 0x80)
-        }
-
-        If (LGreater (TCNT, One))
-        {
-            If (LAnd (And (PC00, 0x08), And (PC00, 0x10)))
-            {
-                Notify (\_PR.PR00, 0x81)
-            }
-
-            If (LAnd (And (PC01, 0x08), And (PC01, 0x10)))
-            {
-                Notify (\_PR.PR01, 0x81)
-            }
-
-            If (LAnd (And (PC02, 0x08), And (PC02, 0x10)))
-            {
-                Notify (\_PR.PR02, 0x81)
-            }
-
-            If (LAnd (And (PC03, 0x08), And (PC03, 0x10)))
-            {
-                Notify (\_PR.PR03, 0x81)
-            }
-
-            If (LAnd (And (PC04, 0x08), And (PC04, 0x10)))
-            {
-                Notify (\_PR.PR04, 0x81)
-            }
-
-            If (LAnd (And (PC05, 0x08), And (PC05, 0x10)))
-            {
-                Notify (\_PR.PR05, 0x81)
-            }
-
-            If (LAnd (And (PC06, 0x08), And (PC06, 0x10)))
-            {
-                Notify (\_PR.PR06, 0x81)
-            }
-
-            If (LAnd (And (PC07, 0x08), And (PC07, 0x10)))
-            {
-                Notify (\_PR.PR07, 0x81)
-            }
-
-            If (LAnd (And (PC08, 0x08), And (PC08, 0x10)))
-            {
-                Notify (\_PR.PR08, 0x81)
-            }
-
-            If (LAnd (And (PC09, 0x08), And (PC09, 0x10)))
-            {
-                Notify (\_PR.PR09, 0x81)
-            }
-
-            If (LAnd (And (PC10, 0x08), And (PC10, 0x10)))
-            {
-                Notify (\_PR.PR10, 0x81)
-            }
-
-            If (LAnd (And (PC11, 0x08), And (PC11, 0x10)))
-            {
-                Notify (\_PR.PR11, 0x81)
-            }
-
-            If (LAnd (And (PC12, 0x08), And (PC12, 0x10)))
-            {
-                Notify (\_PR.PR12, 0x81)
-            }
-
-            If (LAnd (And (PC13, 0x08), And (PC13, 0x10)))
-            {
-                Notify (\_PR.PR13, 0x81)
-            }
-
-            If (LAnd (And (PC14, 0x08), And (PC14, 0x10)))
-            {
-                Notify (\_PR.PR14, 0x81)
-            }
-
-            If (LAnd (And (PC15, 0x08), And (PC15, 0x10)))
-            {
-                Notify (\_PR.PR15, 0x81)
-            }
-        }
-        Else
-        {
-            Notify (\_PR.PR00, 0x81)
-        }
-
-        If (LEqual (ECON, One))
-        {
-            Notify (\_SB.PCI0.LPCB.H_EC.BAT0, 0x81)
-            Notify (\_SB.PCI0.LPCB.H_EC.BAT1, 0x81)
-            Notify (\_SB.PCI0.LPCB.H_EC.BAT2, 0x81)
-        }
-
-        If (LEqual (DPTF, One))
-        {
-            Notify (\_SB.IETM, 0x86)
-            If (LEqual (CHGE, One))
-            {
-                Notify (\_SB.PCI0.LPCB.H_EC.CHRG, 0x80)
-            }
-        }
     }
 
     OperationRegion (MBAR, SystemMemory, Add (\_SB.PCI0.GMHB (), 0x5000), 0x1000)
@@ -40031,8 +39845,8 @@ RWAK (Arg0)
                 Offset (0x88), 
                 Offset (0x89), 
                 Offset (0x93), 
-                TAH0,   16, 
-                TAH1,   16, 
+                TH00,8,TH01,8, 
+                TH10,8,TH11,8, 
                 TSTP,   8, 
                 Offset (0x9C), 
                 CDT4,   8, 
@@ -40057,7 +39871,7 @@ RWAK (Arg0)
                 B0TM,   16, 
                 B0C1,   16, 
                 B0C2,   16, 
-                B0C3,   16, 
+                XC30,8,XC31,8, 
                 B0C4,   16, 
                 Offset (0xD0), 
                 B1PN,   16, 
@@ -40070,16 +39884,16 @@ RWAK (Arg0)
                 B1TM,   16, 
                 B1C1,   16, 
                 B1C2,   16, 
-                B1C3,   16, 
+                YC30,8,YC31,8, 
                 B1C4,   16, 
                 Offset (0xF0), 
                 Offset (0xF2), 
                 Offset (0xF4), 
-                B0SN,   16, 
+                B0S0,8,B0S1,8, 
                 Offset (0xF8), 
                 Offset (0xFA), 
                 Offset (0xFC), 
-                B1SN,   16
+                B1S0,8,B1S1,8
             }
 
             Name (SMBF, Zero)
@@ -40093,7 +39907,16 @@ RWAK (Arg0)
                 CDFG,   1, 
                 ADDR,   8, 
                 CMDB,   8, 
-                BDAT,   256, 
+                //BDAT, 256,
+BA00,8,BA01,8,BA02,8,BA03,8,
+BA04,8,BA05,8,BA06,8,BA07,8,
+BA08,8,BA09,8,BA0A,8,BA0B,8,
+BA0C,8,BA0D,8,BA0E,8,BA0F,8,
+BA10,8,BA11,8,BA12,8,BA13,8,
+BA14,8,BA15,8,BA16,8,BA17,8,
+BA18,8,BA19,8,BA1A,8,BA1B,8,
+BA1C,8,BA1D,8,BA1E,8,BA1F,8
+, 
                 BCNT,   8, 
                     ,   1, 
                 ALAD,   7, 
@@ -40111,7 +39934,16 @@ RWAK (Arg0)
                 CDF2,   1, 
                 ADD2,   8, 
                 CMD2,   8, 
-                BDA2,   256, 
+                //BDA2, 256,
+BB00,8,BB01,8,BB02,8,BB03,8,
+BB04,8,BB05,8,BB06,8,BB07,8,
+BB08,8,BB09,8,BB0A,8,BB0B,8,
+BB0C,8,BB0D,8,BB0E,8,BB0F,8,
+BB10,8,BB11,8,BB12,8,BB13,8,
+BB14,8,BB15,8,BB16,8,BB17,8,
+BB18,8,BB19,8,BB1A,8,BB1B,8,
+BB1C,8,BB1D,8,BB1E,8,BB1F,8
+, 
                 BCN2,   8, 
                     ,   1, 
                 ALA2,   7, 
@@ -40136,7 +39968,7 @@ RWAK (Arg0)
             Field (SMBX, ByteAcc, NoLock, Preserve)
             {
                 Offset (0x04), 
-                DT2B,   16
+                T2B0,8,T2B1,8
             }
 
             OperationRegion (NSBS, EmbeddedControl, 0x40, 0x04)
@@ -40220,6 +40052,154 @@ RWAK (Arg0)
                 {
                     Store (Arg1, ECFL)
                 }
+            }
+            Method (RDBA, 0, Serialized)
+            {
+                Name (TEMP, Buffer(0x20) { })
+                Store (BA00, Index(TEMP, 0x00))
+                Store (BA01, Index(TEMP, 0x01))
+                Store (BA02, Index(TEMP, 0x02))
+                Store (BA03, Index(TEMP, 0x03))
+                Store (BA04, Index(TEMP, 0x04))
+                Store (BA05, Index(TEMP, 0x05))
+                Store (BA06, Index(TEMP, 0x06))
+                Store (BA07, Index(TEMP, 0x07))
+                Store (BA08, Index(TEMP, 0x08))
+                Store (BA09, Index(TEMP, 0x09))
+                Store (BA0A, Index(TEMP, 0x0A))
+                Store (BA0B, Index(TEMP, 0x0B))
+                Store (BA0C, Index(TEMP, 0x0C))
+                Store (BA0D, Index(TEMP, 0x0D))
+                Store (BA0E, Index(TEMP, 0x0E))
+                Store (BA0F, Index(TEMP, 0x0F))
+                Store (BA10, Index(TEMP, 0x10))
+                Store (BA11, Index(TEMP, 0x11))
+                Store (BA12, Index(TEMP, 0x12))
+                Store (BA13, Index(TEMP, 0x13))
+                Store (BA14, Index(TEMP, 0x14))
+                Store (BA15, Index(TEMP, 0x15))
+                Store (BA16, Index(TEMP, 0x16))
+                Store (BA17, Index(TEMP, 0x17))
+                Store (BA18, Index(TEMP, 0x18))
+                Store (BA19, Index(TEMP, 0x19))
+                Store (BA1A, Index(TEMP, 0x1A))
+                Store (BA1B, Index(TEMP, 0x1B))
+                Store (BA1C, Index(TEMP, 0x1C))
+                Store (BA1D, Index(TEMP, 0x1D))
+                Store (BA1E, Index(TEMP, 0x1E))
+                Store (BA1F, Index(TEMP, 0x1F))
+                Return (TEMP)
+            }
+            Method (WRBA, 1, Serialized)
+            {
+                Name (TEMP, Buffer(0x20) { })
+                Store (Arg0, TEMP)
+                Store (DerefOf(Index(TEMP, 0x00)), BA00)
+                Store (DerefOf(Index(TEMP, 0x01)), BA01)
+                Store (DerefOf(Index(TEMP, 0x02)), BA02)
+                Store (DerefOf(Index(TEMP, 0x03)), BA03)
+                Store (DerefOf(Index(TEMP, 0x04)), BA04)
+                Store (DerefOf(Index(TEMP, 0x05)), BA05)
+                Store (DerefOf(Index(TEMP, 0x06)), BA06)
+                Store (DerefOf(Index(TEMP, 0x07)), BA07)
+                Store (DerefOf(Index(TEMP, 0x08)), BA08)
+                Store (DerefOf(Index(TEMP, 0x09)), BA09)
+                Store (DerefOf(Index(TEMP, 0x0A)), BA0A)
+                Store (DerefOf(Index(TEMP, 0x0B)), BA0B)
+                Store (DerefOf(Index(TEMP, 0x0C)), BA0C)
+                Store (DerefOf(Index(TEMP, 0x0D)), BA0D)
+                Store (DerefOf(Index(TEMP, 0x0E)), BA0E)
+                Store (DerefOf(Index(TEMP, 0x0F)), BA0F)
+                Store (DerefOf(Index(TEMP, 0x10)), BA10)
+                Store (DerefOf(Index(TEMP, 0x11)), BA11)
+                Store (DerefOf(Index(TEMP, 0x12)), BA12)
+                Store (DerefOf(Index(TEMP, 0x13)), BA13)
+                Store (DerefOf(Index(TEMP, 0x14)), BA14)
+                Store (DerefOf(Index(TEMP, 0x15)), BA15)
+                Store (DerefOf(Index(TEMP, 0x16)), BA16)
+                Store (DerefOf(Index(TEMP, 0x17)), BA17)
+                Store (DerefOf(Index(TEMP, 0x18)), BA18)
+                Store (DerefOf(Index(TEMP, 0x19)), BA19)
+                Store (DerefOf(Index(TEMP, 0x1A)), BA1A)
+                Store (DerefOf(Index(TEMP, 0x1B)), BA1B)
+                Store (DerefOf(Index(TEMP, 0x1C)), BA1C)
+                Store (DerefOf(Index(TEMP, 0x1D)), BA1D)
+                Store (DerefOf(Index(TEMP, 0x1E)), BA1E)
+                Store (DerefOf(Index(TEMP, 0x1F)), BA1F)
+            }
+            Method (RDBB, 0, Serialized)
+            {
+                Name (TEMP, Buffer(0x20) { })
+                Store (BB00, Index(TEMP, 0x00))
+                Store (BB01, Index(TEMP, 0x01))
+                Store (BB02, Index(TEMP, 0x02))
+                Store (BB03, Index(TEMP, 0x03))
+                Store (BB04, Index(TEMP, 0x04))
+                Store (BB05, Index(TEMP, 0x05))
+                Store (BB06, Index(TEMP, 0x06))
+                Store (BB07, Index(TEMP, 0x07))
+                Store (BB08, Index(TEMP, 0x08))
+                Store (BB09, Index(TEMP, 0x09))
+                Store (BB0A, Index(TEMP, 0x0A))
+                Store (BB0B, Index(TEMP, 0x0B))
+                Store (BB0C, Index(TEMP, 0x0C))
+                Store (BB0D, Index(TEMP, 0x0D))
+                Store (BB0E, Index(TEMP, 0x0E))
+                Store (BB0F, Index(TEMP, 0x0F))
+                Store (BB10, Index(TEMP, 0x10))
+                Store (BB11, Index(TEMP, 0x11))
+                Store (BB12, Index(TEMP, 0x12))
+                Store (BB13, Index(TEMP, 0x13))
+                Store (BB14, Index(TEMP, 0x14))
+                Store (BB15, Index(TEMP, 0x15))
+                Store (BB16, Index(TEMP, 0x16))
+                Store (BB17, Index(TEMP, 0x17))
+                Store (BB18, Index(TEMP, 0x18))
+                Store (BB19, Index(TEMP, 0x19))
+                Store (BB1A, Index(TEMP, 0x1A))
+                Store (BB1B, Index(TEMP, 0x1B))
+                Store (BB1C, Index(TEMP, 0x1C))
+                Store (BB1D, Index(TEMP, 0x1D))
+                Store (BB1E, Index(TEMP, 0x1E))
+                Store (BB1F, Index(TEMP, 0x1F))
+                Return (TEMP)
+            }
+            Method (WRBB, 1, Serialized)
+            {
+                Name (TEMP, Buffer(0x20) { })
+                Store (Arg0, TEMP)
+                Store (DerefOf(Index(TEMP, 0x00)), BB00)
+                Store (DerefOf(Index(TEMP, 0x01)), BB01)
+                Store (DerefOf(Index(TEMP, 0x02)), BB02)
+                Store (DerefOf(Index(TEMP, 0x03)), BB03)
+                Store (DerefOf(Index(TEMP, 0x04)), BB04)
+                Store (DerefOf(Index(TEMP, 0x05)), BB05)
+                Store (DerefOf(Index(TEMP, 0x06)), BB06)
+                Store (DerefOf(Index(TEMP, 0x07)), BB07)
+                Store (DerefOf(Index(TEMP, 0x08)), BB08)
+                Store (DerefOf(Index(TEMP, 0x09)), BB09)
+                Store (DerefOf(Index(TEMP, 0x0A)), BB0A)
+                Store (DerefOf(Index(TEMP, 0x0B)), BB0B)
+                Store (DerefOf(Index(TEMP, 0x0C)), BB0C)
+                Store (DerefOf(Index(TEMP, 0x0D)), BB0D)
+                Store (DerefOf(Index(TEMP, 0x0E)), BB0E)
+                Store (DerefOf(Index(TEMP, 0x0F)), BB0F)
+                Store (DerefOf(Index(TEMP, 0x10)), BB10)
+                Store (DerefOf(Index(TEMP, 0x11)), BB11)
+                Store (DerefOf(Index(TEMP, 0x12)), BB12)
+                Store (DerefOf(Index(TEMP, 0x13)), BB13)
+                Store (DerefOf(Index(TEMP, 0x14)), BB14)
+                Store (DerefOf(Index(TEMP, 0x15)), BB15)
+                Store (DerefOf(Index(TEMP, 0x16)), BB16)
+                Store (DerefOf(Index(TEMP, 0x17)), BB17)
+                Store (DerefOf(Index(TEMP, 0x18)), BB18)
+                Store (DerefOf(Index(TEMP, 0x19)), BB19)
+                Store (DerefOf(Index(TEMP, 0x1A)), BB1A)
+                Store (DerefOf(Index(TEMP, 0x1B)), BB1B)
+                Store (DerefOf(Index(TEMP, 0x1C)), BB1C)
+                Store (DerefOf(Index(TEMP, 0x1D)), BB1D)
+                Store (DerefOf(Index(TEMP, 0x1E)), BB1E)
+                Store (DerefOf(Index(TEMP, 0x1F)), BB1F)
             }
         }
     }
@@ -40780,7 +40760,7 @@ RWAK (Arg0)
                     }
                 }
 
-                Store (Zero, BDAT)
+                WRBA(Zero)
                 Store (Arg0, PRTC)
                 Store (SWTC (Arg0), Index (Local0, Zero))
                 If (LEqual (DerefOf (Index (Local0, Zero)), Zero))
@@ -40788,13 +40768,13 @@ RWAK (Arg0)
                     If (LEqual (Arg0, RDBL))
                     {
                         Store (BCNT, Index (Local0, One))
-                        Store (BDAT, Index (Local0, 0x02))
+                        Store (RDBA(), Index (Local0, 0x02))
                     }
 
                     If (LEqual (Arg0, RDWD))
                     {
                         Store (0x02, Index (Local0, One))
-                        Store (DT2B, Index (Local0, 0x02))
+                        Store (B1B2(T2B0,T2B1), Index (Local0, 0x02))
                     }
 
                     If (LEqual (Arg0, RDBT))
@@ -40863,7 +40843,7 @@ RWAK (Arg0)
 
             If (LLessEqual (Local2, 0x03E8))
             {
-                Store (Zero, BDAT)
+                WRBA(Zero)
                 ShiftLeft (Arg1, One, Local3)
                 Store (Local3, ADDR)
                 If (LNotEqual (Arg0, WRQK))
@@ -40877,12 +40857,12 @@ RWAK (Arg0)
                 If (LEqual (Arg0, WRBL))
                 {
                     Store (Arg3, BCNT)
-                    Store (Arg4, BDAT)
+                    WRBA(Arg4)
                 }
 
                 If (LEqual (Arg0, WRWD))
                 {
-                    Store (Arg4, DT2B)
+                    Store(Arg4,T2B0) Store(ShiftRight(Arg4,8),T2B1)
                 }
 
                 If (LEqual (Arg0, WRBT))
@@ -41916,11 +41896,11 @@ RWAK (Arg0)
             {
                 If (BSLF)
                 {
-                    Store (B1SN, Local0)
+                    Store (B1B2(B1S0,B1S1), Local0)
                 }
                 Else
                 {
-                    Store (B0SN, Local0)
+                    Store (B1B2(B0S0,B0S1), Local0)
                 }
             }
             Else
@@ -42219,13 +42199,13 @@ RWAK (Arg0)
                 If (Local0)
                 {
                     If (CHGS (Zero))
-                    {
-                        Store (0x02, Local0)
-                    }
-                    Else
-                    {
-                        Store (One, Local0)
-                    }
+{
+    Store (0x02, Local0)
+}
+Else
+{
+    Store (Zero, Local0)
+}
                 }
                 Else
                 {
@@ -42393,7 +42373,7 @@ RWAK (Arg0)
                     Divide (DerefOf (Index (BIXT, 0x0F)), 0x03E8, Local0, Index (BIXT, 0x0F))
                 }
 
-                Store (B0C3, Index (BIXT, 0x08))
+                Store (B1B2(XC30,XC31), Index (BIXT, 0x08))
                 Store (0x0001869F, Index (BIXT, 0x09))
                 Return (BIXT)
             }
@@ -43529,5 +43509,6 @@ RWAK (Arg0)
             }
         }
     }
+    Method (B1B2, 2, NotSerialized) { Return (Or (Arg0, ShiftLeft (Arg1, 8))) }
 }
 

@@ -4026,16 +4026,6 @@ DefinitionBlock ("", "DSDT", 2, "_ASUS_", "Notebook", 0x01072009)
                 0x12
             }
         })
-        Device(ALS0)
-        {
-            Name(_HID, "ACPI0008")
-            Name(_CID, "smc-als")
-            Name(_ALI, 150)
-            Name(_ALR, Package()
-            {
-                Package() { 100, 150 },
-            })
-        }
     }
 
     Scope (_SB)
@@ -12939,10 +12929,7 @@ RWAK (Arg0)
                 PMES,   1
             }
 
-            Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
-            {
-                Return (GPRW (0x6D, 0x04))
-            }
+            
 
             Method (_DSW, 3, NotSerialized)  // _DSW: Device Sleep Wake
             {
@@ -12962,6 +12949,7 @@ RWAK (Arg0)
                     Notify (GLAN, 0x02)
                 }
             }
+            Method(_PRW) { Return(Package() { 0x0D, 0 }) }
         }
     }
 
@@ -12996,62 +12984,7 @@ RWAK (Arg0)
             }
 
             Name (XFLT, Zero)
-            Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
-            {
-                ADBG ("_DSM")
-                ShiftLeft (XADH, 0x20, Local0)
-                Or (Local0, XADL, Local0)
-                And (Local0, 0xFFFFFFFFFFFFFFF0, Local0)
-                OperationRegion (XMIO, SystemMemory, Local0, 0x9000)
-                Field (XMIO, AnyAcc, Lock, Preserve)
-                {
-                    Offset (0x550), 
-                    PCCS,   1, 
-                        ,   4, 
-                    PPLS,   4, 
-                    PTPP,   1, 
-                    Offset (0x8420), 
-                    PRTM,   2
-                }
-
-                If (PCIC (Arg0))
-                {
-                    Return (PCID (Arg0, Arg1, Arg2, Arg3))
-                }
-
-                If (LEqual (Arg0, ToUUID ("ac340cb7-e901-45bf-b7e6-2b34ec931e23")))
-                {
-                    If (LEqual (Arg1, 0x03))
-                    {
-                        Store (Arg1, XFLT)
-                    }
-
-                    If (LAnd (LGreater (PRTM, Zero), LOr (LEqual (Arg1, 0x05), LEqual (Arg1, 0x06))))
-                    {
-                        ADBG ("SSIC")
-                        If (LOr (LOr (LEqual (PCCS, Zero), LEqual (PTPP, Zero)), LAnd (LGreaterEqual (PPLS, 0x04), LLessEqual (PPLS, 0x0F))))
-                        {
-                            If (LEqual (PPLS, 0x08))
-                            {
-                                Store (One, D3HE)
-                            }
-                            Else
-                            {
-                                Store (Zero, D3HE)
-                            }
-                        }
-                        Else
-                        {
-                            Store (One, D3HE)
-                        }
-                    }
-                }
-
-                Return (Buffer (One)
-                {
-                     0x00                                           
-                })
-            }
+            
 
             Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
             {
@@ -13085,10 +13018,7 @@ RWAK (Arg0)
                 }
             }
 
-            Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
-            {
-                Return (GPRW (0x6D, 0x03))
-            }
+            
 
             Method (_DSW, 3, NotSerialized)  // _DSW: Device Sleep Wake
             {
@@ -13403,6 +13333,21 @@ RWAK (Arg0)
                     }
                 }
             }
+            Method(_PRW) { Return(Package() { 0x0D, 0 }) }
+            Method (_DSM, 4, NotSerialized)
+            {
+                If (LEqual (Arg2, Zero)) { Return (Buffer() { 0x03 } ) }
+                Return (Package()
+                {
+                    "subsystem-id", Buffer() { 0x70, 0x72, 0x00, 0x00 },
+                    "subsystem-vendor-id", Buffer() { 0x86, 0x80, 0x00, 0x00 },
+                    "AAPL,current-available", 2100,
+                    "AAPL,current-extra", 2200,
+                    "AAPL,current-extra-in-sleep", 1600,
+                    "AAPL,device-internal", 0x02,
+                    "AAPL,max-port-current-in-sleep", 2100,
+                })
+            }
         }
     }
 
@@ -13692,10 +13637,7 @@ RWAK (Arg0)
                 }
             }
 
-            Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
-            {
-                Return (GPRW (0x6D, 0x04))
-            }
+            
 
             Method (_DSW, 3, NotSerialized)  // _DSW: Device Sleep Wake
             {
@@ -13716,6 +13658,7 @@ RWAK (Arg0)
                     Notify (XDCI, 0x02)
                 }
             }
+            Method(_PRW) { Return(Package() { 0x0D, 0 }) }
         }
     }
 
@@ -13745,10 +13688,7 @@ RWAK (Arg0)
                 Store (Arg0, PMEE)
             }
 
-            Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
-            {
-                Return (GPRW (0x6D, 0x04))
-            }
+            
 
             Method (GPEH, 0, NotSerialized)
             {
@@ -13914,6 +13854,7 @@ RWAK (Arg0)
                     }
                 }
             }
+            Method(_PRW) { Return(Package() { 0x0D, 0 }) }
         }
 
         Device (SAT0)
@@ -16101,6 +16042,7 @@ RWAK (Arg0)
                     LPD3 (SB1A)
                 }
             }
+            Method(_PRW) { Return(Package() { 0x0D, 0 }) }
         }
     }
 
@@ -18270,195 +18212,9 @@ RWAK (Arg0)
 
     Method (PNOT, 0, Serialized)
     {
-        If (LGreater (TCNT, One))
-        {
-            If (And (PC00, 0x08))
-            {
-                Notify (\_PR.PR00, 0x80)
-            }
+        
+        // nothing
 
-            If (And (PC01, 0x08))
-            {
-                Notify (\_PR.PR01, 0x80)
-            }
-
-            If (And (PC02, 0x08))
-            {
-                Notify (\_PR.PR02, 0x80)
-            }
-
-            If (And (PC03, 0x08))
-            {
-                Notify (\_PR.PR03, 0x80)
-            }
-
-            If (And (PC04, 0x08))
-            {
-                Notify (\_PR.PR04, 0x80)
-            }
-
-            If (And (PC05, 0x08))
-            {
-                Notify (\_PR.PR05, 0x80)
-            }
-
-            If (And (PC06, 0x08))
-            {
-                Notify (\_PR.PR06, 0x80)
-            }
-
-            If (And (PC07, 0x08))
-            {
-                Notify (\_PR.PR07, 0x80)
-            }
-
-            If (And (PC08, 0x08))
-            {
-                Notify (\_PR.PR08, 0x80)
-            }
-
-            If (And (PC09, 0x08))
-            {
-                Notify (\_PR.PR09, 0x80)
-            }
-
-            If (And (PC10, 0x08))
-            {
-                Notify (\_PR.PR10, 0x80)
-            }
-
-            If (And (PC11, 0x08))
-            {
-                Notify (\_PR.PR11, 0x80)
-            }
-
-            If (And (PC12, 0x08))
-            {
-                Notify (\_PR.PR12, 0x80)
-            }
-
-            If (And (PC13, 0x08))
-            {
-                Notify (\_PR.PR13, 0x80)
-            }
-
-            If (And (PC14, 0x08))
-            {
-                Notify (\_PR.PR14, 0x80)
-            }
-
-            If (And (PC15, 0x08))
-            {
-                Notify (\_PR.PR15, 0x80)
-            }
-        }
-        Else
-        {
-            Notify (\_PR.PR00, 0x80)
-        }
-
-        If (LGreater (TCNT, One))
-        {
-            If (LAnd (And (PC00, 0x08), And (PC00, 0x10)))
-            {
-                Notify (\_PR.PR00, 0x81)
-            }
-
-            If (LAnd (And (PC01, 0x08), And (PC01, 0x10)))
-            {
-                Notify (\_PR.PR01, 0x81)
-            }
-
-            If (LAnd (And (PC02, 0x08), And (PC02, 0x10)))
-            {
-                Notify (\_PR.PR02, 0x81)
-            }
-
-            If (LAnd (And (PC03, 0x08), And (PC03, 0x10)))
-            {
-                Notify (\_PR.PR03, 0x81)
-            }
-
-            If (LAnd (And (PC04, 0x08), And (PC04, 0x10)))
-            {
-                Notify (\_PR.PR04, 0x81)
-            }
-
-            If (LAnd (And (PC05, 0x08), And (PC05, 0x10)))
-            {
-                Notify (\_PR.PR05, 0x81)
-            }
-
-            If (LAnd (And (PC06, 0x08), And (PC06, 0x10)))
-            {
-                Notify (\_PR.PR06, 0x81)
-            }
-
-            If (LAnd (And (PC07, 0x08), And (PC07, 0x10)))
-            {
-                Notify (\_PR.PR07, 0x81)
-            }
-
-            If (LAnd (And (PC08, 0x08), And (PC08, 0x10)))
-            {
-                Notify (\_PR.PR08, 0x81)
-            }
-
-            If (LAnd (And (PC09, 0x08), And (PC09, 0x10)))
-            {
-                Notify (\_PR.PR09, 0x81)
-            }
-
-            If (LAnd (And (PC10, 0x08), And (PC10, 0x10)))
-            {
-                Notify (\_PR.PR10, 0x81)
-            }
-
-            If (LAnd (And (PC11, 0x08), And (PC11, 0x10)))
-            {
-                Notify (\_PR.PR11, 0x81)
-            }
-
-            If (LAnd (And (PC12, 0x08), And (PC12, 0x10)))
-            {
-                Notify (\_PR.PR12, 0x81)
-            }
-
-            If (LAnd (And (PC13, 0x08), And (PC13, 0x10)))
-            {
-                Notify (\_PR.PR13, 0x81)
-            }
-
-            If (LAnd (And (PC14, 0x08), And (PC14, 0x10)))
-            {
-                Notify (\_PR.PR14, 0x81)
-            }
-
-            If (LAnd (And (PC15, 0x08), And (PC15, 0x10)))
-            {
-                Notify (\_PR.PR15, 0x81)
-            }
-        }
-        Else
-        {
-            Notify (\_PR.PR00, 0x81)
-        }
-
-        If (LEqual (ECON, One))
-        {
-            Notify (\_SB.PCI0.LPCB.H_EC.BAT0, 0x81)
-            Notify (\_SB.PCI0.LPCB.H_EC.BAT1, 0x81)
-            Notify (\_SB.PCI0.LPCB.H_EC.BAT2, 0x81)
-        }
-
-        If (LEqual (DPTF, One))
-        {
-            Notify (\_SB.IETM, 0x86)
-            If (LEqual (CHGE, One))
-            {
-                Notify (\_SB.PCI0.LPCB.H_EC.CHRG, 0x80)
-            }
-        }
     }
 
     OperationRegion (MBAR, SystemMemory, Add (\_SB.PCI0.GMHB (), 0x5000), 0x1000)
@@ -39715,21 +39471,6 @@ RWAK (Arg0)
             {
                 Return (Zero)
             }
-            Method (ALSS, 0, NotSerialized)
-            {
-                Return (^^ALS0._ALI)
-            }
-            Method (ALSC, 1, NotSerialized)
-            {
-                // This method does nothing
-            }
-            Method (SKBV, 1, NotSerialized)
-            {
-                ^^KBLV = Arg0 / 16
-                ^^PCI0.LPCB.EC0.WRAM (0x09F0, ^^KBLV)
-                ^^PCI0.LPCB.EC0.ST9E (0x1F, 0xFF, Arg0)
-                Return (Arg0)
-            }
         }
     }
 
@@ -41373,42 +41114,32 @@ RWAK (Arg0)
 
         Method (_Q0C, 0, NotSerialized)  // _Qxx: EC Query
         {
-            
-            If (ATKP)
-            {
-                \_SB.ATKD.IANE (0xC5)
-            }
-
+            KBLD ()
         }
 
         Method (_Q0D, 0, NotSerialized)  // _Qxx: EC Query
         {
-            
-            If (ATKP)
-            {
-                \_SB.ATKD.IANE (0xC4)
-            }
-
+            KBLU ()
         }
 
         Method (_Q0E, 0, NotSerialized)  // _Qxx: EC Query
         {
-            
-            If (ATKP)
+            If (LGreaterEqual (MSOS (), OSW8))
             {
-                \_SB.ATKD.IANE (0x20)
+                BRTN (0x87)
             }
 
+            Return (Zero)
         }
 
         Method (_Q0F, 0, NotSerialized)  // _Qxx: EC Query
         {
-            
-            If (ATKP)
+            If (LGreaterEqual (MSOS (), OSW8))
             {
-                \_SB.ATKD.IANE (0x10)
+                BRTN (0x86)
             }
 
+            Return (Zero)
         }
 
         Method (_Q10, 0, NotSerialized)  // _Qxx: EC Query
