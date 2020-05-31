@@ -83,8 +83,10 @@ Getting most things setup post-install was relatively painless, with some minor 
  However, I was then  experiencing kernel panics/rebooting when waking from sleep when using the `igfxonln=1` boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the *Apple PowerManagement preference* files:
  ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
 
-* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/) *(no battery related DSDT patch has been applied)*
+* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
 
-* Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with instead of older outdated [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/) 
-* Using and [ApplePS2SmartTouchPad.kext](https://osxlatitude.com/forums/topic/1948-elan-focaltech-and-synaptics-smart-touchpad-driver-mac-os-x/)
+* Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS` and `[kbd] Kaby Lake/Kaby-Lake R` patches *(instead of older outdated [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
+
+* Using **[VoodooI2C](https://github.com/VoodooI2C/VoodooI2C)** [VoodooI2C.kext
+VoodooI2CHID.kext] *(instead of outdated [ApplePS2SmartTouchPad.kext](https://osxlatitude.com/forums/topic/1948-elan-focaltech-and-synaptics-smart-touchpad-driver-mac-os-x/))*
 
