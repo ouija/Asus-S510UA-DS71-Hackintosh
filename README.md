@@ -83,9 +83,11 @@ Getting most things setup post-install was relatively painless, with some minor 
  However, I was then  experiencing kernel panics/rebooting when waking from sleep when using the `igfxonln=1` boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the *Apple PowerManagement preference* files:
  ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
 
-* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without SMCLightSensor.kext as well as any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
+~~* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without SMCLightSensor.kext as well as any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*~~
 
-Note that VirtualSMC might have introduced a slight "boot glitch" during the loading screen with the Apple Icon, but it's minor.
+~~Note that VirtualSMC might have introduced a slight "boot glitch" during the loading screen with the Apple Icon, but it's minor.~~
+
+* **UPDATED**: Switched to using [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/)  after having issue with battery [percentage indicator] not charging above 61-62% when using VirtualSMC. 
 
 * Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon to enable Asus Function Keys and Keyboard Backlight *(instead of older outdated [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
 
@@ -130,4 +132,5 @@ Note that the **Intel Core i7-8550U [Kaby Lake] Processor** is <ins>not</ins> su
 * All `Common Patches` from the RehabMan guide have been applied to the DSDT, including the `Fix PNOT/PPNT` patch as I am <ins>not</ins> including OEM SSDT *(only ssdtPRGen SSDT)* but excluding `Add IMEI` patch as DSDT contain `HECI` device and Clover patch to rename to `IMEI`
 
 * Applied `USB3_PRW 0x0D Skylake (instant wake)` patch to fix USB causing wake after sleep.
-* 
+
+* Applied `[bat] Asus N55SL/VivoBook` patch for [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/)  support
