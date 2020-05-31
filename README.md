@@ -85,12 +85,12 @@ Getting most things setup post-install was relatively painless, with some minor 
  However, I was then  experiencing kernel panics/rebooting when waking from sleep when using the `igfxonln=1` boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the *Apple PowerManagement preference* files:
  ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
 
-* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without SMCLightSensor.kext as well as any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
+* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
 
-* Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon to enable Asus Function Keys and Keyboard Backlight *(instead of older outdated [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
+* Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon to enable Asus Function Keys and Keyboard Backlight *(instead of [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
 
 * Using **[VoodooI2C](https://github.com/VoodooI2C/VoodooI2C)** [VoodooI2C.kext
-VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of outdated [ApplePS2SmartTouchPad.kext](https://osxlatitude.com/forums/topic/1948-elan-focaltech-and-synaptics-smart-touchpad-driver-mac-os-x/))*
+VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of [ApplePS2SmartTouchPad.kext](https://osxlatitude.com/forums/topic/1948-elan-focaltech-and-synaptics-smart-touchpad-driver-mac-os-x/))*
 
 	* Note: Turn on `Tap to click` under `System Preferences -> Trackpad` to improve click events.  Also, don't be temped to use the VoodooI2CELAN.kext as it does not work with the ELAN 1300 Trackpad!
 
@@ -131,5 +131,4 @@ VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of outdated [AppleP
 
 * Applied `USB3_PRW 0x0D Skylake (instant wake)` patch to fix USB causing wake after sleep.
 
-* Applied `[bat] Asus N55SL/VivoBook` patch for proper sensor support when charging/draining. 
-	* Note that I did have an issue where battery status indicator wasn't charging battery above 62% *(but would drain when unplugged and charge back up to 62%)*, so I reverted back to FakeSMC.kext and tested using ACPIBatteryManager.kext to debug (and applied this battery patch) and  didn't have this issue;  However,  I want to use AsusSMC *(which requires VirtualSMC)*, so I switched back [with this patch still in place] and all seems to be working properly now.
+* Applied `[bat] Asus N55SL/VivoBook` patch for better support.
