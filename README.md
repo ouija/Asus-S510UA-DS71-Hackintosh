@@ -85,8 +85,18 @@ Getting most things setup post-install was relatively painless, with some minor 
 
 * Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
 
-* Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS` and `[kbd] Kaby Lake/Kaby-Lake R` patches *(instead of older outdated [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
+Note that VirtualSMC might have introduced a slight "boot glitch" during the loading screen with the Apple Icon, but it's minor.
+
+* Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon *(instead of older outdated [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
 
 * Using **[VoodooI2C](https://github.com/VoodooI2C/VoodooI2C)** [VoodooI2C.kext
 VoodooI2CHID.kext] *(instead of outdated [ApplePS2SmartTouchPad.kext](https://osxlatitude.com/forums/topic/1948-elan-focaltech-and-synaptics-smart-touchpad-driver-mac-os-x/))*
+
+* Using **[AppleBacklightFixup](https://bitbucket.org/RehabMan/applebacklightfixup/downloads/)** for enabling brightness slider for Intel UHD Graphics 620 *(instead of DSDT or Clover patch -- see [here](https://www.elitemacx86.com/threads/guide-how-to-enable-backlight-control-on-laptop.182/) for more info)*
+
+* Enabled Native Power Management via [ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh) *(removed NullCPUPowerManagement.kext)*
+
+Note that the `Intel Core i7-8550U [Kaby Lake] Processor` is <ins>not</ins> supported by the script and I had to edit the `~/Library/ssdtPRGen/Data/User\ Defined.cfg` file and add the following definition: `i7-8550U,15,400,2000,4000,4,8,64,100` *(see [here](DSDT/ssdtPRGen/User%20Defined.cfg) for example file)*, which was determined via CPUZ [report](DSDT/ssdtPRGen/cpuz.txt) generated under Windows 10.
+
+
 
