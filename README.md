@@ -6,7 +6,7 @@
 ## Preface
 This unit was a bit of a stubborn bitch to hackintosh *(as it was my first Kaby Lake and Intel UHD 620 based model)* and prompted me to create this repo to track my installation and configuration steps for not only myself, but others as well.
 
-This installation and guide was done in *May of 2020* using **macOS 10.15.5** and supports *ALL NATIVE HARDWARE*, including the oem wifi card!
+This installation and guide was done in *May of 2020* using **macOS 10.15.5** and supports *ALL NATIVE HARDWARE*, including the OEM Intel WiFi card!
 
 ## Hardware Specs
 - Intel Core i7-8550U [Kaby Lake] Processor 1.8 GHz (Turbo up to 4.0 GHz)
@@ -29,7 +29,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 ## Post-Installation Notes
  1. Install [Clover](https://github.com/CloverHackyColor/CloverBootloader/releases) to the macOS installation partition and choose `Customize` before installation and ensure that `Clover for UEFI booting only` is checked, along with `Install Clover in the ESP` and `UEFI Drivers -> Recommended drivers`,  as well as `File System drivers -> ApfsDriverLoader`, and also ensure that `Memory fix drivers -> AptioMemoryFix` 
 
-*(Note that **OSXAptioFix3Drv** might be causing random `kernel panic "14=page fault"`on sleep *(hasn't occured yet with `AptioMemoryFix` driver)* and **OSXAptioFixDrv** breaks NVRAM)*
+*(Note that **OSXAptioFix3Drv** might be causing random `kernel panic "14=page fault"`on sleep *[hasn't occurred yet with `AptioMemoryFix` driver]* and **OSXAptioFixDrv** breaks NVRAM)*
 
 You should also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
@@ -101,7 +101,9 @@ VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of [ApplePS2SmartTo
 
 * Using **[NoTouchID.kext](https://github.com/al3xtjames/NoTouchID/releases)** to disable TouchID with MacBookPro14,1 definition and improve performance 
 
-* Using custom **[USBMap.kext](https://github.com/corpnewt/USBMap)** to enable all 10 USB ports and improve sleep functionailty.
+* Using custom **[USBMap.kext](https://github.com/corpnewt/USBMap)** to enable all 10 USB ports and improve sleep functionality.
+
+* Native support for Realtek Card Reader **without** any additional kexts *(such as [Sinetek-rtsx.kext](https://github.com/sinetek/Sinetek-rtsx) or AnyCardReader.kext or AppleUSBCardReader.kext)*
 
 * Native Audio support for Conexant Audio CX8050 enabled via **[AppleALC](https://github.com/acidanthera/AppleALC/releases)** using `layout 13` *(internal mic not working with layout 3)*
 
