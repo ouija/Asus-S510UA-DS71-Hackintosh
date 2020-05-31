@@ -1,6 +1,6 @@
 
 # Asus-S510UA-DS71-Hackintosh
-**Hackintosh Method for Asus VivoBook S10UA-DS71**
+**Hackintosh Installation Guide  for Asus VivoBook S10UA-DS71**
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/Asus-S510UA-DS71-Hackintosh.png"></p>
 
 ## Preface
@@ -49,7 +49,7 @@ Most notably is the fact that you <ins>*cannot*</ins> directly connect to wirele
 
 This driver also *doesn't* support running the card at full speed yet, but I've managed to get fairly decent performance at an average of 60mb down and 15up *(which is much better than nothing!)*
 
-<p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/speedtest.png"></p>
+<p align="center" style="display:block; margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/speedtest.png" align="right"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/speedtest.png" align="left"></p>
 
 5. Use [Hackintool](https://github.com/headkaze/Hackintool/releases) and open the NVRAM section and add two `string` type variable names as `WiFi-SSID` and `WiFi-PW` using the credentials of the wireless network you want to connect to:
 
