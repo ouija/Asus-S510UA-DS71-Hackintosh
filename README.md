@@ -86,6 +86,7 @@ Getting most things setup post-install was relatively painless, with some minor 
  ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
 
 * Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
+	* Ensure you include **all** VirtualSMC kexts!
 
 * Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon to enable Asus Function Keys and Keyboard Backlight *(instead of [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
 
