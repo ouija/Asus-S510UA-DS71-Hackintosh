@@ -83,7 +83,7 @@ Getting most things setup post-install was relatively painless, with some minor 
  However, I was then  experiencing kernel panics/rebooting when waking from sleep when using the `igfxonln=1` boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the *Apple PowerManagement preference* files:
  ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
 
-~~* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without SMCLightSensor.kext as well as any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*~~
+	~~* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without SMCLightSensor.kext as well as any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*~~
 
 ~~Note that VirtualSMC might have introduced a slight "boot glitch" during the loading screen with the Apple Icon, but it's minor.~~
 
