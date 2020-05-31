@@ -110,6 +110,9 @@ Note that the **Intel Core i7-8550U [Kaby Lake] Processor** is <ins>not</ins> su
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Post-Install/DSDT/ssdtPRGen/cpuz.png"></p>
 
 **CLOVER RELATED:**
+
+* Referenced [this guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/config.plist-per-hardware/kaby-lake) for Kaby Lake processors when configuring, but only referencing here for notes.
+
 * Using `FakeID=0x59168086` injection method with `ig-platform-id=0x591b0000` for enabling Intel UHD Graphics 620 via [WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)
 
 * **ACPI/DSDT/Patches**  include: `change _OSI to XOSI`, `change _DSM to XDSM`, `change EC0 to EC`, `change HECI to IMEI`, `change GFX0 to IGPU`, and `change SAT0 to SATA`.
@@ -121,8 +124,10 @@ Note that the **Intel Core i7-8550U [Kaby Lake] Processor** is <ins>not</ins> su
 * SMBIOS Definition set for **MacBookPro14,1** which closely matches the hardware of the Asus VivoBook S10UA-DS71
 
 **DSDT RELATED:**
+
 * [This guide](https://www.tonymacx86.com/threads/guide-patching-laptop-dsdt-ssdts.152573/)  by RehabMan is still *one of the best* by far when it comes to disassembling and modifying the DSDT.
 
-* All `Common Patches` from the guide have been applied to the DSDT, including the `Fix PNOT/PPNT` patch as I am <ins>not</ins> including OEM SSDT *(only ssdtPRGen SSDT)* but excluding `Add IMEI` patch as DSDT contain `HECI` device and Clover patch to rename to `IMEI`
+* All `Common Patches` from the RehabMan guide have been applied to the DSDT, including the `Fix PNOT/PPNT` patch as I am <ins>not</ins> including OEM SSDT *(only ssdtPRGen SSDT)* but excluding `Add IMEI` patch as DSDT contain `HECI` device and Clover patch to rename to `IMEI`
 
+* Applied `USB3_PRW 0x0D Skylake (instant wake)` patch to fix USB causing wake after sleep.
 * 
