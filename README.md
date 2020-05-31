@@ -83,18 +83,14 @@ Getting most things setup post-install was relatively painless, with some minor 
  However, I was then  experiencing kernel panics/rebooting when waking from sleep when using the `igfxonln=1` boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the *Apple PowerManagement preference* files:
  ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
 
-	~~* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without SMCLightSensor.kext as well as any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*~~
-
-~~Note that VirtualSMC might have introduced a slight "boot glitch" during the loading screen with the Apple Icon, but it's minor.~~
-
-* **UPDATED**: Switched to using [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/)  after having issue with battery [percentage indicator] not charging above 61-62% when using VirtualSMC. 
+* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without SMCLightSensor.kext as well as any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
 
 * Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon to enable Asus Function Keys and Keyboard Backlight *(instead of older outdated [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
 
 * Using **[VoodooI2C](https://github.com/VoodooI2C/VoodooI2C)** [VoodooI2C.kext
 VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of outdated [ApplePS2SmartTouchPad.kext](https://osxlatitude.com/forums/topic/1948-elan-focaltech-and-synaptics-smart-touchpad-driver-mac-os-x/))*
 
-Note: Turn on `Tap to click` under `System Preferences -> Trackpad` to improve click events.  Also, don't be temped to use the VoodooI2CELAN.kext as it does not work with the ELAN 1300 Trackpad!
+	* Note: Turn on `Tap to click` under `System Preferences -> Trackpad` to improve click events.  Also, don't be temped to use the VoodooI2CELAN.kext as it does not work with the ELAN 1300 Trackpad!
 
 * Using **[Lilu.kext](https://github.com/acidanthera/lilu/releases)** and **[WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)** to enable Intel UHD Graphics 620 *(with FakeID injection; See CLOVER notes below)*
 
@@ -108,7 +104,7 @@ Note: Turn on `Tap to click` under `System Preferences -> Trackpad` to improve c
 
 * Native Power Management enabled via **[ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh)** *(removed NullCPUPowerManagement.kext)*
 
-Note that the **Intel Core i7-8550U [Kaby Lake] Processor** is <ins>not</ins> supported by the **[ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh)** script and I had to edit the `~/Library/ssdtPRGen/Data/User\ Defined.cfg` file and add the following definition: `i7-8550U,15,400,2000,4000,4,8,64,100` *(see [here](Post-Install/DSDT/ssdtPRGen/User%20Defined.cfg) for example file and [here](https://www.elitemacx86.com/threads/guide-how-to-generate-ssdt-for-unknown-processor-models-using-ssdtprgen-script.97/) for additional info)*, which was determined via CPUZ [report](Post-Install/DSDT/ssdtPRGen/cpuz.txt) generated under Windows 10.
+	* Note that the **Intel Core i7-8550U [Kaby Lake] Processor** is <ins>not</ins> supported by the **[ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh)** script and I had to edit the `~/Library/ssdtPRGen/Data/User\ Defined.cfg` file and add the following definition: `i7-8550U,15,400,2000,4000,4,8,64,100` *(see [here](Post-Install/DSDT/ssdtPRGen/User%20Defined.cfg) for example file and [here](https://www.elitemacx86.com/threads/guide-how-to-generate-ssdt-for-unknown-processor-models-using-ssdtprgen-script.97/) for additional info)*, which was determined via CPUZ [report](Post-Install/DSDT/ssdtPRGen/cpuz.txt) generated under Windows 10.
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Post-Install/DSDT/ssdtPRGen/cpuz.png"></p>
 
 **CLOVER RELATED:**
@@ -133,4 +129,5 @@ Note that the **Intel Core i7-8550U [Kaby Lake] Processor** is <ins>not</ins> su
 
 * Applied `USB3_PRW 0x0D Skylake (instant wake)` patch to fix USB causing wake after sleep.
 
-* Applied `[bat] Asus N55SL/VivoBook` patch for [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/)  support
+* Applied `[bat] Asus N55SL/VivoBook` patch for proper sensor support when charging/draining. 
+	* Note that I did have an issue where battery status indicator wasn't charging battery above 62% *(but would drain when unplugged and charge back up to 62%)* so I reverted back to FakeSMC.kext and tested using ACPIBatteryManager.kext to debug (and applied this patch) and  didn't have issue;  But I wanted to use AsusSMC which requires VirtualSMC, so I switched back with this patch still in place and all seems to be working again.
