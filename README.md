@@ -97,6 +97,6 @@ VoodooI2CHID.kext] *(instead of outdated [ApplePS2SmartTouchPad.kext](https://os
 * Enabled Native Power Management via [ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh) *(removed NullCPUPowerManagement.kext)*
 
 Note that the `Intel Core i7-8550U [Kaby Lake] Processor` is <ins>not</ins> supported by the script and I had to edit the `~/Library/ssdtPRGen/Data/User\ Defined.cfg` file and add the following definition: `i7-8550U,15,400,2000,4000,4,8,64,100` *(see [here](DSDT/ssdtPRGen/User%20Defined.cfg) for example file)*, which was determined via CPUZ [report](DSDT/ssdtPRGen/cpuz.txt) generated under Windows 10.
-
+<p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/DSDT/ssdtPRGen/cpuz.png"></p>
 
 
