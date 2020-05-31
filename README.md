@@ -43,7 +43,9 @@ Note that [this post-installation folder](Post-Install/CLOVER) contains **all** 
 
 4. Once booted into MacOS, install [the driver package](Post-Install/WiFi) for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading [this file](Post-Install/WiFi), extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.  
 
-Note: [This driver](http://bbs.pcbeta.com/viewthread-1856465-1-1.html) is still very experimental at the time *(only being released a few days prior to this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an `uninstall.command` file to remove it in the future if needed)*
+Note: [This driver]([http://bbs.pcbeta.com/viewthread-1848662-1-1.html](http://bbs.pcbeta.com/viewthread-1848662-1-1.html)) is still very experimental at the time *(only [being released](http://bbs.pcbeta.com/viewthread-1856465-1-1.html) a few days prior to this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an `uninstall.command` file to remove it in the future if needed)*.   
+
+The source can be found [here](https://github.com/zxystd/itlwm).
 
 Most notably is the fact that you <ins>*cannot*</ins> directly connect to wireless networks using the Wireless Settings dropdown in the macOS  menu bar, but rather have to **add your Wireless SSID and password as strings to the NVRAM** *(recommended)* or as entries in the Clover config.plist to run as boot arguments - [see here](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633963347) for more details.
 
