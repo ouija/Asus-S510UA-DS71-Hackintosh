@@ -18,7 +18,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 
 ## Quick Installation Notes
 
- 1. Create macOS 10.15.5 Catalina USB Installer via [UniBeast](https://www.tonymacx86.com/resources/unibeast-10-1-0-catalina.469/) (EFI Method)
+ 1. Create macOS 10.15.5 Catalina USB Installer via [Vanilla Method](https://hackintosher.com/guides/how-to-make-a-macos-10-15-catalina-flash-drive-installer/) or [UniBeast](https://www.tonymacx86.com/resources/unibeast-10-1-0-catalina.469/) (EFI Method)
  2. Mount EFI partition of USB Installer *(using [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
  3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](Installation/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
  4. Copy/replace [these kexts](Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
@@ -85,53 +85,65 @@ Getting most things setup post-install was relatively painless, with some minor 
  However, I was then  experiencing kernel panics/rebooting when waking from sleep when using the `igfxonln=1` boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the *Apple PowerManagement preference* files:
  ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
 
-* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
+ - Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
 	* Ensure you include **all** VirtualSMC kexts!
 
-* Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon to enable Asus Function Keys and Keyboard Backlight *(instead of [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
+ - Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon to enable Asus Function Keys and Keyboard Backlight *(instead of [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
 
-* Using **[VoodooI2C](https://github.com/VoodooI2C/VoodooI2C)** [VoodooI2C.kext
+ - Using **[VoodooI2C](https://github.com/VoodooI2C/VoodooI2C)** [VoodooI2C.kext
 VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of [ApplePS2SmartTouchPad.kext](https://osxlatitude.com/forums/topic/1948-elan-focaltech-and-synaptics-smart-touchpad-driver-mac-os-x/))*
 
 	* Note: Turn on `Tap to click` under `System Preferences -> Trackpad` to improve click events.  Also, don't be temped to use the VoodooI2CELAN.kext as it does not work with the ELAN 1300 Trackpad!
 
-* Using **[Lilu.kext](https://github.com/acidanthera/lilu/releases)** and **[WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)** to enable Intel UHD Graphics 620 *(with FakeID injection; See CLOVER notes below)*
+ - Using **[Lilu.kext](https://github.com/acidanthera/lilu/releases)** and **[WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)** to enable Intel UHD Graphics 620 *(with FakeID injection; See CLOVER notes below)*
 
-* Using **[AppleBacklightFixup](https://bitbucket.org/RehabMan/applebacklightfixup/downloads/)** for enabling brightness slider for Intel UHD Graphics 620 *(instead of DSDT or Clover patch -- see [here](https://www.elitemacx86.com/threads/guide-how-to-enable-backlight-control-on-laptop.182/) for more info)*
+ - Using **[AppleBacklightFixup](https://bitbucket.org/RehabMan/applebacklightfixup/downloads/)** for enabling brightness slider for Intel UHD Graphics 620 *(instead of DSDT or Clover patch -- see [here](https://www.elitemacx86.com/threads/guide-how-to-enable-backlight-control-on-laptop.182/) for more info)*
 
-* Using **[NoTouchID.kext](https://github.com/al3xtjames/NoTouchID/releases)** to disable TouchID with MacBookPro14,1 definition and improve performance 
+ - Using **[NoTouchID.kext](https://github.com/al3xtjames/NoTouchID/releases)** to disable TouchID with MacBookPro14,1 definition and improve performance 
 
-* Using custom **[USBMap.kext](https://github.com/corpnewt/USBMap)** to enable all 10 USB ports and improve sleep functionality.
+ - Using custom **[USBMap.kext](https://github.com/corpnewt/USBMap)** to enable all 10 USB ports and improve sleep functionality.
 
-* Native support for Realtek Card Reader **without** any additional kexts *(such as [Sinetek-rtsx.kext](https://github.com/sinetek/Sinetek-rtsx) or AnyCardReader.kext or AppleUSBCardReader.kext)*
+ - Native support for Realtek Card Reader **without** any additional kexts *(such as [Sinetek-rtsx.kext](https://github.com/sinetek/Sinetek-rtsx) or AnyCardReader.kext or AppleUSBCardReader.kext)*
 
-* Native Audio support for Conexant Audio CX8050 enabled via **[AppleALC](https://github.com/acidanthera/AppleALC/releases)** using `layout 13` *(internal mic not working with layout 3)*
+ - Native Audio support for Conexant Audio CX8050 enabled via **[AppleALC](https://github.com/acidanthera/AppleALC/releases)** using `layout 13` *(internal mic not working with layout 3)*
 
-* Native Power Management enabled via **[ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh)** *(removed NullCPUPowerManagement.kext)*
+ - Native Power Management enabled via **[ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh)** *(removed NullCPUPowerManagement.kext)*
 
 	* Note that the **Intel Core i7-8550U [Kaby Lake] Processor** is <ins>not</ins> supported by the **[ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh)** script and I had to edit the `~/Library/ssdtPRGen/Data/User\ Defined.cfg` file and add the following definition: `i7-8550U,15,400,2000,4000,4,8,64,100` *(see [here](Post-Install/DSDT/ssdtPRGen/User%20Defined.cfg) for example file and [here](https://www.elitemacx86.com/threads/guide-how-to-generate-ssdt-for-unknown-processor-models-using-ssdtprgen-script.97/) for additional info)*, which was determined via CPUZ [report](Post-Install/DSDT/ssdtPRGen/cpuz.txt) generated under Windows 10.
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Post-Install/DSDT/ssdtPRGen/cpuz.png"></p>
 
 **CLOVER RELATED:**
 
-* Referenced [this guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/config.plist-per-hardware/kaby-lake) for Kaby Lake processors when configuring, but only referencing here for notes.
+ - Referenced [this guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/config.plist-per-hardware/kaby-lake) for Kaby Lake processors when configuring, but only referencing here for notes.
 
-* Using `FakeID=0x59168086` injection method with `ig-platform-id=0x591b0000` for enabling Intel UHD Graphics 620 via [WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)
+ - Using `FakeID=0x59168086` injection method with `ig-platform-id=0x591b0000` for enabling Intel UHD Graphics 620 via [WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)
 
-* **ACPI/DSDT/Patches**  include: `change _OSI to XOSI`, `change _DSM to XDSM`, `change EC0 to EC`, `change HECI to IMEI`, `change GFX0 to IGPU`, and `change SAT0 to SATA`.
+ - **ACPI/DSDT/Patches**  include: `change _OSI to XOSI`, `change _DSM to XDSM`, `change EC0 to EC`, `change HECI to IMEI`, `change GFX0 to IGPU`, and `change SAT0 to SATA`.
 
-* **KernelAndKextPatches/KextsToPatch** include:  CoolStar's `Prevent Apple I2C kexts from attaching to I2C controllers` patches and `TRIM function for non-Apple SSDs`
+ - **KernelAndKextPatches/KextsToPatch** include:  CoolStar's `Prevent Apple I2C kexts from attaching to I2C controllers` patches and `TRIM function for non-Apple SSDs`
 
-* **ACPI/SSDT/Generate/PluginType** is enabled (true) to take advantage of CPU scaling SSDT generated by **[ssdtPRGen](https://github.com/Piker-Alpha/ssdtPRGen.sh)**.
+ - **ACPI/SSDT/Generate/PluginType** is enabled (true) to take advantage of CPU scaling SSDT generated by **[ssdtPRGen](https://github.com/Piker-Alpha/ssdtPRGen.sh)**.
 
-* SMBIOS Definition set for **MacBookPro14,1** which closely matches the hardware of the Asus VivoBook S10UA-DS71
+ - SMBIOS Definition set for **MacBookPro14,1** which closely matches the hardware of the Asus VivoBook S10UA-DS71
 
 **DSDT RELATED:**
 
-* [This guide](https://www.tonymacx86.com/threads/guide-patching-laptop-dsdt-ssdts.152573/)  by RehabMan is still *one of the best* by far when it comes to disassembling and modifying the DSDT.
+ - [This guide](https://www.tonymacx86.com/threads/guide-patching-laptop-dsdt-ssdts.152573/)  by RehabMan is still *one of the best* by far when it comes to disassembling and modifying the DSDT.
 
-* All `Common Patches` from the RehabMan guide have been applied to the DSDT, including the `Fix PNOT/PPNT` patch, as I am <ins>not</ins> including OEM SSDT *(only ssdtPRGen SSDT)* but did not apply  `Add IMEI` patch as DSDT contains `HECI` device *(with Clover patch renaming it to `IMEI`)*
+ - All `Common Patches` from the RehabMan guide have been applied to the DSDT, including the `Fix PNOT/PPNT` patch, as I am <ins>not</ins> including OEM SSDT *(only ssdtPRGen SSDT)* but did not apply  `Add IMEI` patch as DSDT contains `HECI` device *(with Clover patch renaming it to `IMEI`)*
 
-* Applied `USB3_PRW 0x0D Skylake (instant wake)` patch to fix USB causing wake after sleep.
+ - Applied `USB3_PRW 0x0D Skylake (instant wake)` patch to fix USB causing wake after sleep.
 
-* Applied `[bat] Asus N55SL/VivoBook` patch for better support.
+ - Applied `[bat] Asus N55SL/VivoBook` patch for better support.
+<br>
+
+**OTHER NOTES:**
+
+ - NetBIOS is disabled in macOS 10.15 to speed up mounting, browsing, and connecting to SMB shares;  Needed to re-enable as I was exteriencing consistant disconnects and timeouts when connecting to a QNAP NAS drive, as per [this](https://apple.stackexchange.com/questions/362739/what-causes-some-network-drives-using-smb-no-longer-connect-to-macos-catalina):
+		 ```
+echo "[default]" | sudo tee -a /etc/nsmb.conf
+echo "port445=both" | sudo tee -a /etc/nsmb.conf
+echo "signing_required=no" | sudo tee -a /etc/nsmb.conf
+		 ```
+		 and also enabled the "Allow guest users to connect to shared folders" for the "Guest User" under the "Users & Groups" panel.
+
