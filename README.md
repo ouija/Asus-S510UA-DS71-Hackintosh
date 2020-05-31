@@ -63,6 +63,7 @@ This driver also *doesn't* support running the card at full speed yet, but I've 
 <br>
 
 ## Detailed Installation and Configuration Notes
+
 ### Pre-Install: 
 Just getting the macOS Installer to load took me more time than it did to configure all the hardware!  There were a couple tricks to it that I hadn't come across before in all my years of Hackintoshin', and I struggled a bit figuring them out.
 
@@ -125,9 +126,9 @@ VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of outdated [AppleP
 
 * [This guide](https://www.tonymacx86.com/threads/guide-patching-laptop-dsdt-ssdts.152573/)  by RehabMan is still *one of the best* by far when it comes to disassembling and modifying the DSDT.
 
-* All `Common Patches` from the RehabMan guide have been applied to the DSDT, including the `Fix PNOT/PPNT` patch as I am <ins>not</ins> including OEM SSDT *(only ssdtPRGen SSDT)* but excluding `Add IMEI` patch as DSDT contain `HECI` device and Clover patch to rename to `IMEI`
+* All `Common Patches` from the RehabMan guide have been applied to the DSDT, including the `Fix PNOT/PPNT` patch, as I am <ins>not</ins> including OEM SSDT *(only ssdtPRGen SSDT)* but did not apply  `Add IMEI` patch as DSDT contains `HECI` device *(with Clover patch renaming it to `IMEI`)*
 
 * Applied `USB3_PRW 0x0D Skylake (instant wake)` patch to fix USB causing wake after sleep.
 
 * Applied `[bat] Asus N55SL/VivoBook` patch for proper sensor support when charging/draining. 
-	* Note that I did have an issue where battery status indicator wasn't charging battery above 62% *(but would drain when unplugged and charge back up to 62%)* so I reverted back to FakeSMC.kext and tested using ACPIBatteryManager.kext to debug (and applied this patch) and  didn't have issue;  But I wanted to use AsusSMC which requires VirtualSMC, so I switched back with this patch still in place and all seems to be working again.
+	* Note that I did have an issue where battery status indicator wasn't charging battery above 62% *(but would drain when unplugged and charge back up to 62%)*, so I reverted back to FakeSMC.kext and tested using ACPIBatteryManager.kext to debug (and applied this battery patch) and  didn't have this issue;  However,  I want to use AsusSMC *(which requires VirtualSMC)*, so I switched back [with this patch still in place] and all seems to be working properly now.
