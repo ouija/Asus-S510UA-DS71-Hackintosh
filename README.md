@@ -47,7 +47,7 @@ Note: [This driver](http://bbs.pcbeta.com/viewthread-1856465-1-1.html) is still 
 
 Most notably is the fact that you <ins>*cannot*</ins> directly connect to wireless networks using the Wireless Settings dropdown in the macOS  menu bar, but rather have to **add your Wireless SSID and password as strings to the NVRAM** *(recommended)* or as entries in the Clover config.plist to run as boot arguments - [see here](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633963347) for more details.
 
-This driver also *doesn't* support running the card at full speed yet, but I've managed to get fairly decent performance at an average of 60mb down and 15up *(which is much better than nothing!)*
+This driver also *doesn't* support running the card at full speed yet, but I've managed to get fairly decent performance with a Tx rate of 140Mbps and an average of 60Mbps down and 15Mbps up *(which is much better than nothing!)*
 
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/speedtest.png"></p>
 
