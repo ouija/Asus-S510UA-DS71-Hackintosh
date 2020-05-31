@@ -28,7 +28,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 ## Post-Installation Notes
  1. Install [Clover](https://github.com/CloverHackyColor/CloverBootloader/releases) to the macOS installation partition and choose `Customize` before installation and ensure that `Clover for UEFI booting only` is checked, along with `Install Clover in the ESP` and `UEFI Drivers -> Recommended drivers`,  as well as `File System drivers -> ApfsDriverLoader`, and also ensure that `Memory fix drivers -> AptioMemoryFix` 
 
-*(Note that **OSXAptioFix3Drv** causes random `kernel panic "14=page fault"` when system goes to sleep and **OSXAptioFixDrv** breaks NVRAM)*
+*(Note that **OSXAptioFix3Drv** causes random `kernel panic "14=page fault"`on sleep and **OSXAptioFixDrv** breaks NVRAM)*
 
 You should also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
