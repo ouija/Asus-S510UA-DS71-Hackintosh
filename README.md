@@ -94,9 +94,11 @@ VoodooI2CHID.kext] *(instead of outdated [ApplePS2SmartTouchPad.kext](https://os
 
 * Using **[AppleBacklightFixup](https://bitbucket.org/RehabMan/applebacklightfixup/downloads/)** for enabling brightness slider for Intel UHD Graphics 620 *(instead of DSDT or Clover patch -- see [here](https://www.elitemacx86.com/threads/guide-how-to-enable-backlight-control-on-laptop.182/) for more info)*
 
+* Native Audio support for `Conexant Audio CX8050` enabled via **[AppleALC](https://github.com/acidanthera/AppleALC/releases)** using `layout 13` *(internal mic not working with layout 3)*
+
 * Enabled Native Power Management via [ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh) *(removed NullCPUPowerManagement.kext)*
 
-Note that the `Intel Core i7-8550U [Kaby Lake] Processor` is <ins>not</ins> supported by the script and I had to edit the `~/Library/ssdtPRGen/Data/User\ Defined.cfg` file and add the following definition: `i7-8550U,15,400,2000,4000,4,8,64,100` *(see [here](Post-Install/DSDT/ssdtPRGen/User%20Defined.cfg) for example file)*, which was determined via CPUZ [report](Post-Install/ssdtPRGen/cpuz.txt) generated under Windows 10.
+Note that the `Intel Core i7-8550U [Kaby Lake] Processor` is <ins>not</ins> supported by the script and I had to edit the `~/Library/ssdtPRGen/Data/User\ Defined.cfg` file and add the following definition: `i7-8550U,15,400,2000,4000,4,8,64,100` *(see [here](Post-Install/DSDT/ssdtPRGen/User%20Defined.cfg) for example file)*, which was determined via CPUZ [report](Post-Install/DSDT/ssdtPRGen/cpuz.txt) generated under Windows 10.
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Post-Install/DSDT/ssdtPRGen/cpuz.png"></p>
 
 
