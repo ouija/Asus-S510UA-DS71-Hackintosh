@@ -77,28 +77,52 @@ And finally, you need to have the Intel injection method enabled with the proper
 Getting most things setup post-install was relatively painless, with some minor issues that took some debugging, which I'm detailing here for reference.
 
  - **No external HDMI display on startup:**
- This was an odd issue that I managed to resolve using the Clover boot argument `igfxonln=1`  for WhateverGreen. 
+ This was an odd issue that I managed to resolve using the Clover boot argument `igfxonln=1`  for [WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)
  
  - **Reboot on wake/resume from sleep:**
  However, I was then  experiencing kernel panics/rebooting when waking from sleep when using the `igfxonln=1` boot arg, which I managed to resolve [as per this thread](https://www.tonymacx86.com/threads/solved-mojave-reboot-when-waking-from-sleep.261061/) by deleting the *Apple PowerManagement preference* files:
  ```sudo rm -rf /Library/Preferences/com.apple.PowerManagement*```
 
-* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
+* Using **[VirtualSMC](https://github.com/acidanthera/virtualsmc/releases)** without SMCLightSensor.kext as well as any battery related DSDT patches *(instead of [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/) and [ACPIBatteryManager.kext](https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/))*
 
 Note that VirtualSMC might have introduced a slight "boot glitch" during the loading screen with the Apple Icon, but it's minor.
 
-* Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon *(instead of older outdated [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
+* Using **[AsusSMC](https://github.com/hieplpvip/AsusSMC)** with `[als] Fake ALS`  and `[kbd] Kaby Lake/Kaby-Lake R` and `F3 to F6` patches without AsusSMCDaemon to enable Asus Function Keys and Keyboard Backlight *(instead of older outdated [AsusNBFnKeys.kext](https://osxlatitude.com/forums/topic/1968-fn-hotkey-and-als-sensor-driver-for-asus-notebooks/))*
 
 * Using **[VoodooI2C](https://github.com/VoodooI2C/VoodooI2C)** [VoodooI2C.kext
-VoodooI2CHID.kext] *(instead of outdated [ApplePS2SmartTouchPad.kext](https://osxlatitude.com/forums/topic/1948-elan-focaltech-and-synaptics-smart-touchpad-driver-mac-os-x/))*
+VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of outdated [ApplePS2SmartTouchPad.kext](https://osxlatitude.com/forums/topic/1948-elan-focaltech-and-synaptics-smart-touchpad-driver-mac-os-x/))*
+
+Note: Turn on `Tap to click` under `System Preferences -> Trackpad` to improve click events.  Also, don't be temped to use the VoodooI2CELAN.kext as it does not work with the ELAN 1300 Trackpad!
+
+* Using **[Lilu.kext](https://github.com/acidanthera/lilu/releases)** and **[WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)** to enable Intel UHD Graphics 620 *(with FakeID injection; See CLOVER notes below)*
 
 * Using **[AppleBacklightFixup](https://bitbucket.org/RehabMan/applebacklightfixup/downloads/)** for enabling brightness slider for Intel UHD Graphics 620 *(instead of DSDT or Clover patch -- see [here](https://www.elitemacx86.com/threads/guide-how-to-enable-backlight-control-on-laptop.182/) for more info)*
 
-* Native Audio support for `Conexant Audio CX8050` enabled via **[AppleALC](https://github.com/acidanthera/AppleALC/releases)** using `layout 13` *(internal mic not working with layout 3)*
+* Using **[NoTouchID.kext](https://github.com/al3xtjames/NoTouchID/releases)** to disable TouchID with MacBookPro14,1 definition and improve performance 
 
-* Enabled Native Power Management via [ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh) *(removed NullCPUPowerManagement.kext)*
+* Using custom **[USBMap.kext](https://github.com/corpnewt/USBMap)** to enable all 10 USB ports and improve sleep functionailty.
 
-Note that the `Intel Core i7-8550U [Kaby Lake] Processor` is <ins>not</ins> supported by the script and I had to edit the `~/Library/ssdtPRGen/Data/User\ Defined.cfg` file and add the following definition: `i7-8550U,15,400,2000,4000,4,8,64,100` *(see [here](Post-Install/DSDT/ssdtPRGen/User%20Defined.cfg) for example file)*, which was determined via CPUZ [report](Post-Install/DSDT/ssdtPRGen/cpuz.txt) generated under Windows 10.
+* Native Audio support for Conexant Audio CX8050 enabled via **[AppleALC](https://github.com/acidanthera/AppleALC/releases)** using `layout 13` *(internal mic not working with layout 3)*
+
+* Native Power Management enabled via **[ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh)** *(removed NullCPUPowerManagement.kext)*
+
+Note that the **Intel Core i7-8550U [Kaby Lake] Processor** is <ins>not</ins> supported by the **[ssdtPRGen.sh](https://github.com/Piker-Alpha/ssdtPRGen.sh)** script and I had to edit the `~/Library/ssdtPRGen/Data/User\ Defined.cfg` file and add the following definition: `i7-8550U,15,400,2000,4000,4,8,64,100` *(see [here](Post-Install/DSDT/ssdtPRGen/User%20Defined.cfg) for example file and [here](https://www.elitemacx86.com/threads/guide-how-to-generate-ssdt-for-unknown-processor-models-using-ssdtprgen-script.97/) for additional info)*, which was determined via CPUZ [report](Post-Install/DSDT/ssdtPRGen/cpuz.txt) generated under Windows 10.
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Post-Install/DSDT/ssdtPRGen/cpuz.png"></p>
 
+**CLOVER RELATED:**
+* Using `FakeID=0x59168086` injection method with `ig-platform-id=0x591b0000` for enabling Intel UHD Graphics 620 via [WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)
 
+* **ACPI/DSDT/Patches**  include: `change _OSI to XOSI`, `change _DSM to XDSM`, `change EC0 to EC`, `change HECI to IMEI`, `change GFX0 to IGPU`, and `change SAT0 to SATA`.
+
+* **KernelAndKextPatches/KextsToPatch** include:  CoolStar's `Prevent Apple I2C kexts from attaching to I2C controllers` patches and `TRIM function for non-Apple SSDs`
+
+* **ACPI/SSDT/Generate/PluginType** is enabled (true) to take advantage of CPU scaling SSDT generated by **[ssdtPRGen](https://github.com/Piker-Alpha/ssdtPRGen.sh)**.
+
+* SMBIOS Definition set for **MacBookPro14,1** which closely matches the hardware of the Asus VivoBook S10UA-DS71
+
+**DSDT RELATED:**
+* [This guide](https://www.tonymacx86.com/threads/guide-patching-laptop-dsdt-ssdts.152573/)  by RehabMan is still *one of the best* by far when it comes to disassembling and modifying the DSDT.
+
+* All `Common Patches` from the guide have been applied to the DSDT, including the `Fix PNOT/PPNT` patch as I am <ins>not</ins> including OEM SSDT *(only ssdtPRGen SSDT)* but excluding `Add IMEI` patch as DSDT contain `HECI` device and Clover patch to rename to `IMEI`
+
+* 
