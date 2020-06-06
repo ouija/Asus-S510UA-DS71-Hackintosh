@@ -4,8 +4,15 @@
 <dict>
 	<key>ACPI</key>
 	<dict>
+		<key>AutoMerge</key>
+		<true/>
 		<key>DSDT</key>
 		<dict>
+			<key>Fixes</key>
+			<dict>
+				<key>AddPNLF</key>
+				<true/>
+			</dict>
 			<key>Patches</key>
 			<array>
 				<dict>
@@ -97,7 +104,7 @@
 		<key>Arguments</key>
 		<string>dart=0 nv_disable=1 alcid=13 -nobiobeta -wegbeta igfxonln=1</string>
 		<key>Debug</key>
-		<true/>
+		<false/>
 		<key>DefaultVolume</key>
 		<string>LastBootedVolume</string>
 		<key>NeverHibernate</key>
@@ -214,6 +221,10 @@
 				<integer>1</integer>
 			</dict>
 		</dict>
+		<key>SetIntelBacklight</key>
+		<true/>
+		<key>SetIntelMaxBacklight</key>
+		<true/>
 		<key>USB</key>
 		<dict>
 			<key>FixOwnership</key>
@@ -246,6 +257,8 @@
 			<key>Speed</key>
 			<integer>8</integer>
 		</dict>
+		<key>PlayAsync</key>
+		<true/>
 		<key>Scan</key>
 		<dict>
 			<key>Entries</key>
@@ -287,7 +300,7 @@
 		<key>KernelCpu</key>
 		<false/>
 		<key>KernelLapic</key>
-		<false/>
+		<true/>
 		<key>KernelPm</key>
 		<true/>
 		<key>KextsToPatch</key>
@@ -356,7 +369,7 @@
 		<key>BoardManufacturer</key>
 		<string>Apple Inc.</string>
 		<key>BoardSerialNumber</key>
-		<string>C02937501GUHWVP8C</string>
+		<string>C02906270CDHWVP1F</string>
 		<key>BoardType</key>
 		<integer>10</integer>
 		<key>BoardVersion</key>
@@ -386,9 +399,9 @@
 		<key>ProductName</key>
 		<string>MacBookPro14,1</string>
 		<key>SerialNumber</key>
-		<string>C02ZDXZ6HV29</string>
+		<string>C02Y7KYCHV29</string>
 		<key>SmUUID</key>
-		<string>8C583843-733E-42C6-837C-A5BC7ACF6219</string>
+		<string>4973A2D2-8763-4433-BD45-B979CF2A97D7</string>
 		<key>Version</key>
 		<string>1.0</string>
 	</dict>
