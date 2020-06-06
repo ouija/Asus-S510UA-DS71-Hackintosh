@@ -99,7 +99,8 @@ VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of [ApplePS2SmartTo
 
  - Using **[Lilu.kext](https://github.com/acidanthera/lilu/releases)** and **[WhateverGreen.kext](https://github.com/acidanthera/whatevergreen/releases)** to enable Intel UHD Graphics 620 *(with FakeID injection; See CLOVER notes below)*
 
- - Using **[AppleBacklightFixup](https://bitbucket.org/RehabMan/applebacklightfixup/downloads/)** for enabling brightness slider for Intel UHD Graphics 620 *(instead of DSDT or Clover patch -- see [here](https://www.elitemacx86.com/threads/guide-how-to-enable-backlight-control-on-laptop.182/) for more info)*
+ - Using [**WhateverGreen and CLOVER**](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.IntelHD.en.md#adjusting-the-brightness-on-a-laptop) to enable backlight / brightness slider control via Method 1 -> Enabled `AddPNLF` and `SetIntelBacklight` and `SetIntelMaxBacklight`
+	 - You can also use **[AppleBacklightFixup](https://bitbucket.org/RehabMan/applebacklightfixup/downloads/)** for enabling brightness slider for Intel UHD Graphics 620 *(instead of DSDT or Clover patch -- see [here](https://www.elitemacx86.com/threads/guide-how-to-enable-backlight-control-on-laptop.182/) for more info)*
 
  - Using **[NoTouchID.kext](https://github.com/al3xtjames/NoTouchID/releases)** to disable TouchID with MacBookPro14,1 definition and improve performance 
 
