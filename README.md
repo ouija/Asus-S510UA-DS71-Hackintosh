@@ -3,6 +3,8 @@
 **Hackintosh Installation Guide  for Asus VivoBook S10UA-DS71**
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/Asus-S510UA-DS71-Hackintosh.png"></p>
 
+Please consider [donating](https://paypal.me/djouija) to support this project. Thanks!
+
 ## Preface
 This unit was a bit of a stubborn bitch to hackintosh *(as it was my first Kaby Lake and Intel UHD 620 based model)* and prompted me to create this repo to track my installation and configuration steps for not only myself, but others as well.
 
