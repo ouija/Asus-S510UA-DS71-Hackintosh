@@ -160,7 +160,7 @@ echo "signing_required=no" | sudo tee -a /etc/nsmb.conf
 
 ## macOS 11.0 Big Sur Update
 
-I've recently upgraded this machine to macOS 11.0 Big Sur with relatively little issues.  Here's the steps I took to do so:
+I've recently upgraded this machine to macOS 11.0 Big Sur *(as of Dec 2020)* with relatively little issues.  Here's the steps I took to do so:
 
 - Download a copy of the Big Sur update from the App Store but do not complete the installation before all the following steps.
 
