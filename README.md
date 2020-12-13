@@ -1,4 +1,5 @@
 
+
 # Asus-S510UA-DS71-Hackintosh
 **Hackintosh Installation Guide  for Asus VivoBook S10UA-DS71**
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/raw/master/Images/Asus-S510UA-DS71-Hackintosh.png"></p>
@@ -23,7 +24,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
  1. Create macOS 10.15.5 Catalina USB Installer via [Vanilla Method](https://hackintosher.com/guides/how-to-make-a-macos-10-15-catalina-flash-drive-installer/) or [UniBeast](https://www.tonymacx86.com/resources/unibeast-10-1-0-catalina.469/) (EFI Method)
  2. Mount EFI partition of USB Installer *(using [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
  3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](Installation/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
- 4. Copy/replace [these kexts](Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
+ 4. Copy/replace [these kexts](macOS%2010.15%20(Catalina)/Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
  5. Ensure BIOS has Display Memory set to 64MB and that both Secure Boot and CSM mode is disabled.
  6. Reboot and boot from USB and complete macOS installation! *(note that you need a usb mouse to complete installation)*
 
@@ -35,15 +36,15 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 
 You should also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
-2. The `EFI` volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of the [Clover post-installation folder](Post-Install/CLOVER) from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
+2. The `EFI` volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of the [Clover post-installation folder](macOS%2010.15%20(Catalina)/Post-Install/CLOVER) from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
 
-Note that [this post-installation folder](Post-Install/CLOVER) contains **all** of the kexts, config settings, and DSDT modifications needed to get your `ASUS S510UA-DS71` up and running *beautifully*!
+Note that [this post-installation folder](macOS%2010.15%20(Catalina)/Post-Install/CLOVER) contains **all** of the kexts, config settings, and DSDT modifications needed to get your `ASUS S510UA-DS71` up and running *beautifully*!
 
 3. Now reboot and **open the BIOS boot menu** to select the macOS installation partition to boot Clover from.  
 
 *Note:  If you **don't** see an entry in the BIOS boot menu for Clover on the macOS installation partition, you'll need to **manually create it** through the BIOS.* 
 
-4. Once booted into MacOS, install [the driver package](Post-Install/WiFi) for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading [this file](Post-Install/WiFi), extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.  
+4. Once booted into MacOS, install [the driver package](macOS%2010.15%20(Catalina)/Post-Install/WiFi) for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading [this file](macOS%2010.15%20(Catalina)/Post-Install/WiFi), extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.  
 
 Note: [This driver](http://bbs.pcbeta.com/viewthread-1848662-1-1.html) is still very experimental at the time and there are [a few variants](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-636502735) of it *([the one I'm referencing here](https://bbs.pcbeta.org/forum.php?mod=viewthread&tid=1856465) only being released a few days prior to this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an `uninstall.command` file to remove it in the future if needed)*.   
 
@@ -144,11 +145,48 @@ VoodooI2CHID.kext] for enabling ELAN 1300 Trackpad *(instead of [ApplePS2SmartTo
 
 **OTHER NOTES:**
 
- - NetBIOS is disabled in macOS 10.15 to speed up mounting, browsing, and connecting to SMB shares;  Needed to re-enable as I was exteriencing consistant disconnects and timeouts when connecting to a QNAP NAS drive, as per [this](https://apple.stackexchange.com/questions/362739/what-causes-some-network-drives-using-smb-no-longer-connect-to-macos-catalina):
+ - NetBIOS is disabled in macOS 10.15 to speed up mounting, browsing, and connecting to SMB shares;  Needed to re-enable as I was experiencing consistent disconnects and timeouts when connecting to a QNAP NAS drive, as per [this](https://apple.stackexchange.com/questions/362739/what-causes-some-network-drives-using-smb-no-longer-connect-to-macos-catalina):
 		 ```
 echo "[default]" | sudo tee -a /etc/nsmb.conf
 echo "port445=both" | sudo tee -a /etc/nsmb.conf
 echo "signing_required=no" | sudo tee -a /etc/nsmb.conf
 		 ```
 		 and also enabled the "Allow guest users to connect to shared folders" for the "Guest User" under the "Users & Groups" panel.
+
+## macOS 11.0 Big Sur Update
+
+I've recently upgraded this machine to macOS 11.0 Big Sur with relatively little issues.  Here's the steps I took to do so:
+
+- Download a copy of the Big Sur update from the App Store but do not complete the installation before all the following steps.
+
+- Update [Clover](https://github.com/CloverHackyColor/CloverBootloader/releases) to v5123 or greater (which includes OpenCore's `OpenRuntime.efi` integration to replace `AptioMemoryFix.efi`, `OsxAptioFix3Drv.efi`, and `OSXAptioFixDrv.efi` and now includes several **Quirks** that you need to enable *(via Clover Configurator)* else you'll have troubles with it not booting:
+	 - AvoidRuntimeDefrag
+	 - EnableSafeModeSlide
+	 - EnableWriteUnprotector
+	 - ProvideCustomSlide
+	 - SetupVitrualMap
+	 - DsiableIoMapper *(if VT-d enabled in BIOS)* 
+	 - XhciPortLimit
+
+- Remove the SSD TRIM patch from Clover's `config.plist` *(but keep the I2C patches in place)*
+
+- Update all other kexts to latest versions (AppleALC, VistualSMC, AsusSMC, VoodooI2C, Whatevergreen, etc).
+
+- Download the newer [AirportItlwm](https://github.com/OpenIntelWireless/itlwm/releases/) driver for Big Sur to use for wireless support *after* the upgrade.
+
+- Also download the [IntelBluetoothFirmware](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/releases) driver to install after the upgrade as well.
+
+- Remove the old [driver package](https://stackedit.io/Post-Install/WiFi) for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading [this file](https://stackedit.io/Post-Install/WiFi), extracting the contents and running the `uninstall.command` file from the terminal under the directory you extracted the files to. 
+	- Note you can also remove the `WiFi-PW` and `WiFi-SSID` settings from NVRAM as well *(using Hackintool)*
+
+- Complete the Big Sur upgrade and the machine should reboot; Select the macOS install partition and allow the installation to complete; It will take 45-60 minutes to complete, and note the initial progress bar may appear to stall when the update first begins, but just be patient as macOS is creating 'snapshots' and eventually it will show the estimated time remaining and the upgrade will complete.
+
+- After upgrading, boot back into macOS, mount the EFI and copy the kexts for the [AirportItlwm](https://github.com/OpenIntelWireless/itlwm/releases/) and [IntelBluetoothFirmware](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/releases) drivers to the `EFI/CLOVER/kexts/Other` folder.
+
+- To enable TRIM support for SSD, open terminal and type in the following command: `sudo trimforce enable` and follow the prompts to enable and system will reboot
+
+That should be everything needed to get Big Sur up and running!   Note that I experience some odd issues where AppleALC.kext didn't load (sound not working), but rebooting seemed to fix it.
+
+All kexts and associated files have been updated to 
+
 
