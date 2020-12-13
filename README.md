@@ -153,8 +153,11 @@ echo "signing_required=no" | sudo tee -a /etc/nsmb.conf
 		 ```
 		 and also enabled the "Allow guest users to connect to shared folders" for the "Guest User" under the "Users & Groups" panel.
 <br>
----------------------
+
+---
+
 <br>
+
 ## macOS 11.0 Big Sur Update
 
 I've recently upgraded this machine to macOS 11.0 Big Sur with relatively little issues.  Here's the steps I took to do so:
