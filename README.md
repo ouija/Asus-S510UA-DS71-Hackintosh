@@ -50,7 +50,7 @@ Note: [This driver](http://bbs.pcbeta.com/viewthread-1848662-1-1.html) is still 
 
 The source can be found [here](https://github.com/zxystd/itlwm).
 
-Most notably is the fact that you <ins>*cannot*</ins> directly connect to wireless networks using the Wireless Settings dropdown in the macOS  menu bar, but rather have to **add your Wireless SSID and password as strings to the NVRAM** *(recommended)* or as entries in the Clover config.plist to run as boot arguments - [see here](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633963347) for more details.
+Most notably is the fact that you <ins>*cannot*</ins> directly connect to wireless networks using the Wireless Settings dropdown in the macOS  menu bar, but rather have to **add your Wireless SSID and password as strings to the NVRAM** *(recommended)* or as entries in the Clover `config.plist` to run as boot arguments - [see here](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-633963347) for more details.
 
 This driver also *doesn't* support running the card at full speed yet, but I've managed to get fairly decent performance with a Tx rate of 140Mbps and an average of 60Mbps down and 15Mbps up *(which is much better than nothing!)*
 
@@ -192,6 +192,6 @@ I've recently upgraded this machine to macOS 11.0 Big Sur with relatively little
 
 That should be everything needed to get Big Sur up and running!   Note that I experience some odd issues where AppleALC.kext didn't load (sound not working), but rebooting seemed to fix it.
 
-All kexts and associated files have been updated to 
+All kexts and associated files have been updated to latest versions as of this commit date, and you can download the [Big Sur related files here](asdf).
 
 
