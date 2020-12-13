@@ -192,6 +192,8 @@ I've recently upgraded this machine to macOS 11.0 Big Sur with relatively little
 
 That should be everything needed to get Big Sur up and running!   Note that I experience some odd issues where AppleALC.kext didn't load (sound not working), but rebooting seemed to fix it.
 
-All kexts and associated files have been updated to latest versions as of this commit date, and you can download the [Big Sur related files here](asdf).
+All kexts and associated files have been updated to latest versions as of this commit date, and you can download the [Big Sur related files here](macOS%2011.0%20(Big%20Sur)).
+
+Enjoy.
 
 
