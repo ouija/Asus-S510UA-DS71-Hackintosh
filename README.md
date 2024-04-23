@@ -30,12 +30,15 @@ I've finally managed to get OpenCore running on this machine, after realizing th
 - After successful install, then copied EFI folder to internal EFI partition and [generated SMBIOS](https://github.com/corpnewt/GenSMBIOS) for `MacBookPro15,2`
 - Modified OpenCore `config.plist` and tweaked some values the olarila.com prebuilt EFI folder came with: 
 	- Note that the `igfxfw=2` boot arg is set which causes [ failure when loading IGPU firmware](https://elitemacx86.com/threads/how-to-improve-igpu-performance-intel-graphics-on-macos.1059/); This should be removed.
+	- Removed the `-igfxblr -igfxblt` boot args to fix backlight/brightness slider
+		- _Debating if `-igfxbls` makes any difference in backlight smoothness ("steps" aren't great)_
 	- Changed boot arg from `alcid=3` to instead use `alcid=13` to better match Conexant Audio CX8050 and fix internal microphone
 	- Modified graphic properties to better match Intel UHD 620 model of the Asus-S510UA-DS71 and fix HDMI output _(see below)_
 	- Wifi for the Intel Dual Band Wireless-AC 8265 can be enabled via the [itlwm 2.3.0-alpha version](https://github.com/OpenIntelWireless/itlwm/releases/tag/v2.3.0-alpha) kext.
 		- _Debating if I should set country code via `itlwm_cc=` boot arg_
 	- Update kexts via [kextupdater](https://github.com/MacThings/kextupdater)
 	- _Todo:_ Generate [USB Map](https://github.com/corpnewt/USBMap) _(under Windows)_ and replace `USBInjectAll.kext`
+	- _Todo:_ Install and enable [AsusSMC](https://github.com/hieplpvip/AsusSMC)
 	- Still tweaking and improving, will update here accordingly.
 
 ## DeviceProperties
@@ -57,3 +60,4 @@ Intel UHD 620 Graphics
 | framebuffer-fbmem        |   Data   | ``00009000`` |
 | framebuffer-patch-enable |   Data   | ``01000000`` |
 | framebuffer-stolenmem    |   Data   | ``00003001`` |
+| enable-metal             |   Data   | ``01000000`` |
