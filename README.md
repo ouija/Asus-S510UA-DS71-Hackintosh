@@ -26,9 +26,9 @@ I've _finally_ managed to get OpenCore running on this machine, after running in
 - Built the macOS USB installer using [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/INSTALLER.html) for macOS Sonoma 14.4.1
 	-  _Note this now requires a USB **larger than** 16GB!_
 - Based my initial OpenCore USB installer EFI off [this](https://olarila.com/files/OPENCORE1/EFI.Opencore.NoteBook.Coffee.Lake.Whiskey.Lake.zip) prebuilt package available from [olarila.com](https://www.olarila.com/topic/5676-hackintosh-efi-folder-with-clover-and-opencore/) for **"NoteBook CoffeeLake and WhiskeyLake"** based models  _(thank you to [@MaLd0n](https://github.com/MaLd0n))_
-	- _The Asus VivoBook S10UA-DS71 is based of the **Kaby Lake Refresh** but following the [Dortainia Guide](https://dortania.github.io/OpenCore-Install-Guide/config-laptop.plist/kaby-lake.html) for this and/or using the prebuilt config from olarila.com for Kaby Lake had issues and the macOS installer would always fail to load and I didn't have the patience to debug why!)_
+	- _The Asus VivoBook S10UA-DS71 is based of the **Kaby Lake Refresh** but following the [Dortainia Guide](https://dortania.github.io/OpenCore-Install-Guide/config-laptop.plist/kaby-lake.html) for this and/or using the prebuilt config from olarila.com for Kaby Lake had issues and the macOS installer would always fail to load with kernel panic/freeze_
 	- _Using the Coffee Lake prebuit EFI/config to simply get installer to run and then updated config post-install to better suite the Kaby Lake chipset_
-		- _and now realize this is likely because the prebuilt Coffee Lake EFI also contains `CpuTscSync.kext`, and `TSC_sync_margin=0` boot arg which prevents this panic_
+		- _**and now realize this issue was likely because the prebuilt Coffee Lake EFI also contains `CpuTscSync.kext`, and `TSC_sync_margin=0` boot arg which prevents this panic!**_
 - After successful install, then copied EFI folder to internal EFI partition and [generated SMBIOS](https://github.com/corpnewt/GenSMBIOS) for `MacBookPro15,2`
 - Modified OpenCore `config.plist` and tweaked some values the olarila.com prebuilt EFI folder came with: 
 	- Note that the `igfxfw=2` boot arg is set which causes [ failure when loading IGPU firmware](https://elitemacx86.com/threads/how-to-improve-igpu-performance-intel-graphics-on-macos.1059/); This should be removed.
