@@ -26,7 +26,7 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
  1. Create macOS 10.15.5 Catalina USB Installer via [Vanilla Method](https://hackintosher.com/guides/how-to-make-a-macos-10-15-catalina-flash-drive-installer/) or [UniBeast](https://www.tonymacx86.com/resources/unibeast-10-1-0-catalina.469/) (EFI Method)
  2. Mount EFI partition of USB Installer *(using [Hackintool](https://github.com/headkaze/Hackintool/releases) or [Clover Configurator](https://mackie100projects.altervista.org/download-clover-configurator/) if necessary)*
  3. Replace the `EFI/CLOVER/config.plist` file with [the version from this repo](Installation/EFI/CLOVER/config.plist) *(see detailed installation notes  below regarding necessary modifications to this file to enable installation)*
- 4. Copy/replace [these kexts](macOS%2010.15%20(Catalina)/Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
+ 4. Copy/replace [these kexts](./Installation/EFI/CLOVER/kexts/Other) in the `/EFI/CLOVER/kexts/Other` folder
  5. Ensure BIOS has Display Memory set to 64MB and that both Secure Boot and CSM mode is disabled.
  6. Reboot and boot from USB and complete macOS installation! *(note that you need a usb mouse to complete installation)*
 
@@ -38,15 +38,15 @@ This installation and guide was done in *May of 2020* using **macOS 10.15.5** an
 
 You should also check off `Install Clover Preference Pane` to easily check for Clover Updates in the future from within System Preferences in macOS.
 
-2. The `EFI` volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of the [Clover post-installation folder](macOS%2010.15%20(Catalina)/Post-Install/CLOVER) from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
+2. The `EFI` volume for this new macOS installation should still be mounted after installing Clover, so open it up and copy the contents of the [Clover post-installation folder](./Post-Install/CLOVER) from this repo to the `/EFI/CLOVER` folder *(replace any existing files if prompted)*
 
-Note that [this post-installation folder](macOS%2010.15%20(Catalina)/Post-Install/CLOVER) contains **all** of the kexts, config settings, and DSDT modifications needed to get your `ASUS S510UA-DS71` up and running *beautifully*!
+Note that [this post-installation folder](./Post-Install/CLOVER) contains **all** of the kexts, config settings, and DSDT modifications needed to get your `ASUS S510UA-DS71` up and running *beautifully*!
 
 3. Now reboot and **open the BIOS boot menu** to select the macOS installation partition to boot Clover from.  
 
 *Note:  If you **don't** see an entry in the BIOS boot menu for Clover on the macOS installation partition, you'll need to **manually create it** through the BIOS.* 
 
-4. Once booted into MacOS, install [the driver package](macOS%2010.15%20(Catalina)/Post-Install/WiFi) for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading [this file](macOS%2010.15%20(Catalina)/Post-Install/WiFi), extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.  
+4. Once booted into MacOS, install [the driver package](./Post-Install/WiFi) for supporting the `Intel Dual Band Wireless-AC 8265` card by downloading [this file](./Post-Install/WiFi), extracting the contents and running the `install.command` file from the terminal under the directory you extracted the files to.  
 
 Note: [This driver](http://bbs.pcbeta.com/viewthread-1848662-1-1.html) is still very experimental at the time and there are [a few variants](https://github.com/daliansky/XiaoMi-Pro-Hackintosh/issues/330#issuecomment-636502735) of it *([the one I'm referencing here](https://bbs.pcbeta.org/forum.php?mod=viewthread&tid=1856465) only being released a few days prior to this writing)* and has some limitations in terms of performance and operation.    Hence this is why there is an `install.command` script you need to run for this *(as well as an `uninstall.command` file to remove it in the future if needed)*.   
 
@@ -162,6 +162,6 @@ echo "signing_required=no" | sudo tee -a /etc/nsmb.conf
 
 ## macOS 11.0 Big Sur Update
 
-Visit [this readme](../macOS%2011.0%20%28Big%20Sur%29/README.md) for information related to my experience upgrading the Asus VivoBook S10UA-DS71 to macOS 11.0 Big Sur.
+Visit [this readme](../macOS_11.0/README.md) for information related to my experience upgrading the Asus VivoBook S10UA-DS71 to macOS 11.0 Big Sur.
 
 

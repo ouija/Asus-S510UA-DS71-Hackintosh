@@ -9,7 +9,7 @@ Please consider [donating](https://paypal.me/djouija) to support this project. T
 ## Preface
 **NOTE: This guide is <u>outdated</u> and is for archival purposes only.**
 
-The information outlined here is in relation to upgrading macOS Catalina to Big Sur -- Follow the steps that were outlined in [this readme](../macOS%2010.15%20%28Catalina%29/README.md)
+The information outlined here is in relation to upgrading macOS Catalina to Big Sur -- Follow the steps that were outlined in [this readme](../macOS_10.15/README.md)
  previously which preceeds this information below.
 
 
