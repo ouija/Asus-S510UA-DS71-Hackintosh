@@ -41,7 +41,7 @@ I've _finally_ managed to get OpenCore running on this machine, after running in
 	- _(Optional)_ Configured OpenCore to boot Linix via [OpenLinuxBoot](OpenLinuxBoot) method
 	- _Todo:_ Generate [USB Map](https://github.com/corpnewt/USBMap) _(under Windows)_ and replace `USBInjectAll.kext`
 	- _Todo:_ Install and enable [AsusSMC](https://github.com/hieplpvip/AsusSMC) -- follow here for [SSDT patching](https://github.com/hieplpvip/AsusSMC/issues/93) related to this
-	- _Note:_ As per [this](https://dortania.github.io/OpenCore-Post-Install/universal/sleep.html#fixing-gpus) the `forceRenderStandby=0` boot arge may be needed if kernel panic on sleep occurs; Noticed that `-noDC9` boot arg is present in the Coffee Lake prebuilt EFI, not sure if needed but making note of it here.
+	- _Note:_ As per [this](https://dortania.github.io/OpenCore-Post-Install/universal/sleep.html#fixing-gpus) the `forceRenderStandby=0` boot arg may be needed if kernel panic on sleep occurs; Noticed that `-noDC9` boot arg is present in the Coffee Lake prebuilt EFI, not sure if needed but making note of it here.
 	- Whatevergreen `igfxfw=2` boot arg causes [failure when loading IGPU firmware](https://elitemacx86.com/threads/how-to-improve-igpu-performance-intel-graphics-on-macos.1059/), do not use!
 	- Whatevergreen `-igfxblr -igfxblt` boot arg will break brightness slider, do not use!
 	- Debating if `-igfxbls` makes any difference in backlight smoothness
