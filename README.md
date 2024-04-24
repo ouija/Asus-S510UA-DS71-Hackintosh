@@ -31,7 +31,7 @@ I've _finally_ managed to get OpenCore running on this machine, after running in
 
 - After successful install, then copied EFI folder to internal EFI partition and [generated SMBIOS](https://github.com/corpnewt/GenSMBIOS) for `MacBookPro15,2`
 - Modified OpenCore `config.plist` and tweaked some values the olarila.com prebuilt EFI folder came with: 
-	- Modificed the `DeviceProperties` for `PciRoot(0x0)/Pci(0x2,0x0)`, aka the Intel UHD 620 IGPU; See table below.
+	- Modificed the `DeviceProperties` for `PciRoot(0x0)/Pci(0x2,0x0)` aka the Intel UHD 620 IGPU; See table below.
 		- This enables proper graphics accelleration/frame buffer with HDMI output and Metal 3 support.
 	- Changed AppleALC boot arg from `alcid=3` to instead use `alcid=13` to better match Conexant Audio CX8050 which also enables internal microphone
 	- Enabled wifi support for the Intel Dual Band Wireless-AC 8265 via the [itlwm 2.3.0-alpha version](https://github.com/OpenIntelWireless/itlwm/releases/tag/v2.3.0-alpha) kext.
