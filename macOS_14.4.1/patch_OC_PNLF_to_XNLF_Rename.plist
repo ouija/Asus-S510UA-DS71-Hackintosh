@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ACPI</key>
-	<dic>		
+	<dict>		
 		<key>Patch</key>
 		<array>
 			<dict>
