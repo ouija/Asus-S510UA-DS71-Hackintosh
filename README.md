@@ -19,7 +19,7 @@ Please consider [donating](https://paypal.me/djouija) to support this project. T
 
 After a long hiatus from the hackintosh scene, I'm back in action wasting time trying to get this awful operating system running on this unit again for development purposes.
 
-I've _finally_ managed to get OpenCore running on this machine, after running into nothing but issues with macOS installer failing to load / kernel panic when following other **Kaby Lake** based configurations and examples.  After finally getting the macOS installer to load when using [prebuilt package](https://olarila.com/files/OPENCORE1/EFI.Opencore.NoteBook.Coffee.Lake.Whiskey.Lake.zip) for **Cofeee Lake** instead, I realized both `CpuTscSync.kext` and `TSC_sync_margin=0` boot arg are needed to resolve this!
+I've _finally_ managed to get OpenCore running on this machine, after running into nothing but issues with macOS installer failing to load / kernel panic when following other **Kaby Lake** based configurations and examples.  After finally getting the macOS installer to load when trying a prebuilt package for **Cofeee Lake** instead, I realized that both `CpuTscSync.kext` and `TSC_sync_margin=0` boot arg are needed to resolve this!
 
 ## Quick Installation Notes
 
