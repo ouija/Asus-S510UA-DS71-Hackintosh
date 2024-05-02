@@ -18,7 +18,7 @@ Please consider [donating](https://paypal.me/djouija) to support this project. T
 **This guide is a <u>work in progress</u> and will be updated accordingly.**
 
 > [!NOTE]
-> This system is pretty much **fully functional** now running Sonoma 14.4.1, and I'm beginning to put it through it's paces to find out where the ghosts in the machine are!
+> _This system is **fully functional** now running Sonoma 14.4.1, and I'm beginning to put it through it's paces to find out where the ghosts in the machine are!_
 
 After a long hiatus from the hackintosh scene, I'm back in action wasting time trying to get this awful operating system running on this unit again for development purposes.
 
