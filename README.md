@@ -50,6 +50,7 @@ I've _finally_ managed to get OpenCore running on this machine, after running in
 	- Changed AppleALC boot arg from `alcid=3` to instead use `alcid=13` to better match Conexant Audio CX8050 which also enables internal microphone
 	- Enabled wifi support for the Intel Dual Band Wireless-AC 8265 via the [itlwm 2.3.0-alpha version](https://github.com/OpenIntelWireless/itlwm/releases/tag/v2.3.0-alpha) kext.
 		- _Debating if I should set country code via `itlwm_cc=` boot arg_
+	- Enabled bluetooth support for the Intel Dual Band Wireless-AC 8265 via the [IntelBluetoothFirmware](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/) package and only added `IntelBTPatcher.kext` and `IntelBluetoothFirmware.kext` along with the `BlueToolFixup.kext` from [acidanthera/BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM/releases) _(as per these [instructions](https://openintelwireless.github.io/IntelBluetoothFirmware/FAQ.html#what-additional-steps-should-i-do-to-make-bluetooth-work-on-macos-monterey-and-newer))_
 	- Enabled Realtek Card Reader via [Sinetek-rtsx.kext](https://github.com/cholonam/Sinetek-rtsx/releases)
 		- _Note you need to insert SD card into reader during USB mapping or SD card reader will fail to function if using `UTBMap.kext`/`USBToolBox.kext`_
 	- Added [GPRW Instant Wake Patch](https://dortania.github.io/OpenCore-Post-Install/usb/misc/instant-wake.html) to improve sleep
