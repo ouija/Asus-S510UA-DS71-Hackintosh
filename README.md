@@ -35,9 +35,11 @@ I've _finally_ managed to get OpenCore running on this machine, after running in
 	- _Note you need to insert SD card into reader during USB mapping or SD card reader will fail to function! (in relation to [Sinetek-rtsx.kext](https://github.com/cholonam/Sinetek-rtsx/releases))_
 	- _You should also insert a [USB3.0] device into every port during mapping, including USB-C port!_
 	- _Also note this will help fix issues with sleep!_
-- Modified OpenCore `config.plist` and tweaked some values the olarila.com prebuilt EFI folder came with: 
+
 > [!WARNING]  
 > If using [OpenCore Configurator](https://mackie100projects.altervista.org/download-opencore-configurator/) to modify your `config.plist`, be aware that the `Check Kexts` button/option under the `Kernel -> Add` section has the potential to *break* your config and cause kexts to fail to load for some reason.  **Avoid using this to prevent headaches!**
+	
+- Modified OpenCore `config.plist` and tweaked some values the olarila.com prebuilt EFI folder came with:
 	- Modificed the `DeviceProperties` for `PciRoot(0x0)/Pci(0x2,0x0)` aka the Intel UHD 620 IGPU; See table below.
 		- This enables proper graphics accelleration/frame buffer with external HDMI output, 4095MB VRAM, and Metal 3 support.
 	- Changed AppleALC boot arg from `alcid=3` to instead use `alcid=13` to better match Conexant Audio CX8050 which also enables internal microphone
