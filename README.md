@@ -67,6 +67,28 @@ I've _finally_ managed to get OpenCore running on this machine, after running in
 	- Update kexts via [kextupdater](https://github.com/MacThings/kextupdater)
 	- _(Optional)_ Configured OpenCore to boot Linix via [OpenLinuxBoot](OpenLinuxBoot) method
 
+## Updating OpenCore (0.9.9 → 1.0.7)
+
+Updated OpenCore from `0.9.9` to [1.0.7](https://github.com/acidanthera/OpenCorePkg/releases/tag/1.0.7) while still on Sonoma 14.4.1, in preparation for upgrading to macOS Tahoe _(which requires OpenCore **1.0.5 or newer**)_.
+
+> [!IMPORTANT]
+> Back up your working `EFI/OC` folder first!  I kept one copy on the Mac and a second copy on the EFI partition itself (`EFI/OC-0.9.9-backup`) so it can be restored from Windows/Linux if macOS fails to boot.
+
+- Downloaded the `OpenCore-1.0.7-RELEASE.zip` and from `X64/EFI/OC` replaced:
+	- `OpenCore.efi`
+	- `Drivers/OpenRuntime.efi`, `Drivers/OpenCanopy.efi`, `Drivers/OpenLinuxBoot.efi`, `Drivers/ResetNvramEntry.efi`
+	- Replaced the old `Drivers/ext4_x64.efi` with `Drivers/Ext4Dxe.efi` _(renamed in newer OpenCore)_ and updated the path under `UEFI -> Drivers` in `config.plist`
+	- `HfsPlus.efi` is <ins>not</ins> part of the OpenCore package _(from [OcBinaryData](https://github.com/acidanthera/OcBinaryData))_ so left as-is, along with kexts, ACPI and theme resources.
+- Ran the matching `Utilities/ocvalidate/ocvalidate` against `config.plist`, which reported two missing keys that were added with default values:
+	- `Booter -> Quirks -> ClearTaskSwitchBit` = `False` _(Boolean)_
+	- `UEFI -> Unload` = empty _(Array)_
+- Re-ran `ocvalidate` with no issues found, then copied the updated files to the EFI partition and rebooted.
+- Verify the new version after booting via: `nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version` _(should return `REL-107-2026-03-20`)_
+- Also updated `BlueToolFixup.kext` to `2.7.2`; all other kexts were already at their latest releases.
+
+> [!NOTE]
+> On this machine `EFI/BOOT/BOOTx64.efi` is the Ubuntu shim _(not OpenCore)_ since the BIOS boots `EFI/OC/OpenCore.efi` directly, so it was left untouched.  If your `BOOTx64.efi` _is_ OpenCore's, replace it with the one from `X64/EFI/BOOT` as well.
+
 ## General Notes
 
 - The `forceRenderStandby=0` boot arg may be needed if kernel panic on sleep occurs _(as noted  [here](https://dortania.github.io/OpenCore-Post-Install/universal/sleep.html#fixing-gpus))_
