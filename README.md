@@ -89,6 +89,64 @@ Updated OpenCore from `0.9.9` to [1.0.7](https://github.com/acidanthera/OpenCore
 > [!NOTE]
 > On this machine `EFI/BOOT/BOOTx64.efi` is the Ubuntu shim _(not OpenCore)_ since the BIOS boots `EFI/OC/OpenCore.efi` directly, so it was left untouched.  If your `BOOTx64.efi` _is_ OpenCore's, replace it with the one from `X64/EFI/BOOT` as well.
 
+## Upgrading to macOS Sequoia (15.8)
+
+The goal was to get current enough for iOS development in Xcode.  Since **April 28, 2026** App Store Connect requires apps to be built with **Xcode 26 / iOS 26 SDK**, which requires _at least_ macOS Sequoia 15.6 _(Sonoma tops out at Xcode 16.x)_.
+
+### Why Sequoia and not Tahoe?
+
+Originally planned to go to macOS Tahoe 26.7 _(the final Intel release)_, but decided against it for this machine:
+
+- `AppleHDA.kext` was **removed** in Tahoe, so AppleALC no longer works for the Conexant CX8050.  Audio would require either [re-injecting AppleHDA](https://github.com/perez987/AppleHDA-back-on-macOS-26-Tahoe) into the system volume _(redone after every macOS update)_ or VoodooHDA.
+- Could not confirm that the Kaby Lake (KBL) graphics drivers survived into the final Tahoe releases.
+- Intel wifi requires `itlwm` + HeliPort either way; the [AirportItlwm-Tahoe](https://github.com/kgp-macPro/AirportItlwm-Tahoe) fork needs OCLP root patches and is only qualified on the AX210.
+- The gain is small: Tahoe only allows Xcode **26.6** _(iOS 26.5 SDK)_ vs Xcode **26.3** _(iOS 26.2 SDK)_ on Sequoia. **Xcode 27** _(iOS 27 SDK)_ only runs on Apple silicon Macs, so no Intel machine gets past Xcode 26.x regardless.
+
+| **macOS**   | **Newest Xcode** | **iOS SDK** | **Notes** |
+|-------------|:----------------:|:-----------:|-----------|
+| Sonoma 14.x | 16.x             | 18.x        | Can no longer upload to App Store Connect |
+| Sequoia 15.6+ | 26.3           | 26.2        | AppleHDA and KBL graphics still native |
+| Tahoe 26.2+ | 26.6             | 26.5        | AppleHDA removed, requires patching |
+
+### SMBIOS
+
+`MacBookPro15,2` is not supported by Tahoe, so switched to **`MacBookPro16,2`** _(13-inch, 2020, Four Thunderbolt 3 Ports)_ which is supported by both Sequoia and Tahoe.
+
+- **Sign out of iMessage, FaceTime and iCloud first!**
+- Generated new `SystemSerialNumber`, `MLB` and `SystemUUID` using `macserial` from the OpenCore package: `macserial -m MacBookPro16,2 -g -n 6`
+	- Check each serial at [checkcoverage.apple.com](https://checkcoverage.apple.com) and use one that reports **"Please enter a valid serial number"**.  _(The first one I generated belonged to a real MacBook Pro!)_
+	- `ROM` was left unchanged.
+- Performed a **Reset NVRAM** from the OpenCore picker after changing SMBIOS, and verified everything still worked under Sonoma before continuing.
+- `UTBMap.kext` from USBToolBox matches on the `XHC` controller rather than the SMBIOS model, so the USB mapping did <ins>not</ins> need to be redone.
+
+### Wifi and Bluetooth
+
+`AirportItlwm` does <ins>not</ins> work natively on Sequoia or newer _(Apple removed the legacy wireless stack it depends on)_, so switched to [itlwm](https://github.com/OpenIntelWireless/itlwm/releases) with the [HeliPort](https://github.com/OpenIntelWireless/HeliPort/releases) client app instead.  Using `MinKernel`/`MaxKernel` lets the same EFI boot either OS with the correct kext:
+
+| **Kext**            | **MinKernel** | **MaxKernel** | **Loads on** |
+|---------------------|:-------------:|:-------------:|--------------|
+| `AirportItlwm.kext` _(Sonoma 14.4 build)_ | | `23.99.99` | Sonoma |
+| `itlwm.kext` _(v2.3.0)_ | `24.0.0` | | Sequoia and newer |
+
+- Install **HeliPort** _before_ upgrading since there's no ethernet port on this laptop!  _(Have iPhone USB tethering or a USB ethernet adapter handy as a backup)_
+- Added `-ibtcompatbeta` boot arg for `IntelBluetoothFirmware`/`IntelBTPatcher` on newer macOS.
+- _Note: With itlwm + HeliPort, AirDrop, Continuity and native Wi-Fi menu features are unavailable._
+
+### Other config changes
+
+- Added `revpatch=sbvmm` boot arg _(uses the existing `RestrictEvents.kext`)_ so OTA updates still work with a T2-based SMBIOS and `SecureBootModel` set to `Disabled`.
+- Boot args are now: `alcid=13 watchdog=0 igfxonln=1 agdpmod=vit9696 -vi2c-force-polling igfxagdc=0 -wegnoegpu -ibtcompatbeta revpatch=sbvmm`
+
+### Installing
+
+> [!NOTE]
+> _Upgrade in progress; will update with results once running Sequoia._
+
+- Downloaded the full installer via terminal: `softwareupdate --fetch-full-installer --full-installer-version 15.8`
+	- _Use `softwareupdate --list-full-installers` to see available versions; these will <ins>only</ins> appear for your SMBIOS if it is supported._
+- Run `Install macOS Sequoia` as an in-place upgrade over Sonoma, selecting `macOS Installer` in the OpenCore picker during reboots until it disappears.
+- After first login, launch HeliPort to connect to wifi and add it to Login Items.
+
 ## General Notes
 
 - The `forceRenderStandby=0` boot arg may be needed if kernel panic on sleep occurs _(as noted  [here](https://dortania.github.io/OpenCore-Post-Install/universal/sleep.html#fixing-gpus))_
