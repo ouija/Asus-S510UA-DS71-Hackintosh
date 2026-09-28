@@ -91,8 +91,6 @@ Updated OpenCore from `0.9.9` to [1.0.7](https://github.com/acidanthera/OpenCore
 
 ## Upgrading to macOS Sequoia (15.8)
 
-The goal was to get current enough for iOS development in Xcode.  Since **April 28, 2026** App Store Connect requires apps to be built with **Xcode 26 / iOS 26 SDK**, which requires _at least_ macOS Sequoia 15.6 _(Sonoma tops out at Xcode 16.x)_.
-
 ### Why Sequoia and not Tahoe?
 
 Originally planned to go to macOS Tahoe 26.7 _(the final Intel release)_, but decided against it for this machine:
@@ -100,13 +98,8 @@ Originally planned to go to macOS Tahoe 26.7 _(the final Intel release)_, but de
 - `AppleHDA.kext` was **removed** in Tahoe, so AppleALC no longer works for the Conexant CX8050.  Audio would require either [re-injecting AppleHDA](https://github.com/perez987/AppleHDA-back-on-macOS-26-Tahoe) into the system volume _(redone after every macOS update)_ or VoodooHDA.
 - Could not confirm that the Kaby Lake (KBL) graphics drivers survived into the final Tahoe releases.
 - Intel wifi requires `itlwm` + HeliPort either way; the [AirportItlwm-Tahoe](https://github.com/kgp-macPro/AirportItlwm-Tahoe) fork needs OCLP root patches and is only qualified on the AX210.
-- The gain is small: Tahoe only allows Xcode **26.6** _(iOS 26.5 SDK)_ vs Xcode **26.3** _(iOS 26.2 SDK)_ on Sequoia. **Xcode 27** _(iOS 27 SDK)_ only runs on Apple silicon Macs, so no Intel machine gets past Xcode 26.x regardless.
 
-| **macOS**   | **Newest Xcode** | **iOS SDK** | **Notes** |
-|-------------|:----------------:|:-----------:|-----------|
-| Sonoma 14.x | 16.x             | 18.x        | Can no longer upload to App Store Connect |
-| Sequoia 15.6+ | 26.3           | 26.2        | AppleHDA and KBL graphics still native |
-| Tahoe 26.2+ | 26.6             | 26.5        | AppleHDA removed, requires patching |
+On Sequoia, both AppleHDA _(AppleALC audio)_ and the KBL graphics drivers are still native.
 
 ### SMBIOS
 
