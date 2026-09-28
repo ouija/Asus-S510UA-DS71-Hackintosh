@@ -96,7 +96,7 @@ Updated OpenCore from `0.9.9` to [1.0.7](https://github.com/acidanthera/OpenCore
 Originally planned to go to macOS Tahoe 26.7 _(the final Intel release)_, but decided against it for this machine:
 
 - `AppleHDA.kext` was **removed** in Tahoe, so AppleALC no longer works for the Conexant CX8050.  Audio would require either [re-injecting AppleHDA](https://github.com/perez987/AppleHDA-back-on-macOS-26-Tahoe) into the system volume _(redone after every macOS update)_ or VoodooHDA.
-- Could not confirm that the Kaby Lake (KBL) graphics drivers survived into the final Tahoe releases.
+- The Kaby Lake (KBL) graphics drivers were present in the Tahoe betas, and reports suggest UHD 620 acceleration still works on Tahoe with current Lilu/WhateverGreen, but this has <ins>not</ins> been tested on this machine.
 - Intel wifi requires `itlwm` + HeliPort either way; the [AirportItlwm-Tahoe](https://github.com/kgp-macPro/AirportItlwm-Tahoe) fork needs OCLP root patches and is only qualified on the AX210.
 
 On Sequoia, both AppleHDA _(AppleALC audio)_ and the KBL graphics drivers are still native.
