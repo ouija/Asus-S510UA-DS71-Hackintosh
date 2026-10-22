@@ -281,7 +281,10 @@ Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https:/
 | `AirportItlwm-Sequoia.kext` _(laobamac v2.4.0-alpha)_ | `24.0.0` | `24.99.99` | Sequoia |
 | `AirportItlwm-Tahoe.kext` _(laobamac v2.4.0-alpha)_ | `25.0.0` | | Tahoe |
 
-- Wifi connects with the native Wi-Fi menu, but link speed is low so far _(investigating)_.
+- Wifi connects with the native Wi-Fi menu at full speed: **585 Mbps on 5 GHz** _(channel 36, 80 MHz, 802.11ac)_, the same as on Sequoia.  Keep the `itlwm_cc` country code boot arg _(see [Other config changes](#other-config-changes))_.
+- With the **same network name for 2.4 and 5 GHz** _(e.g. Asus Smart Connect)_, it may join the **2.4 GHz band** _(20 MHz, ~58 Mbps)_ and stay there.  **Turn Wi-Fi off and on** to rejoin, and it should pick 5 GHz.  Hold `Option` and click the Wi-Fi menu icon to check the channel.  If it keeps happening, adjust the router's band steering or give the 5 GHz band its own name.
+- The **Tx Rate** shown in that menu is meaningless while ethernet is connected.  macOS sends all traffic over ethernet, and the wifi driver only raises its rate when there's traffic.  Unplug ethernet before judging wifi speed.
+- As of Oct 2026 this laobamac build is the best option I found for the 8265 on Tahoe: native Wi-Fi menu, <ins>no</ins> OCLP root patches.  The [AirportItlwm-Tahoe](https://github.com/kgp-macPro/AirportItlwm-Tahoe) fork needs root patches and is only qualified on the AX210; `itlwm.kext` + HeliPort works as a fallback without the native menu.
 
 ### OpenCore 1.0.8 and kext updates
 
@@ -296,7 +299,7 @@ Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https:/
 
 - **Working:** graphics acceleration _(UHD 620 with the same KBL framebuffer properties)_, audio _(SimpleHDA)_, `Fn` volume keys, `Fn` brightness keys, battery status, USB ports, USB-C hub with ethernet, trackpad with multi-finger gestures, SD card reader, Bluetooth device discovery, keyboard backlight.
 - **Issues:**
-	- Wifi link speed is low _(~7 Mbps reported)_.
+	- ~~Wifi link speed is low~~ **Fixed**: it had joined the 2.4 GHz band; toggling Wi-Fi off/on got it onto 5 GHz at 585 Mbps _(see [Wifi](#wifi))_.
 	- `Fn+F3` / `Fn+F4` keyboard backlight keys don't adjust the backlight.
 	- The on-screen brightness indicator gets out of sync _(jumps or moves the wrong way)_ when pressing the brightness keys **quickly**.  Slow presses display fine and the backlight itself always changes correctly.
 		- Recorded the brightness values while pressing the keys: each press moves exactly **1/16** of the range _(the standard 16 steps)_ in the right direction, with <ins>no</ins> duplicate events from AsusSMC/BrightnessKeys.  So this looks like a cosmetic timing quirk of the indicator, <ins>not</ins> a backlight or PNLF config problem.
