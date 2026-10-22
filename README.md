@@ -209,6 +209,7 @@ What did fix it:
 - Whatevergreen `igfxfw=2` boot arg causes [failure when loading IGPU firmware](https://elitemacx86.com/threads/how-to-improve-igpu-performance-intel-graphics-on-macos.1059/), do <ins>not</ins> use!
 - Whatevergreen `-igfxblr` and/or `-igfxblt` boot args will break brightness slider, do <ins>not</ins> use!
 - Debating if `-igfxbls` makes any difference in display backlight smoothness, <ins>not</ins> using currently.
+- To set your **preferred OS to boot by default**, highlight it in the OpenCore picker and press **`Ctrl+Enter`**.  It stays the default until you change it again _(requires `Misc -> Security -> AllowSetDefault` = `True`)_.
 - Still tweaking and improving, will update here accordingly.
 
 ## DeviceProperties
