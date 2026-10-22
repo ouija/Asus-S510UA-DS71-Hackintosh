@@ -228,6 +228,13 @@ What did fix it:
 - **Sleep works**, but a connected **USB drive** made it wake immediately; eject/unplug USB storage before sleeping.  Also applied the usual hackintosh sleep settings: `sudo pmset -a hibernatemode 0`, `standby 0`, `autopoweroff 0`, `proximitywake 0`, `powernap 0`, `tcpkeepalive 0`, then `sudo rm -f /var/vm/sleepimage` _(undo with `sudo pmset restoredefaults`)_.
 - After a **long sleep**, Wi-Fi on the 8265 may stay unavailable until toggled off/on _(laobamac issue [#19](https://github.com/laobamac/itlwm/issues/19), fix in progress)_.
 - Bluetooth devices don't reconnect automatically after a reboot _(re-pairing works)_.
+- **Updating from System Settings → Software Update fails** with _"Failed to prepare the software update. Please try again."_
+	- `/var/log/install.log` shows the cause: `'./usr/sbin/bluetoothd' does not verify` / `contents of '/usr/sbin/bluetoothd' don't match bom` and `FullReplacementRequired`.
+	- `BlueToolFixup.kext` _(via Lilu)_ patches `bluetoothd` **in memory** at boot so Intel Bluetooth works.  The system volume itself is still sealed and unmodified, but the updater reads the patched copy, so its file check fails.  Smaller "patch" updates check every system file and will **always** fail like this.  This affects any update from System Settings, including point releases _(e.g. 15.8 → 15.8.1)_, not just major upgrades.
+	- **Fix:** use the **full installer** instead, which replaces the whole system without checking existing files:
+		`softwareupdate --fetch-full-installer --full-installer-version <version>` _(see `softwareupdate --list-full-installers`)_, then run the `Install macOS ...` app from `/Applications`.  This is how I upgraded from Sonoma to Sequoia.
+	- Run the download from the Terminal app, and add `caffeinate -dims` in front of the command so the Mac doesn't sleep partway through.
+	- _Alternative (untested): temporarily disable `BlueToolFixup.kext` in `config.plist` for one boot, run the update, then re-enable it._
 - ~~The `` ` ~ `` key _(left of `1`)_ types `§ ±` instead~~ **Fixed** by removing the `29=56` and `56=29` entries from the `Default` → `Custom PS2 Map` in `VoodooPS2Keyboard.kext/Contents/Info.plist` _(inside `VoodooPS2Controller.kext/Contents/PlugIns`)_.
 	- These entries came from the prebuilt EFI and swap the `` ` ~ `` key with the ISO `§ ±` key; they are <ins>not</ins> in the official VoodooPS2 release.  Under Sonoma macOS had the keyboard type set to ISO, which cancelled out the swap.  After upgrading, macOS correctly detected the keyboard as **ANSI**, so the swap showed up.
 	- The kext in [macOS_15/EFI/OC](./macOS_15/EFI/OC) already has this fix.  If you update VoodooPS2 later, the official `Info.plist` doesn't have the swap either.
