@@ -147,7 +147,18 @@ The official [itlwm](https://github.com/OpenIntelWireless/itlwm/releases) releas
 ### Other config changes
 
 - Added `revpatch=sbvmm` boot arg _(uses the existing `RestrictEvents.kext`)_ so OTA updates still work with a T2-based SMBIOS and `SecureBootModel` set to `Disabled`.
-- Boot args are now: `alcid=13 watchdog=0 igfxonln=1 agdpmod=vit9696 -vi2c-force-polling igfxagdc=0 -wegnoegpu -ibtcompatbeta revpatch=sbvmm`
+- Added `itlwm_cc=CA` boot arg to set the Wi-Fi country code _(use your own two-letter country code; without it System Information shows `Country Code: ZZ`)_.
+- Boot args are now: `alcid=13 watchdog=0 igfxonln=1 agdpmod=vit9696 -vi2c-force-polling igfxagdc=0 -wegnoegpu -ibtcompatbeta revpatch=sbvmm itlwm_cc=CA`
+
+### EFI folder
+
+My working Sequoia `EFI/OC` folder is in [macOS_15/EFI/OC](./macOS_15/EFI/OC) _(OpenCore 1.0.7, validated with `ocvalidate`)_.
+
+> [!IMPORTANT]
+> The `SystemSerialNumber`, `MLB`, `SystemUUID` and `ROM` in `config.plist` are **blank**.  Generate your own for `MacBookPro16,2` with [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) or `macserial` _(see [SMBIOS](#smbios) above)_ and set `ROM` to your network card's MAC address before using it.
+
+- `itlwm.kext` is <ins>not</ins> included _(disabled HeliPort fallback)_; grab it from the [itlwm releases](https://github.com/OpenIntelWireless/itlwm/releases) if needed.
+- `EFI/BOOT/BOOTx64.efi` is <ins>not</ins> included since mine is the Ubuntu shim; use the one from the OpenCore package if your BIOS boots via the fallback path.
 
 ### Installing
 
@@ -184,7 +195,7 @@ What did fix it:
 - Wi-Fi may not reconnect after booting Windows _(see Fast Startup note above)_.
 - **Wi-Fi link speed is low** _(~72 Mbps on 5GHz; the 8265 should manage several hundred)_.  Logs from the earlier build showed the link negotiating **HT at 20MHz** with `VHT=0`.  Things to check:
 	- The router's **5GHz channel width** _(a scan showed my 5GHz network advertising 20MHz; set it to 80MHz or 40MHz)_.
-	- Setting a country code with the `itlwm_cc=XX` boot arg _(System Information shows `Country Code: ZZ`)_.
+	- Country code is now set via `itlwm_cc=CA` _(see above)_; re-test speed with it.
 	- The `-novht` and `-noht40` boot args should <ins>not</ins> be set.
 - After a **long sleep**, Wi-Fi on the 8265 may stay unavailable until toggled off/on _(laobamac issue [#19](https://github.com/laobamac/itlwm/issues/19), fix in progress)_.
 - Bluetooth devices don't reconnect automatically after a reboot _(re-pairing works)_.
