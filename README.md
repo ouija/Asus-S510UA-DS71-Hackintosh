@@ -297,7 +297,7 @@ Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https:/
 
 ### Status on Tahoe
 
-- **Working:** graphics acceleration _(UHD 620 with the same KBL framebuffer properties)_, audio _(SimpleHDA)_, `Fn` volume keys, `Fn` brightness keys, battery status, USB ports, USB-C hub with ethernet, trackpad with multi-finger gestures, SD card reader, Bluetooth device discovery, keyboard backlight with `Fn+F3` / `Fn+F4`.
+- **Working:** graphics acceleration _(UHD 620 with the same KBL framebuffer properties)_, audio _(SimpleHDA)_, `Fn` volume keys, `Fn` brightness keys, battery status, USB ports, USB-C hub with ethernet, trackpad with multi-finger gestures, SD card reader, Bluetooth device discovery, keyboard backlight with `Fn+F3` / `Fn+F4`, **HDMI output with HDMI audio**.
 - **Issues:**
 	- ~~Wifi link speed is low~~ **Fixed**: it had joined the 2.4 GHz band; toggling Wi-Fi off/on got it onto 5 GHz at 585 Mbps _(see [Wifi](#wifi))_.
 	- The on-screen brightness indicator gets out of sync _(jumps or moves the wrong way)_ when pressing the brightness keys **quickly**.  Slow presses display fine and the backlight itself always changes correctly.
@@ -309,8 +309,9 @@ Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https:/
 	- The Tahoe upgrade reset the `pmset` sleep settings applied on Sequoia back to defaults.  On Tahoe, sleep works fine with the defaults _(`powernap`, `tcpkeepalive`, `womp`, `proximitywake` = `1`)_.  Turning them off made <ins>no</ins> difference to sleep, and `tcpkeepalive 0` disables **Find My Mac** while asleep.  The only change I kept is turning off deep standby, which often causes wake problems on hackintoshes:
 		`sudo pmset -a standby 0` _(with `hibernatemode 0`, the default here; check with `pmset -g`)_
 	- With a **USB stick inserted**, Tahoe <ins>does</ins> sleep fine _(unlike Sequoia, which woke immediately)_.
-	- On AC power you may still see a brief **"DarkWake … due to RTC/Maintenance"** about every 5 minutes, scheduled by `powerd` as `GaugingMitigationActions` _(check with `pmset -g log | grep "Wake Requests"`)_.  It comes from macOS battery gauging: the battery reports **on AC, not charging, but not full** _(the firmware stops charging at ~98%)_.  Turning off Optimized Battery Charging / battery longevity did <ins>not</ins> stop it.  It's harmless _(screen stays off, under a minute)_, so I'm leaving it.
-- **Not tested yet:** Bluetooth pairing, HDMI output.
+	- On AC power you may still see a brief **"DarkWake … due to RTC/Maintenance"** about every 5 minutes, scheduled by `powerd` as `GaugingMitigationActions` _(check with `pmset -g log | grep "Wake Requests"`)_.  It comes from macOS battery gauging: the battery reports **on AC, not charging, but not full** _(the firmware stops charging at ~98%)_.  It's harmless _(screen stays off, under a minute)_, so I'm leaving it.
+		- Turning off **Optimized Battery Charging** and the **battery longevity** option did <ins>not</ins> stop it.  You can still turn them off if you like _(optional; charging is controlled by the laptop's firmware, not macOS)_: **System Settings → Battery → ⓘ next to Battery Health**.
+- **Not tested yet:** Bluetooth pairing.
 
 ## General Notes
 
