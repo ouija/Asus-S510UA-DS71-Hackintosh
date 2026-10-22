@@ -307,7 +307,9 @@ Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https:/
 - **Sleep works** _(without USB storage connected)_: stays asleep until a key is pressed and resumes fine; Wi-Fi takes a few seconds to reconnect.
 	- If the Mac takes a while to sleep on its own, check `pmset -g assertions`.  Open audio streams _(e.g. an app playing sound or using the mic)_ keep `coreaudiod` holding `PreventUserIdleSystemSleep`, which delayed idle sleep here until they closed.
 	- To see what woke the Mac: `pmset -g log | grep -E "Wake from|DarkWake"` _(a key press shows as `due to PWRB/User`)_.
-	- USB storage _(made Sequoia wake immediately)_ is still to be tested on Tahoe.
+	- **The Tahoe upgrade reset the sleep settings** applied on Sequoia _(`powernap`, `tcpkeepalive`, `proximitywake`, `standby` were all back to `1`)_.  This caused **"DarkWake … due to RTC/Maintenance"** every few minutes, so the laptop never seemed fully asleep.  Re-apply after major upgrades and check with `pmset -g`:
+		`sudo pmset -a powernap 0 tcpkeepalive 0 proximitywake 0 standby 0 womp 0`
+	- With a **USB stick inserted**, Tahoe <ins>did</ins> go to sleep _(unlike Sequoia, which woke immediately)_; the only wakes logged were the maintenance wakes above.
 - **Not tested yet:** Bluetooth pairing, HDMI output.
 
 ## General Notes
