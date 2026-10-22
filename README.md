@@ -18,7 +18,7 @@ Please consider [donating](https://paypal.me/djouija) to support this project. T
 **This guide is a <u>work in progress</u> and will be updated accordingly.**
 
 > [!NOTE]
-> _This system is now running **Sequoia 15.8** with graphics acceleration, audio, native Wi-Fi, Bluetooth, keyboard backlight and SD card reader all working.  See [Upgrading to macOS Sequoia](#upgrading-to-macos-sequoia-158) for what it took to get there!_
+> _This system is now running **Sequoia 15.8** with graphics acceleration, audio, native Wi-Fi, Bluetooth, keyboard backlight and SD card reader all working, with a few rough edges noted below.  See [Upgrading to macOS Sequoia](#upgrading-to-macos-sequoia-158) for what it took to get there!_
 
 After a long hiatus from the hackintosh scene, I'm back in action wasting time trying to get this awful operating system running on this unit again for development purposes.
 
@@ -114,7 +114,7 @@ On Sequoia, both AppleHDA _(AppleALC audio)_ and the KBL graphics drivers are st
 
 ### Wifi and Bluetooth
 
-The official [itlwm](https://github.com/OpenIntelWireless/itlwm/releases) releases stop at a Sonoma 14.4 build of `AirportItlwm`, which does <ins>not</ins> load on Sequoia.  My original plan was to switch to `itlwm.kext` + [HeliPort](https://github.com/OpenIntelWireless/HeliPort/releases), but I'm instead using the **Sequoia build of AirportItlwm** from the [jzrodriguez98/itlwm fork](https://github.com/jzrodriguez98/itlwm/releases) _(release `1.1.0`, file `AirportItlwm-Sequoia-Release.kext.zip`)_, which gives the **native macOS Wi-Fi menu** with <ins>no</ins> OCLP root patches.  It's built against the macOS 15.5 SDK and includes the 8265 _(`0x24FD`)_ in its device list.
+The official [itlwm](https://github.com/OpenIntelWireless/itlwm/releases) releases stop at a Sonoma 14.4 build of `AirportItlwm`, which does <ins>not</ins> load on Sequoia.  My original plan was to switch to `itlwm.kext` + [HeliPort](https://github.com/OpenIntelWireless/HeliPort/releases), but I'm instead using the **Sequoia build of AirportItlwm** from [laobamac/itlwm](https://github.com/laobamac/itlwm/releases) _(release `v2.4.0-alpha`, file `AirportItlwm-Sequoia-v2.4.0-RELEASE-alpha-738d4c6.zip`)_, which gives the **native macOS Wi-Fi menu** with <ins>no</ins> OCLP root patches.  It's built against the macOS 15.5 SDK and includes the 8265 _(`0x24FD`)_ in its device list.
 
 - Renamed it to `AirportItlwm-Sequoia.kext` so it can sit alongside the Sonoma build in `EFI/OC/Kexts`.
 - Using `MinKernel`/`MaxKernel` lets the same EFI boot either OS with the correct kext:
@@ -122,14 +122,26 @@ The official [itlwm](https://github.com/OpenIntelWireless/itlwm/releases) releas
 | **Kext**            | **MinKernel** | **MaxKernel** | **Enabled** | **Loads on** |
 |---------------------|:-------------:|:-------------:|:-----------:|--------------|
 | `AirportItlwm.kext` _(official v2.3.0, Sonoma 14.4 build)_ | | `23.99.99` | Yes | Sonoma |
-| `AirportItlwm-Sequoia.kext` _(jzrodriguez98 fork 1.1.0, v2.4.1)_ | `24.0.0` | `24.99.99` | Yes | Sequoia |
-| `itlwm.kext` _(v2.3.0)_ | `24.0.0` | | **No** | _(fallback with HeliPort if the fork misbehaves)_ |
+| `AirportItlwm-Sequoia.kext` _(laobamac v2.4.0-alpha, `738d4c6`)_ | `24.0.0` | `24.99.99` | Yes | Sequoia |
+| `itlwm.kext` _(v2.3.0)_ | `24.0.0` | | **No** | _(fallback with HeliPort if needed)_ |
+
+> [!NOTE]
+> I first tried the [jzrodriguez98/itlwm fork](https://github.com/jzrodriguez98/itlwm/releases) `1.1.0` Sequoia build _(an earlier snapshot of laobamac's work)_.  It loaded and connected at first, but later the Wi-Fi menu showed **no networks** even though the card was scanning: airportd rejected every scan result with `Failed to add scan result to list (err=-3902, bssid=(null))` and only `AirportItlwmEthernetInterface` was registered _(no native Skywalk interface; see laobamac issue [#10](https://github.com/laobamac/itlwm/issues/10))_.  The laobamac `v2.4.0-alpha` build fixed this.
+>
+> To check the native interface came up: `ioreg -l | grep -c AirportItlwmSkywalkInterface` _(should be above `0`)_.
+
+- If **System Settings → Network** shows the card as **Ethernet** instead of Wi-Fi, delete the Ethernet service and add a **Wi-Fi** service _(Network → `...` → Add Service)_ as described in laobamac issue [#5](https://github.com/laobamac/itlwm/issues/5).
+- If joining fails, turn off **Private Wi-Fi Address** for the network _(System Settings → Wi-Fi → `(i)`)_.  Use **Other Network...** to join by name if the network list is empty.
+
+#### Bluetooth
 
 > [!WARNING]
-> **`IntelBTPatcher.kext` (v2.4.0) must be <ins>disabled</ins> on Sequoia!**  With it enabled, boot hangs in verbose output.  v2.4.0 _(Feb 2024)_ predates Sequoia; the [Sequoia compatibility fix](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/commits/master) was committed upstream in June 2024 but never released _(see issue [#486](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/issues/486))_.
+> **`IntelBTPatcher.kext` v2.4.0** _(the latest official release, Feb 2024)_ **breaks booting on Sequoia!**  With it enabled, boot hangs in verbose output or instantly resets.  The [Sequoia compatibility fix](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/commits/master) was committed upstream in June 2024 but never released _(see issue [#486](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/issues/486))_.
 
-- Bluetooth works with just `IntelBluetoothFirmware.kext` + `BlueToolFixup.kext` and the `-ibtcompatbeta` boot arg; able to scan and pair a Bluetooth mouse.
-	- _Previously paired devices may not reconnect after a reboot.  This is likely either the missing `IntelBTPatcher` or the device being re-paired under Windows/Linux (which replaces the pairing key)._
+- Replaced **both** `IntelBluetoothFirmware.kext` and `IntelBTPatcher.kext` with **v2.5.0** from the [Dortania build repo](https://dortania.github.io/builds/?product=IntelBluetoothFirmware&viewall=true) _(automated builds of the official source, commit `a414375`, which includes the Sequoia fixes)_.  Both must be the same version.
+- Kept `BlueToolFixup.kext` _(2.7.2)_ and the `-ibtcompatbeta` boot arg.
+- Bluetooth turns on, scans and pairs a Bluetooth mouse with `IntelBTPatcher` 2.5.0 enabled.
+	- _Previously paired devices don't reconnect automatically after a reboot; removing and re-pairing works.  Not a big deal for now._
 - If you dual-boot Windows, **disable Fast Startup** in Windows _(Control Panel → Power Options → Choose what the power buttons do)_.  Wi-Fi failed to reconnect in macOS after booting Windows; Fast Startup hibernates instead of shutting down and can leave the card in a bad state _(see itlwm issue [#734](https://github.com/OpenIntelWireless/itlwm/issues/734))_.  Do a full power off before booting macOS.
 
 ### Other config changes
@@ -159,8 +171,8 @@ Things that did <ins>not</ins> fix it:
 What did fix it:
 1. Uninstalled **Tuxera NTFS** from Safe Mode _(a third-party kernel extension installed in macOS)_.  This didn't fix it on its own, but it's worth checking `/Library/Extensions` and `/Library/Filesystems` for old third-party drivers after a major upgrade.
 2. Added `-v debug=0x100 keepsyms=1` to the boot args _(`debug=0x100` keeps a panic on screen instead of rebooting)_ and **disabled every non-essential kext**, which booted to the desktop.
-3. Re-enabled kexts one group at a time, rebooting after each: Wi-Fi → Bluetooth → AsusSMC + BrightnessKeys → Sinetek-rtsx.  The only one that broke the boot was **`IntelBTPatcher.kext`** _(see above)_.
-4. Removed the debug boot args once everything was working.
+3. Re-enabled kexts one group at a time, rebooting after each: Wi-Fi → Bluetooth → AsusSMC + BrightnessKeys → Sinetek-rtsx.  The only one that broke the boot was **`IntelBTPatcher.kext` v2.4.0** _(see above)_.
+4. Updated the Bluetooth kexts to the 2.5.0 Dortania build, re-enabled `IntelBTPatcher`, and removed the debug boot args once everything was working.
 
 > [!NOTE]
 > The ethernet kexts _(`AtherosE2200Ethernet`, `IntelMausi`, `RealtekRTL8111`)_ and `AirportBrcmFixup` from the prebuilt EFI are now disabled since this laptop has no ethernet port or Broadcom card.
@@ -170,7 +182,13 @@ What did fix it:
 - **SD cards larger than 32GB** _(SDXC)_ fail to initialize with `Sinetek-rtsx.kext` v9.0 _(the latest release)_; 1GB and 4GB cards work fine.
 - macOS shows a **"The disk you attached was not readable"** prompt at startup, likely for the Linux (ext4) drive.  Click **Ignore**, <ins>never</ins> Initialize!  An `/etc/fstab` entry with `noauto` did <ins>not</ins> suppress it.
 - Wi-Fi may not reconnect after booting Windows _(see Fast Startup note above)_.
-- Sleep/wake, HDMI output, webcam and microphone have <ins>not</ins> been re-tested on Sequoia yet.
+- **Wi-Fi link speed is low** _(~72 Mbps on 5GHz; the 8265 should manage several hundred)_.  Logs from the earlier build showed the link negotiating **HT at 20MHz** with `VHT=0`.  Things to check:
+	- The router's **5GHz channel width** _(a scan showed my 5GHz network advertising 20MHz; set it to 80MHz or 40MHz)_.
+	- Setting a country code with the `itlwm_cc=XX` boot arg _(System Information shows `Country Code: ZZ`)_.
+	- The `-novht` and `-noht40` boot args should <ins>not</ins> be set.
+- After a **long sleep**, Wi-Fi on the 8265 may stay unavailable until toggled off/on _(laobamac issue [#19](https://github.com/laobamac/itlwm/issues/19), fix in progress)_.
+- Bluetooth devices don't reconnect automatically after a reboot _(re-pairing works)_.
+- Battery, microphone, audio, graphics acceleration, keyboard backlight and brightness keys confirmed working.  Sleep/wake, HDMI output, webcam and USB ports have <ins>not</ins> been re-tested on Sequoia yet.
 
 ## General Notes
 
