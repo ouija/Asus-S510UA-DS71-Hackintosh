@@ -163,7 +163,35 @@ My working Sequoia `EFI/OC` folder is in [macOS_15/EFI/OC](./macOS_15/EFI/OC) _(
 - `itlwm.kext` is <ins>not</ins> included _(disabled HeliPort fallback)_; grab it from the [itlwm releases](https://github.com/OpenIntelWireless/itlwm/releases) if needed.
 - `EFI/BOOT/BOOTx64.efi` is <ins>not</ins> included since mine is the Ubuntu shim; use the one from the OpenCore package if your BIOS boots via the fallback path.
 
-### Installing
+> [!TIP]
+> Keep a **private** backup of your own `config.plist` _(with your real serials)_ somewhere outside this repo, so a reinstall keeps the same serial and your iCloud/iMessage setup doesn't change.
+
+### Fresh install from scratch (checklist)
+
+**1. Make the USB installer** _(needs a USB stick **larger than** 16GB)_
+- On a Mac: download the full installer with `softwareupdate --fetch-full-installer --full-installer-version 15.8`, then run:
+	`sudo "/Applications/Install macOS Sequoia.app/Contents/Resources/createinstallmedia" --volume /Volumes/<USB>`
+	- _Or build it with [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/INSTALLER.html), as I did for Sonoma._
+- Without a Mac: use `macrecovery.py` from the OpenCore package _(`Utilities/macrecovery`)_ to download Sequoia recovery: `python3 macrecovery.py -b Mac-937A206F2EE63C01 -m 00000000000000000 download`.  _Note that this downloads macOS during the install, so you'll need a network connection that works in the installer (USB ethernet adapter or iPhone USB tethering)._
+
+**2. Put OpenCore on the USB**
+- Mount the USB's EFI partition and copy [macOS_15/EFI/OC](./macOS_15/EFI/OC) to `EFI/OC`, plus `EFI/BOOT/BOOTx64.efi` from the [OpenCore 1.0.7](https://github.com/acidanthera/OpenCorePkg/releases/tag/1.0.7) package _(`X64/EFI/BOOT`)_.
+- Fill in `PlatformInfo → Generic` with your serials _(see the tip above)_.
+- If the installer hangs or panics early, add `TSC_sync_margin=0` to the boot args _(see [Pre Installation Notes](#pre-installation-notes))_ and/or `-v` to see where it stops.
+
+**3. Install**
+- Boot the USB from the one-time boot menu _(`Esc` or `F8` on this Asus)_ and install macOS onto an APFS volume.
+- Select `macOS Installer` in the OpenCore picker on every reboot until it disappears _(`Space` shows hidden entries)_.
+
+**4. After the install**
+- Mount the internal EFI partition and copy the same `EFI/OC` folder there.
+- Use `Ctrl+Enter` in the OpenCore picker to set macOS _(or another OS)_ as the default boot entry.
+- Wi-Fi: if System Settings → Network shows the card as **Ethernet**, delete that service and add a **Wi-Fi** service.  If joining fails, turn off **Private Wi-Fi Address** for the network.
+- Sleep settings: `sudo pmset -a hibernatemode 0 standby 0 autopoweroff 0 proximitywake 0 powernap 0 tcpkeepalive 0` then `sudo rm -f /var/vm/sleepimage`.
+- If you dual-boot Windows, **disable Fast Startup** in Windows.
+- Don't install third-party filesystem drivers like Tuxera NTFS unless they explicitly support your macOS version.
+
+### Installing (upgrade from Sonoma)
 
 - Downloaded the full installer via terminal: `softwareupdate --fetch-full-installer --full-installer-version 15.8`
 	- _Use `softwareupdate --list-full-installers` to see available versions; these will <ins>only</ins> appear for your SMBIOS if it is supported._
