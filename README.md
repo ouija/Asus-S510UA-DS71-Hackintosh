@@ -228,6 +228,10 @@ What did fix it:
 - **Sleep works**, but a connected **USB drive** made it wake immediately; eject/unplug USB storage before sleeping.  Also applied the usual hackintosh sleep settings: `sudo pmset -a hibernatemode 0`, `standby 0`, `autopoweroff 0`, `proximitywake 0`, `powernap 0`, `tcpkeepalive 0`, then `sudo rm -f /var/vm/sleepimage` _(undo with `sudo pmset restoredefaults`)_.
 - After a **long sleep**, Wi-Fi on the 8265 may stay unavailable until toggled off/on _(laobamac issue [#19](https://github.com/laobamac/itlwm/issues/19), fix in progress)_.
 - Bluetooth devices don't reconnect automatically after a reboot _(re-pairing works)_.
+- ~~The `` ` ~ `` key _(left of `1`)_ types `§ ±` instead~~ **Fixed** by removing the `29=56` and `56=29` entries from the `Default` → `Custom PS2 Map` in `VoodooPS2Keyboard.kext/Contents/Info.plist` _(inside `VoodooPS2Controller.kext/Contents/PlugIns`)_.
+	- These entries came from the prebuilt EFI and swap the `` ` ~ `` key with the ISO `§ ±` key; they are <ins>not</ins> in the official VoodooPS2 release.  Under Sonoma macOS had the keyboard type set to ISO, which cancelled out the swap.  After upgrading, macOS correctly detected the keyboard as **ANSI**, so the swap showed up.
+	- The kext in [macOS_15/EFI/OC](./macOS_15/EFI/OC) already has this fix.  If you update VoodooPS2 later, the official `Info.plist` doesn't have the swap either.
+	- If the key is still wrong, check **System Settings → Keyboard → Change Keyboard Type…** and choose **ANSI**.
 - Battery, microphone, audio, webcam _(tested in Photo Booth)_, graphics acceleration, keyboard backlight, brightness keys, **HDMI output with HDMI audio**, and **all USB ports** _(including USB-C)_ confirmed working.
 
 ## General Notes
