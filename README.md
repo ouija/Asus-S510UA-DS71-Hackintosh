@@ -150,7 +150,7 @@ The official [itlwm](https://github.com/OpenIntelWireless/itlwm/releases) releas
 - Added `itlwm_cc=CA` boot arg to set the Wi-Fi country code _(use your own two-letter country code; without it System Information shows `Country Code: ZZ`)_.
 
 > [!TIP]
-> **Setting `itlwm_cc` was the key to full Wi-Fi speed!**  Without it, the 8265 only connected at **~72 Mbps** _(HT, 20MHz)_ on 5GHz.  With `itlwm_cc=CA` it connects at **~650 Mbps** and gets **~300 Mbps** in a speed test.
+> **Setting `itlwm_cc` was the key to full Wi-Fi speed!**  Without it, the 8265 only connected at **~72 Mbps** _(HT, 20MHz)_ on 5GHz.  With `itlwm_cc=CA` it connects at **~650 Mbps on an 80MHz channel** and gets **~300 Mbps** in a speed test.
 - Boot args are now: `alcid=13 watchdog=0 igfxonln=1 agdpmod=vit9696 -vi2c-force-polling igfxagdc=0 -wegnoegpu -ibtcompatbeta revpatch=sbvmm itlwm_cc=CA`
 
 ### EFI folder
