@@ -228,7 +228,7 @@ What did fix it:
 - **Sleep works**, but a connected **USB drive** made it wake immediately; eject/unplug USB storage before sleeping.  Also applied the usual hackintosh sleep settings: `sudo pmset -a hibernatemode 0`, `standby 0`, `autopoweroff 0`, `proximitywake 0`, `powernap 0`, `tcpkeepalive 0`, then `sudo rm -f /var/vm/sleepimage` _(undo with `sudo pmset restoredefaults`)_.
 - After a **long sleep**, Wi-Fi on the 8265 may stay unavailable until toggled off/on _(laobamac issue [#19](https://github.com/laobamac/itlwm/issues/19), fix in progress)_.
 - Bluetooth devices don't reconnect automatically after a reboot _(re-pairing works)_.
-- Battery, microphone, audio, webcam _(tested in Photo Booth)_, graphics acceleration, keyboard backlight, brightness keys, and **HDMI output with HDMI audio** confirmed working.  USB ports have <ins>not</ins> been re-tested on Sequoia yet.
+- Battery, microphone, audio, webcam _(tested in Photo Booth)_, graphics acceleration, keyboard backlight, brightness keys, **HDMI output with HDMI audio**, and **all USB ports** _(including USB-C)_ confirmed working.
 
 ## General Notes
 
