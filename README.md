@@ -304,7 +304,11 @@ Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https:/
 	- The on-screen brightness indicator gets out of sync _(jumps or moves the wrong way)_ when pressing the brightness keys **quickly**.  Slow presses display fine and the backlight itself always changes correctly.
 		- Recorded the brightness values while pressing the keys: each press moves exactly **1/16** of the range _(the standard 16 steps)_ in the right direction, with <ins>no</ins> duplicate events from AsusSMC/BrightnessKeys.  So this looks like a cosmetic timing quirk of the indicator, <ins>not</ins> a backlight or PNLF config problem.
 		- **Much better a while after the upgrade** with no config changes, so it was most likely lag from post-upgrade background work _(Spotlight indexing etc.)_.
-- **Not tested yet:** sleep, Bluetooth pairing, HDMI output.
+- **Sleep works** _(without USB storage connected)_: stays asleep until a key is pressed and resumes fine; Wi-Fi takes a few seconds to reconnect.
+	- If the Mac takes a while to sleep on its own, check `pmset -g assertions`.  Open audio streams _(e.g. an app playing sound or using the mic)_ keep `coreaudiod` holding `PreventUserIdleSystemSleep`, which delayed idle sleep here until they closed.
+	- To see what woke the Mac: `pmset -g log | grep -E "Wake from|DarkWake"` _(a key press shows as `due to PWRB/User`)_.
+	- USB storage _(made Sequoia wake immediately)_ is still to be tested on Tahoe.
+- **Not tested yet:** Bluetooth pairing, HDMI output.
 
 ## General Notes
 
