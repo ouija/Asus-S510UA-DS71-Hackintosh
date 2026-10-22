@@ -1,7 +1,7 @@
 
 
-# Asus-S510UA-DS71-Hackintosh (macOS 14)
-**Hackintosh Installation Guide for Asus VivoBook S10UA-DS71 and macOS 14.4.1 "Sonoma"**
+# Asus-S510UA-DS71-Hackintosh (macOS 15)
+**Hackintosh Installation Guide for Asus VivoBook S10UA-DS71 and macOS 15.8 "Sequoia"** _(originally installed as 14.4.1 "Sonoma")_
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="Images/Asus-S510UA-DS71-Hackintosh-14.4.1.png"></p>
 
 Please consider [donating](https://paypal.me/djouija) to support this project. Thanks!
@@ -18,7 +18,7 @@ Please consider [donating](https://paypal.me/djouija) to support this project. T
 **This guide is a <u>work in progress</u> and will be updated accordingly.**
 
 > [!NOTE]
-> _This system is **fully functional** now running Sonoma 14.4.1, and I'm beginning to put it through it's paces to find out where the ghosts in the machine are!_
+> _This system is now running **Sequoia 15.8** with graphics acceleration, audio, native Wi-Fi, Bluetooth, keyboard backlight and SD card reader all working.  See [Upgrading to macOS Sequoia](#upgrading-to-macos-sequoia-158) for what it took to get there!_
 
 After a long hiatus from the hackintosh scene, I'm back in action wasting time trying to get this awful operating system running on this unit again for development purposes.
 
@@ -97,7 +97,7 @@ Originally planned to go to macOS Tahoe 26.7 _(the final Intel release)_, but de
 
 - `AppleHDA.kext` was **removed** in Tahoe, so AppleALC no longer works for the Conexant CX8050.  Audio would require either [re-injecting AppleHDA](https://github.com/perez987/AppleHDA-back-on-macOS-26-Tahoe) into the system volume _(redone after every macOS update)_ or VoodooHDA.
 - The Kaby Lake (KBL) graphics drivers were present in the Tahoe betas, and reports suggest UHD 620 acceleration still works on Tahoe with current Lilu/WhateverGreen, but this has <ins>not</ins> been tested on this machine.
-- Intel wifi requires `itlwm` + HeliPort either way; the [AirportItlwm-Tahoe](https://github.com/kgp-macPro/AirportItlwm-Tahoe) fork needs OCLP root patches and is only qualified on the AX210.
+- Intel wifi on Tahoe needs either `itlwm` + HeliPort or a third-party AirportItlwm fork; the [AirportItlwm-Tahoe](https://github.com/kgp-macPro/AirportItlwm-Tahoe) fork needs OCLP root patches and is only qualified on the AX210.  _(The [jzrodriguez98 fork](https://github.com/jzrodriguez98/itlwm/releases) used below for Sequoia also has a Tahoe build, <ins>not</ins> tested here.)_
 
 On Sequoia, both AppleHDA _(AppleALC audio)_ and the KBL graphics drivers are still native.
 
@@ -114,16 +114,23 @@ On Sequoia, both AppleHDA _(AppleALC audio)_ and the KBL graphics drivers are st
 
 ### Wifi and Bluetooth
 
-`AirportItlwm` does <ins>not</ins> work natively on Sequoia or newer _(Apple removed the legacy wireless stack it depends on)_, so switched to [itlwm](https://github.com/OpenIntelWireless/itlwm/releases) with the [HeliPort](https://github.com/OpenIntelWireless/HeliPort/releases) client app instead.  Using `MinKernel`/`MaxKernel` lets the same EFI boot either OS with the correct kext:
+The official [itlwm](https://github.com/OpenIntelWireless/itlwm/releases) releases stop at a Sonoma 14.4 build of `AirportItlwm`, which does <ins>not</ins> load on Sequoia.  My original plan was to switch to `itlwm.kext` + [HeliPort](https://github.com/OpenIntelWireless/HeliPort/releases), but I'm instead using the **Sequoia build of AirportItlwm** from the [jzrodriguez98/itlwm fork](https://github.com/jzrodriguez98/itlwm/releases) _(release `1.1.0`, file `AirportItlwm-Sequoia-Release.kext.zip`)_, which gives the **native macOS Wi-Fi menu** with <ins>no</ins> OCLP root patches.  It's built against the macOS 15.5 SDK and includes the 8265 _(`0x24FD`)_ in its device list.
 
-| **Kext**            | **MinKernel** | **MaxKernel** | **Loads on** |
-|---------------------|:-------------:|:-------------:|--------------|
-| `AirportItlwm.kext` _(Sonoma 14.4 build)_ | | `23.99.99` | Sonoma |
-| `itlwm.kext` _(v2.3.0)_ | `24.0.0` | | Sequoia and newer |
+- Renamed it to `AirportItlwm-Sequoia.kext` so it can sit alongside the Sonoma build in `EFI/OC/Kexts`.
+- Using `MinKernel`/`MaxKernel` lets the same EFI boot either OS with the correct kext:
 
-- Install **HeliPort** _before_ upgrading since there's no ethernet port on this laptop!  _(Have iPhone USB tethering or a USB ethernet adapter handy as a backup)_
-- Added `-ibtcompatbeta` boot arg for `IntelBluetoothFirmware`/`IntelBTPatcher` on newer macOS.
-- _Note: With itlwm + HeliPort, AirDrop, Continuity and native Wi-Fi menu features are unavailable._
+| **Kext**            | **MinKernel** | **MaxKernel** | **Enabled** | **Loads on** |
+|---------------------|:-------------:|:-------------:|:-----------:|--------------|
+| `AirportItlwm.kext` _(official v2.3.0, Sonoma 14.4 build)_ | | `23.99.99` | Yes | Sonoma |
+| `AirportItlwm-Sequoia.kext` _(jzrodriguez98 fork 1.1.0, v2.4.1)_ | `24.0.0` | `24.99.99` | Yes | Sequoia |
+| `itlwm.kext` _(v2.3.0)_ | `24.0.0` | | **No** | _(fallback with HeliPort if the fork misbehaves)_ |
+
+> [!WARNING]
+> **`IntelBTPatcher.kext` (v2.4.0) must be <ins>disabled</ins> on Sequoia!**  With it enabled, boot hangs in verbose output.  v2.4.0 _(Feb 2024)_ predates Sequoia; the [Sequoia compatibility fix](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/commits/master) was committed upstream in June 2024 but never released _(see issue [#486](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/issues/486))_.
+
+- Bluetooth works with just `IntelBluetoothFirmware.kext` + `BlueToolFixup.kext` and the `-ibtcompatbeta` boot arg; able to scan and pair a Bluetooth mouse.
+	- _Previously paired devices may not reconnect after a reboot.  This is likely either the missing `IntelBTPatcher` or the device being re-paired under Windows/Linux (which replaces the pairing key)._
+- If you dual-boot Windows, **disable Fast Startup** in Windows _(Control Panel → Power Options → Choose what the power buttons do)_.  Wi-Fi failed to reconnect in macOS after booting Windows; Fast Startup hibernates instead of shutting down and can leave the card in a bad state _(see itlwm issue [#734](https://github.com/OpenIntelWireless/itlwm/issues/734))_.  Do a full power off before booting macOS.
 
 ### Other config changes
 
@@ -132,13 +139,38 @@ On Sequoia, both AppleHDA _(AppleALC audio)_ and the KBL graphics drivers are st
 
 ### Installing
 
-> [!NOTE]
-> _Upgrade in progress; will update with results once running Sequoia._
-
 - Downloaded the full installer via terminal: `softwareupdate --fetch-full-installer --full-installer-version 15.8`
 	- _Use `softwareupdate --list-full-installers` to see available versions; these will <ins>only</ins> appear for your SMBIOS if it is supported._
 - Run `Install macOS Sequoia` as an in-place upgrade over Sonoma, selecting `macOS Installer` in the OpenCore picker during reboots until it disappears.
-- After first login, launch HeliPort to connect to wifi and add it to Login Items.
+	- _Press `Space` in the picker to show hidden entries if you don't see it, and don't walk away during the first reboot!_
+
+### Troubleshooting: Sequoia only booted in Safe Mode
+
+After the upgrade, Sequoia would boot in **Safe Mode** _(hold `Shift`)_ but a normal boot got through the verbose output and then **instantly reset** right when the display should switch to the Apple logo, with <ins>no</ins> kernel panic logged.
+
+> [!TIP]
+> Safe Mode disables most **Lilu plugins** _(AsusSMC, AppleALC, CpuTscSync, BrightnessKeys, RestrictEvents, etc.)_ and anything installed in `/Library/Extensions`, even though OpenCore still injects the kexts.  So "boots in Safe Mode, fails normally" usually points to a kext rather than your ACPI or graphics config.
+
+Things that did <ins>not</ins> fix it:
+- `-igfxvesa` _(disabling graphics acceleration)_
+- Switching the SMBIOS back to `MacBookPro15,2`
+- Stripping the IGPU `DeviceProperties` down to the basics _(the original framebuffer patches work fine on Sequoia)_
+
+What did fix it:
+1. Uninstalled **Tuxera NTFS** from Safe Mode _(a third-party kernel extension installed in macOS)_.  This didn't fix it on its own, but it's worth checking `/Library/Extensions` and `/Library/Filesystems` for old third-party drivers after a major upgrade.
+2. Added `-v debug=0x100 keepsyms=1` to the boot args _(`debug=0x100` keeps a panic on screen instead of rebooting)_ and **disabled every non-essential kext**, which booted to the desktop.
+3. Re-enabled kexts one group at a time, rebooting after each: Wi-Fi → Bluetooth → AsusSMC + BrightnessKeys → Sinetek-rtsx.  The only one that broke the boot was **`IntelBTPatcher.kext`** _(see above)_.
+4. Removed the debug boot args once everything was working.
+
+> [!NOTE]
+> The ethernet kexts _(`AtherosE2200Ethernet`, `IntelMausi`, `RealtekRTL8111`)_ and `AirportBrcmFixup` from the prebuilt EFI are now disabled since this laptop has no ethernet port or Broadcom card.
+
+### Known issues on Sequoia
+
+- **SD cards larger than 32GB** _(SDXC)_ fail to initialize with `Sinetek-rtsx.kext` v9.0 _(the latest release)_; 1GB and 4GB cards work fine.
+- macOS shows a **"The disk you attached was not readable"** prompt at startup, likely for the Linux (ext4) drive.  Click **Ignore**, <ins>never</ins> Initialize!  An `/etc/fstab` entry with `noauto` did <ins>not</ins> suppress it.
+- Wi-Fi may not reconnect after booting Windows _(see Fast Startup note above)_.
+- Sleep/wake, HDMI output, webcam and microphone have <ins>not</ins> been re-tested on Sequoia yet.
 
 ## General Notes
 
