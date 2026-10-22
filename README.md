@@ -190,7 +190,7 @@ My working Sequoia `EFI/OC` folder is in [macOS_15/EFI/OC](./macOS_15/EFI/OC) _(
 - Mount the internal EFI partition and copy the same `EFI/OC` folder there.
 - Use `Ctrl+Enter` in the OpenCore picker to set macOS _(or another OS)_ as the default boot entry.
 - Wi-Fi: if System Settings → Network shows the card as **Ethernet**, delete that service and add a **Wi-Fi** service.  If joining fails, turn off **Private Wi-Fi Address** for the network.
-- Sleep settings: `sudo pmset -a hibernatemode 0 standby 0 autopoweroff 0 proximitywake 0 powernap 0 tcpkeepalive 0` then `sudo rm -f /var/vm/sleepimage`.
+- Sleep settings: `sudo pmset -a hibernatemode 0 standby 0` then `sudo rm -f /var/vm/sleepimage`.  Leave `powernap`, `tcpkeepalive`, `womp` and `proximitywake` at their defaults _(turning them off made no difference to sleep on Tahoe, and `tcpkeepalive 0` disables Find My Mac while asleep)_.
 - If you dual-boot Windows, **disable Fast Startup** in Windows.
 - Don't install third-party filesystem drivers like Tuxera NTFS unless they explicitly support your macOS version.
 
@@ -297,10 +297,9 @@ Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https:/
 
 ### Status on Tahoe
 
-- **Working:** graphics acceleration _(UHD 620 with the same KBL framebuffer properties)_, audio _(SimpleHDA)_, `Fn` volume keys, `Fn` brightness keys, battery status, USB ports, USB-C hub with ethernet, trackpad with multi-finger gestures, SD card reader, Bluetooth device discovery, keyboard backlight.
+- **Working:** graphics acceleration _(UHD 620 with the same KBL framebuffer properties)_, audio _(SimpleHDA)_, `Fn` volume keys, `Fn` brightness keys, battery status, USB ports, USB-C hub with ethernet, trackpad with multi-finger gestures, SD card reader, Bluetooth device discovery, keyboard backlight with `Fn+F3` / `Fn+F4`.
 - **Issues:**
 	- ~~Wifi link speed is low~~ **Fixed**: it had joined the 2.4 GHz band; toggling Wi-Fi off/on got it onto 5 GHz at 585 Mbps _(see [Wifi](#wifi))_.
-	- `Fn+F3` / `Fn+F4` keyboard backlight keys don't adjust the backlight.
 	- The on-screen brightness indicator gets out of sync _(jumps or moves the wrong way)_ when pressing the brightness keys **quickly**.  Slow presses display fine and the backlight itself always changes correctly.
 		- Recorded the brightness values while pressing the keys: each press moves exactly **1/16** of the range _(the standard 16 steps)_ in the right direction, with <ins>no</ins> duplicate events from AsusSMC/BrightnessKeys.  So this looks like a cosmetic timing quirk of the indicator, <ins>not</ins> a backlight or PNLF config problem.
 		- **Much better a while after the upgrade** with no config changes, so it was most likely lag from post-upgrade background work _(Spotlight indexing etc.)_.
