@@ -148,6 +148,9 @@ The official [itlwm](https://github.com/OpenIntelWireless/itlwm/releases) releas
 
 - Added `revpatch=sbvmm` boot arg _(uses the existing `RestrictEvents.kext`)_ so OTA updates still work with a T2-based SMBIOS and `SecureBootModel` set to `Disabled`.
 - Added `itlwm_cc=CA` boot arg to set the Wi-Fi country code _(use your own two-letter country code; without it System Information shows `Country Code: ZZ`)_.
+
+> [!TIP]
+> **Setting `itlwm_cc` was the key to full Wi-Fi speed!**  Without it, the 8265 only connected at **~72 Mbps** _(HT, 20MHz)_ on 5GHz.  With `itlwm_cc=CA` it connects at **~650 Mbps** and gets **~300 Mbps** in a speed test.
 - Boot args are now: `alcid=13 watchdog=0 igfxonln=1 agdpmod=vit9696 -vi2c-force-polling igfxagdc=0 -wegnoegpu -ibtcompatbeta revpatch=sbvmm itlwm_cc=CA`
 
 ### EFI folder
@@ -193,13 +196,11 @@ What did fix it:
 - **SD cards larger than 32GB** _(SDXC)_ fail to initialize with `Sinetek-rtsx.kext` v9.0 _(the latest release)_; 1GB and 4GB cards work fine.
 - macOS shows a **"The disk you attached was not readable"** prompt at startup, likely for the Linux (ext4) drive.  Click **Ignore**, <ins>never</ins> Initialize!  An `/etc/fstab` entry with `noauto` did <ins>not</ins> suppress it.
 - Wi-Fi may not reconnect after booting Windows _(see Fast Startup note above)_.
-- **Wi-Fi link speed is low** _(~72 Mbps on 5GHz; the 8265 should manage several hundred)_.  Logs from the earlier build showed the link negotiating **HT at 20MHz** with `VHT=0`.  Things to check:
-	- The router's **5GHz channel width** _(a scan showed my 5GHz network advertising 20MHz; set it to 80MHz or 40MHz)_.
-	- Country code is now set via `itlwm_cc=CA` _(see above)_; re-test speed with it.
-	- The `-novht` and `-noht40` boot args should <ins>not</ins> be set.
+- ~~Wi-Fi link speed is low~~ **Fixed** by setting the `itlwm_cc` country code boot arg _(see above)_.  If speeds are still low, make sure `-novht` and `-noht40` are <ins>not</ins> set and check the router's 5GHz channel width.
+- **Sleep:** takes a while to enter sleep, then **wakes immediately**.  Still investigating _(possibly a connected USB device)_.
 - After a **long sleep**, Wi-Fi on the 8265 may stay unavailable until toggled off/on _(laobamac issue [#19](https://github.com/laobamac/itlwm/issues/19), fix in progress)_.
 - Bluetooth devices don't reconnect automatically after a reboot _(re-pairing works)_.
-- Battery, microphone, audio, graphics acceleration, keyboard backlight and brightness keys confirmed working.  Sleep/wake, HDMI output, webcam and USB ports have <ins>not</ins> been re-tested on Sequoia yet.
+- Battery, microphone, audio, webcam _(tested in Photo Booth)_, graphics acceleration, keyboard backlight and brightness keys confirmed working.  HDMI output and USB ports have <ins>not</ins> been re-tested on Sequoia yet.
 
 ## General Notes
 
