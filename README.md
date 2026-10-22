@@ -237,7 +237,7 @@ What did fix it:
 ### Known issues on Sequoia
 
 - **SD cards larger than 32GB** _(SDXC)_ fail to initialize with `Sinetek-rtsx.kext` v9.0 _(the latest release)_; 1GB and 4GB cards work fine.
-- ~~macOS shows a **"The disk you attached was not readable"** prompt at startup for the Linux (ext4) drive~~ **Fixed** by adding a small empty FAT32 partition to the end of the Linux drive _(see [General Notes](#general-notes))_.  Click **Ignore**, <ins>never</ins> Initialize!  An `/etc/fstab` entry with `noauto` did <ins>not</ins> suppress it.
+- ~~macOS shows a **"The disk you attached was not readable"** prompt at startup for the Linux (ext4) drive~~ **Fixed** by adding a small empty HFS+ partition _(hidden with fstab)_ to the end of the Linux drive _(see [General Notes](#general-notes))_.  Click **Ignore**, <ins>never</ins> Initialize!  An `/etc/fstab` entry with `noauto` did <ins>not</ins> suppress it.
 - Wi-Fi may not reconnect after booting Windows _(see Fast Startup note above)_.
 - ~~Wi-Fi link speed is low~~ **Fixed** by setting the `itlwm_cc` country code boot arg _(see above)_.  If speeds are still low, make sure `-novht` and `-noht40` are <ins>not</ins> set and check the router's 5GHz channel width.
 - **Sleep works**, but a connected **USB drive** made it wake immediately; eject/unplug USB storage before sleeping.  Also applied the usual hackintosh sleep settings: `sudo pmset -a hibernatemode 0`, `standby 0`, `autopoweroff 0`, `proximitywake 0`, `powernap 0`, `tcpkeepalive 0`, then `sudo rm -f /var/vm/sleepimage` _(undo with `sudo pmset restoredefaults`)_.
@@ -346,19 +346,19 @@ My working Tahoe `EFI/OC` folder is in [macOS_26/EFI/OC](./macOS_26/EFI/OC) _(Op
 - Debating if `-igfxbls` makes any difference in display backlight smoothness, <ins>not</ins> using currently.
 - To set your **preferred OS to boot by default**, highlight it in the OpenCore picker and press **`Ctrl+Enter`**.  It stays the default until you change it again _(requires `Misc -> Security -> AllowSetDefault` = `True`)_.
 - **Dual-booting Linux on its own separate drive?** macOS will show _"The disk you attached was not readable by this computer"_ with an **Initialize…** button at every boot, because it can't read anything on that drive _(ext4)_.  **<ins>Never</ins> click Initialize; it erases Linux!**  _(Ignore is safe.)_
-	- **Fix:** add a tiny, **empty FAT32 partition** _(~100 MB)_ at the **end** of the Linux drive.  macOS only shows the dialog when it can't read anything on a drive, so one readable partition stops it.  Linux keeps booting normally, since it finds its partition by UUID.
+	- **Fix:** add a tiny, **empty partition** _(~100 MB)_ at the **end** of the Linux drive, formatted as **HFS+**, and hide it with `/etc/fstab`.  macOS only shows the dialog when it can't read anything on a drive, so one readable partition stops it.  Linux keeps booting normally, since it finds its partition by UUID.
 		1. Boot a Linux live USB _(not the installed Linux)_ and open **GParted**.
-		2. Shrink the ext4 partition, leaving ~100 MB of free space **after** it _(shrinking from the end is quick and safe; avoid moving the start)_, then create a **FAT32** partition in that space.  Apply.  _(Back up first, as with any partition change.)_
-		3. Boot macOS: no more dialog.  _(The small partition now auto-mounts on the desktop, e.g. as **"NO NAME"**; step 4 hides it.)_
-		4. **Hide the small partition** with an `/etc/fstab` entry.  This works because macOS <ins>can</ins> read FAT, so the entry matches the volume's UUID:
-			- Get its volume UUID: `diskutil info "/Volumes/NO NAME" | grep "Volume UUID"`
-			- Add it to fstab _(creates the file if it doesn't exist)_:
-				`echo 'UUID=<volume-uuid> none msdos rw,noauto' | sudo tee -a /etc/fstab`
-			- Unmount it now: `diskutil unmount "/Volumes/NO NAME"`, then reboot to check: no dialog and no volume on the desktop.
-			- `noauto` only stops the mount.  macOS still recognises the FAT volume at boot, so the drive no longer counts as "unreadable" and the dialog stays away.
+		2. Shrink the ext4 partition, leaving ~100 MB of free space **after** it _(shrinking from the end is quick and safe; avoid moving the start)_, then create a **FAT32** partition in that space _(easy to create in GParted; it gets reformatted in step 4)_.  Apply.  _(Back up first, as with any partition change.)_
+		3. Boot macOS: no more dialog, but the small partition auto-mounts on the desktop _(e.g. as **"NO NAME"**)_.
+		4. **Reformat it as HFS+** in macOS _(check the size is ~100 MB and it's on the Linux drive first: `diskutil info "/Volumes/NO NAME"`)_:
+			`diskutil eraseVolume JHFS+ HIDDEN "/Volumes/NO NAME"`
+		5. **Hide it** with an `/etc/fstab` entry using its new volume UUID:
+			- `diskutil info /Volumes/HIDDEN | grep "Volume UUID"`
+			- `echo 'UUID=<volume-uuid> none hfs rw,noauto' | sudo tee -a /etc/fstab` _(creates the file if it doesn't exist)_
+			- `diskutil unmount /Volumes/HIDDEN`, then reboot: no dialog and no volume on the desktop.
+	- **Why HFS+ and not FAT32?**  Since Sequoia, macOS mounts FAT _(`msdos`, now handled by FSKit)_ volumes **regardless** of an fstab `noauto` entry _(see this [Apple Community thread](https://discussions.apple.com/thread/255831146))_.  HFS+ still honours `noauto`, macOS can read it at boot _(so the dialog stays away)_, and Windows ignores HFS+ partitions, so it doesn't get a drive letter either.
 	- Naming the partition **"EFI"** does <ins>not</ins> hide it.  macOS hides partitions by their **partition type** _(EFI System Partition)_, not their label.  Changing the type to EFI System would hide it too, but the firmware, OpenCore and GRUB would then treat it as a second boot partition, so the fstab entry is the cleaner option.
-	- Windows may also assign the small partition a drive letter; remove it in **Disk Management** if it shows up there.
-	- What did <ins>not</ins> work: an `/etc/fstab` `noauto` entry for the ext4 partition _(macOS can't read ext4, so it never matches)_, and the [ExtendFS](https://github.com/kthchew/ExtendFS) ext4 driver _(it only loads after login, too late for the boot-time check, and doesn't auto-mount internal drives yet)_.  Hiding the drive through OpenCore/ACPI isn't an option here either, since both SSDs share one SATA controller.
+	- What did <ins>not</ins> work: an `/etc/fstab` `noauto` entry for the ext4 partition _(macOS can't read ext4, so it never matches)_, the [ExtendFS](https://github.com/kthchew/ExtendFS) ext4 driver _(it only loads after login, too late for the boot-time check, and doesn't auto-mount internal drives yet)_, and a FAT32 partition with `noauto` _(still auto-mounts, see above)_.  Hiding the drive through OpenCore/ACPI isn't an option here either, since both SSDs share one SATA controller.
 - Still tweaking and improving, will update here accordingly.
 
 ## DeviceProperties
