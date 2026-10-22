@@ -237,7 +237,7 @@ What did fix it:
 ### Known issues on Sequoia
 
 - **SD cards larger than 32GB** _(SDXC)_ fail to initialize with `Sinetek-rtsx.kext` v9.0 _(the latest release)_; 1GB and 4GB cards work fine.
-- macOS shows a **"The disk you attached was not readable"** prompt at startup, likely for the Linux (ext4) drive.  Click **Ignore**, <ins>never</ins> Initialize!  An `/etc/fstab` entry with `noauto` did <ins>not</ins> suppress it.
+- ~~macOS shows a **"The disk you attached was not readable"** prompt at startup for the Linux (ext4) drive~~ **Fixed** by adding a small empty FAT32 partition to the end of the Linux drive _(see [General Notes](#general-notes))_.  Click **Ignore**, <ins>never</ins> Initialize!  An `/etc/fstab` entry with `noauto` did <ins>not</ins> suppress it.
 - Wi-Fi may not reconnect after booting Windows _(see Fast Startup note above)_.
 - ~~Wi-Fi link speed is low~~ **Fixed** by setting the `itlwm_cc` country code boot arg _(see above)_.  If speeds are still low, make sure `-novht` and `-noht40` are <ins>not</ins> set and check the router's 5GHz channel width.
 - **Sleep works**, but a connected **USB drive** made it wake immediately; eject/unplug USB storage before sleeping.  Also applied the usual hackintosh sleep settings: `sudo pmset -a hibernatemode 0`, `standby 0`, `autopoweroff 0`, `proximitywake 0`, `powernap 0`, `tcpkeepalive 0`, then `sudo rm -f /var/vm/sleepimage` _(undo with `sudo pmset restoredefaults`)_.
