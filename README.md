@@ -6,6 +6,18 @@
 
 Please consider [donating](https://paypal.me/djouija) to support this project. Thanks!
 
+## Branches
+
+Each macOS version has its own branch.  Switch branches with the branch menu at the top of the GitHub page _(or `git checkout <branch>`)_.
+
+| **Branch** | **macOS** | **Bootloader** | **EFI folder** |
+|------------|-----------|----------------|----------------|
+| [`tahoe`](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/tahoe) | **26.7.1 Tahoe** _(default, latest)_ | OpenCore 1.0.8 | [macOS_26/EFI/OC](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/tahoe/macOS_26/EFI/OC) |
+| [`sequoia`](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/sequoia) | 15.8 Sequoia | OpenCore 1.0.7 | [macOS_15/EFI/OC](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/sequoia/macOS_15/EFI/OC) |
+| [`sonoma`](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/sonoma)  ← _you are here_ | 14.4.1 Sonoma | OpenCore 0.9.9 | Notes + [SSDT-KBL](https://github.com/ouija/Asus-S510UA-DS71-Hackintosh/tree/sonoma/macOS_14/Post-Install/SSDT) only _(no full EFI)_ |
+
+_Older guides for 10.15 Catalina and 11.0 Big Sur (Clover) are in the [macOS_10.15](./macOS_10.15) and [macOS_11.0](./macOS_11.0) folders on every branch._
+
 ## Hardware Specs
 - Intel Core i7-8550U [Kaby Lake Refresh] Processor 1.8 GHz (Turbo up to 4.0 GHz)
 - Intel UHD Graphics 620
