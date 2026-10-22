@@ -309,7 +309,8 @@ Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https:/
 	- To see what woke the Mac: `pmset -g log | grep -E "Wake from|DarkWake"` _(a key press shows as `due to PWRB/User`)_.
 	- **The Tahoe upgrade reset the sleep settings** applied on Sequoia _(`powernap`, `tcpkeepalive`, `proximitywake`, `standby` were all back to `1`)_.  This caused **"DarkWake … due to RTC/Maintenance"** every few minutes, so the laptop never seemed fully asleep.  Re-apply after major upgrades and check with `pmset -g`:
 		`sudo pmset -a powernap 0 tcpkeepalive 0 proximitywake 0 standby 0 womp 0`
-	- With a **USB stick inserted**, Tahoe <ins>did</ins> go to sleep _(unlike Sequoia, which woke immediately)_; the only wakes logged were the maintenance wakes above.
+	- With a **USB stick inserted**, Tahoe <ins>does</ins> sleep fine _(unlike Sequoia, which woke immediately)_.
+	- On AC power you may still see a brief **"DarkWake … due to RTC/Maintenance"** about every 5 minutes, scheduled by `powerd` as `GaugingMitigationActions` _(check with `pmset -g log | grep "Wake Requests"`)_.  It comes from macOS battery gauging: the battery reports **on AC, not charging, but not full** _(the firmware stops charging at ~98%)_.  Turning off Optimized Battery Charging / battery longevity did <ins>not</ins> stop it.  It's harmless _(screen stays off, under a minute)_, so I'm leaving it.
 - **Not tested yet:** Bluetooth pairing, HDMI output.
 
 ## General Notes
