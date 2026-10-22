@@ -2,7 +2,7 @@
 
 # Asus-S510UA-DS71-Hackintosh (macOS 26)
 **Hackintosh Installation Guide for Asus VivoBook S10UA-DS71 and macOS 26.7.1 "Tahoe"** _(originally installed as 14.4.1 "Sonoma", then upgraded to 15.8 "Sequoia")_
-<p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="Images/Asus-S510UA-DS71-Hackintosh-14.4.1.png"></p>
+<p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="Images/Asus-S510UA-DS71-Hackintosh-26.7.1.png"></p>
 
 Please consider [donating](https://paypal.me/djouija) to support this project. Thanks!
 
