@@ -1,7 +1,7 @@
 
 
-# Asus-S510UA-DS71-Hackintosh (macOS 15)
-**Hackintosh Installation Guide for Asus VivoBook S10UA-DS71 and macOS 15.8 "Sequoia"** _(originally installed as 14.4.1 "Sonoma")_
+# Asus-S510UA-DS71-Hackintosh (macOS 26)
+**Hackintosh Installation Guide for Asus VivoBook S10UA-DS71 and macOS 26.7.1 "Tahoe"** _(originally installed as 14.4.1 "Sonoma", then upgraded to 15.8 "Sequoia")_
 <p align="center" style="margin:0 auto !important;text-align:center !important;"><img src="Images/Asus-S510UA-DS71-Hackintosh-14.4.1.png"></p>
 
 Please consider [donating](https://paypal.me/djouija) to support this project. Thanks!
@@ -18,7 +18,7 @@ Please consider [donating](https://paypal.me/djouija) to support this project. T
 **This guide is a <u>work in progress</u> and will be updated accordingly.**
 
 > [!NOTE]
-> _This system is now running **Sequoia 15.8** with graphics acceleration, audio, native Wi-Fi, Bluetooth, keyboard backlight and SD card reader all working, with a few rough edges noted below.  See [Upgrading to macOS Sequoia](#upgrading-to-macos-sequoia-158) for what it took to get there!_
+> _This system is now running **Tahoe 26.7.1** _(the final macOS release for Intel)_ with graphics acceleration, audio, Wi-Fi, Bluetooth, keyboard backlight and SD card reader working, with some rough edges still being worked on.  See [Upgrading to macOS Tahoe](#upgrading-to-macos-tahoe-2671) for the latest, and [Upgrading to macOS Sequoia](#upgrading-to-macos-sequoia-158) for the steps before that._
 
 After a long hiatus from the hackintosh scene, I'm back in action wasting time trying to get this awful operating system running on this unit again for development purposes.
 
@@ -100,6 +100,9 @@ Originally planned to go to macOS Tahoe 26.7 _(the final Intel release)_, but de
 - Intel wifi on Tahoe needs either `itlwm` + HeliPort or a third-party AirportItlwm fork; the [AirportItlwm-Tahoe](https://github.com/kgp-macPro/AirportItlwm-Tahoe) fork needs OCLP root patches and is only qualified on the AX210.  _(The [jzrodriguez98 fork](https://github.com/jzrodriguez98/itlwm/releases) used below for Sequoia also has a Tahoe build, <ins>not</ins> tested here.)_
 
 On Sequoia, both AppleHDA _(AppleALC audio)_ and the KBL graphics drivers are still native.
+
+> [!NOTE]
+> _Later upgraded to Tahoe after all: KBL graphics acceleration does work, and audio was solved with SimpleHDA.  See [Upgrading to macOS Tahoe](#upgrading-to-macos-tahoe-2671)._
 
 ### SMBIOS
 
@@ -240,6 +243,64 @@ What did fix it:
 	- The kext in [macOS_15/EFI/OC](./macOS_15/EFI/OC) already has this fix.  If you update VoodooPS2 later, the official `Info.plist` doesn't have the swap either.
 	- If the key is still wrong, check **System Settings → Keyboard → Change Keyboard Type…** and choose **ANSI**.
 - Battery, microphone, audio, webcam _(tested in Photo Booth)_, graphics acceleration, keyboard backlight, brightness keys, **HDMI output with HDMI audio**, and **all USB ports** _(including USB-C)_ confirmed working.
+
+## Upgrading to macOS Tahoe (26.7.1)
+
+Ended up going to Tahoe after all, once working solutions for audio and wifi were available.
+
+> [!NOTE]
+> _Tahoe upgrade is a <u>work in progress</u>; notes will be updated as things are tested._
+
+### Installing (upgrade from Sequoia)
+
+- Upgrading from **System Settings → Software Update** failed every time with _"Failed to prepare the software update"_ _(see the `bluetoothd` note in [Known issues on Sequoia](#known-issues-on-sequoia))_.
+- Used the **full installer** instead, downloaded from the Terminal app:
+	`caffeinate -dims softwareupdate --fetch-full-installer --full-installer-version 26.7.1`
+	then ran `Install macOS Tahoe` from `/Applications` as an in-place upgrade over Sequoia.
+
+> [!TIP]
+> If VS Code (or anything else) is pinning the CPU, the "Preparing" stage can stall.  Opening my **entire home folder** as a VS Code workspace made its file indexer (`rg`) use all 8 threads and the window kept crashing _(code 5)_.  Open a specific project folder instead.
+
+### Audio
+
+`AppleHDA.kext` was removed in Tahoe, so AppleALC alone no longer gives onboard audio.  Fixed with [SimpleHDA](https://github.com/laobamac/SimpleHDA/releases) _(v1.0.0, by laobamac)_, which restores the original AppleHDA stack through **OpenCore injection** with <ins>no</ins> system volume changes, so it survives macOS updates.
+
+- Copy `SimpleHDA.kext` to `EFI/OC/Kexts` and add it under `Kernel -> Add` **right after `AppleALC.kext`** _(order: Lilu → AppleALC → SimpleHDA)_ with `MinKernel` = `25.0.0`.
+- Add the `keepsyms=1` boot arg _(required by SimpleHDA)_ and keep the existing `alcid=13`.
+- Device names follow the NVRAM language automatically; use the `shda-lang=en` boot arg if they show up in Chinese.
+- The optional `SimpleHDA-HAL-1.0.0.pkg` was <ins>not</ins> needed.
+- Built-in speakers, microphone and line input all show up, and the `Fn` volume keys work.
+
+### Wifi
+
+Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https://github.com/laobamac/itlwm/releases) `v2.4.0-alpha` release used for Sequoia _(file `AirportItlwm-Tahoe-v2.4.0-RELEASE-alpha-738d4c6.zip`)_, renamed to `AirportItlwm-Tahoe.kext`:
+
+| **Kext**            | **MinKernel** | **MaxKernel** | **Loads on** |
+|---------------------|:-------------:|:-------------:|--------------|
+| `AirportItlwm.kext` _(official v2.3.0)_ | | `23.99.99` | Sonoma |
+| `AirportItlwm-Sequoia.kext` _(laobamac v2.4.0-alpha)_ | `24.0.0` | `24.99.99` | Sequoia |
+| `AirportItlwm-Tahoe.kext` _(laobamac v2.4.0-alpha)_ | `25.0.0` | | Tahoe |
+
+- Wifi connects with the native Wi-Fi menu, but link speed is low so far _(investigating)_.
+
+### OpenCore 1.0.8 and kext updates
+
+- Updated OpenCore to **1.0.8**.  The only config change `ocvalidate` asked for was a new `HideVerbose` = `False` _(Boolean)_ key on each `UEFI -> Drivers` entry.
+- Updated AppleALC **1.9.8**, WhateverGreen **1.7.1**, and VirtualSMC / SMCBatteryManager / SMCProcessor / SMCLightSensor **1.3.8** _(via kextupdater)_.
+	- _Don't let a kext updater replace the AirportItlwm builds, `IntelBluetoothFirmware`/`IntelBTPatcher` 2.5.0 or the `VoodooPS2Keyboard` key map fix with official versions!_
+
+> [!NOTE]
+> Disk numbers can change after upgrading.  On Tahoe the internal EFI partition became `disk0s1` _(was `disk1s1`)_, so check `diskutil list` before running `sudo diskutil mount`.
+
+### Status on Tahoe
+
+- **Working:** graphics acceleration _(UHD 620 with the same KBL framebuffer properties)_, audio _(SimpleHDA)_, `Fn` volume keys, `Fn` brightness keys, battery status, USB ports, USB-C hub with ethernet, trackpad with multi-finger gestures, SD card reader, Bluetooth device discovery, keyboard backlight.
+- **Issues:**
+	- Wifi link speed is low _(~7 Mbps reported)_.
+	- `Fn+F3` / `Fn+F4` keyboard backlight keys don't adjust the backlight.
+	- The on-screen brightness indicator gets out of sync _(jumps or moves the wrong way)_ when pressing the brightness keys **quickly**.  Slow presses display fine and the backlight itself always changes correctly.
+		- Recorded the brightness values while pressing the keys: each press moves exactly **1/16** of the range _(the standard 16 steps)_ in the right direction, with <ins>no</ins> duplicate events from AsusSMC/BrightnessKeys.  So this looks like a cosmetic timing quirk of the indicator, <ins>not</ins> a backlight or PNLF config problem.  Leaving it as-is for now.
+- **Not tested yet:** sleep, Bluetooth pairing, HDMI output.
 
 ## General Notes
 
