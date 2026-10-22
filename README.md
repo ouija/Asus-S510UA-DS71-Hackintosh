@@ -349,8 +349,15 @@ My working Tahoe `EFI/OC` folder is in [macOS_26/EFI/OC](./macOS_26/EFI/OC) _(Op
 	- **Fix:** add a tiny, **empty FAT32 partition** _(~100 MB)_ at the **end** of the Linux drive.  macOS only shows the dialog when it can't read anything on a drive, so one readable partition stops it.  Linux keeps booting normally, since it finds its partition by UUID.
 		1. Boot a Linux live USB _(not the installed Linux)_ and open **GParted**.
 		2. Shrink the ext4 partition, leaving ~100 MB of free space **after** it _(shrinking from the end is quick and safe; avoid moving the start)_, then create a **FAT32** partition in that space.  Apply.  _(Back up first, as with any partition change.)_
-		3. Boot macOS: no more dialog.
-	- _Optional:_ to also hide the small partition in macOS, get its UUID with `diskutil info /Volumes/<NAME> | grep "Volume UUID"` and add `UUID=<uuid> none msdos rw,noauto` to `/etc/fstab` _(via `sudo vifs`)_.  This works because macOS <ins>can</ins> read FAT.
+		3. Boot macOS: no more dialog.  _(The small partition now auto-mounts on the desktop, e.g. as **"NO NAME"**; step 4 hides it.)_
+		4. **Hide the small partition** with an `/etc/fstab` entry.  This works because macOS <ins>can</ins> read FAT, so the entry matches the volume's UUID:
+			- Get its volume UUID: `diskutil info "/Volumes/NO NAME" | grep "Volume UUID"`
+			- Add it to fstab _(creates the file if it doesn't exist)_:
+				`echo 'UUID=<volume-uuid> none msdos rw,noauto' | sudo tee -a /etc/fstab`
+			- Unmount it now: `diskutil unmount "/Volumes/NO NAME"`, then reboot to check: no dialog and no volume on the desktop.
+			- `noauto` only stops the mount.  macOS still recognises the FAT volume at boot, so the drive no longer counts as "unreadable" and the dialog stays away.
+	- Naming the partition **"EFI"** does <ins>not</ins> hide it.  macOS hides partitions by their **partition type** _(EFI System Partition)_, not their label.  Changing the type to EFI System would hide it too, but the firmware, OpenCore and GRUB would then treat it as a second boot partition, so the fstab entry is the cleaner option.
+	- Windows may also assign the small partition a drive letter; remove it in **Disk Management** if it shows up there.
 	- What did <ins>not</ins> work: an `/etc/fstab` `noauto` entry for the ext4 partition _(macOS can't read ext4, so it never matches)_, and the [ExtendFS](https://github.com/kthchew/ExtendFS) ext4 driver _(it only loads after login, too late for the boot-time check, and doesn't auto-mount internal drives yet)_.  Hiding the drive through OpenCore/ACPI isn't an option here either, since both SSDs share one SATA controller.
 - Still tweaking and improving, will update here accordingly.
 
