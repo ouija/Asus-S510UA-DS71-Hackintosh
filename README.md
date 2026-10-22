@@ -293,7 +293,20 @@ Using the **Tahoe build** of AirportItlwm from the same [laobamac/itlwm](https:/
 	- _Don't let a kext updater replace the AirportItlwm builds, `IntelBluetoothFirmware`/`IntelBTPatcher` 2.5.0 or the `VoodooPS2Keyboard` key map fix with official versions!_
 
 > [!NOTE]
-> Disk numbers can change after upgrading.  On Tahoe the internal EFI partition became `disk0s1` _(was `disk1s1`)_, so check `diskutil list` before running `sudo diskutil mount`.
+> Disk numbers can **change between boots** when there's more than one internal drive _(mine flips between `disk0s1` and `disk1s1` because of the second Linux SSD)_.  Check `diskutil list` first, or mount the internal EFI partition whatever its number:
+> `sudo diskutil mount $(diskutil list internal | awk '/EFI EFI/ {print $NF; exit}')`
+> _(This assumes only one internal drive has an EFI partition.)_
+
+### EFI folder (Tahoe)
+
+My working Tahoe `EFI/OC` folder is in [macOS_26/EFI/OC](./macOS_26/EFI/OC) _(OpenCore 1.0.8, validated with `ocvalidate`)_.  It also boots Sonoma and Sequoia, since the Wi-Fi kexts are limited by `MinKernel`/`MaxKernel`.
+
+> [!IMPORTANT]
+> As with the Sequoia EFI, the `SystemSerialNumber`, `MLB`, `SystemUUID` and `ROM` in `config.plist` are **blank**.  Generate your own for `MacBookPro16,2` _(see [SMBIOS](#smbios))_ and set `ROM` to your network card's MAC address before using it.
+
+- Includes `SimpleHDA.kext` _(audio)_ and `AirportItlwm-Tahoe.kext` _(Wi-Fi)_ in addition to everything in the Sequoia EFI.
+- `itlwm.kext` _(disabled HeliPort fallback)_ and `EFI/BOOT/BOOTx64.efi` are <ins>not</ins> included, same as the Sequoia EFI.
+- Add `keepsyms=1` to the boot args if you start from the Sequoia EFI instead; it's already set here.
 
 ### Status on Tahoe
 
